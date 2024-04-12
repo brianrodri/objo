@@ -1,0 +1,14 @@
+coverage/
+dist/
+docs/
+node_modules/
+
+# Exclude (most of) the testing vault
+test-vault/.obsidian/*
+!test-vault/.obsidian/community-plugins.json
+!test-vault/.obsidian/plugins/
+test-vault/.obsidian/plugins/*
+!test-vault/.obsidian/plugins/sample-plugin/
+!test-vault/.obsidian/plugins/hot-reload/
+test-vault/.obsidian/plugins/sample-plugin/*
+!test-vault/.obsidian/plugins/sample-plugin/.hotreload
