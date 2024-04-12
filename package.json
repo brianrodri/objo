@@ -1,7 +1,7 @@
 {
-    "name": "obsidian-sample-plugin",
+    "name": "objo",
     "version": "1.0.0",
-    "description": "This is a sample plugin for Obsidian (https://obsidian.md)",
+    "description": "Bring Bullet Journal practices to your Obsidian vault.",
     "main": "dist/main.js",
     "scripts": {
         "test": "vitest run",
@@ -17,8 +17,8 @@
         "commitlint": "commitlint --edit",
         "clean": "rm -rf node_modules/ dist/ coverage/ docs/"
     },
-    "keywords": [],
-    "author": "",
+    "keywords": ["Obsidian", "Obsidian plugins", "Bullet Journal", "bujo"],
+    "author": "Brian Rodriguez <brian@brianrodri.com>",
     "license": "MIT",
     "type": "module",
     "dependencies": {
