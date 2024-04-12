@@ -24,7 +24,7 @@
     "dependencies": {
         "luxon": "latest",
         "obsidian": "latest",
-        "obsidian-dataview": "^0.4.21",
+        "obsidian-dataview": "latest",
         "preact": "latest",
         "react": "@preact/compat@latest"
     },
