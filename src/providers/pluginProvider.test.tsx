@@ -5,12 +5,18 @@ import { PluginContext } from "../types/pluginContext";
 import { ContextStringifier } from "../util/contextStringifier";
 import { PluginProvider } from "./pluginProvider";
 
-test("plugin provider", () => {
+test("context from within provider", () => {
     const { container } = render(
-        <PluginProvider plugin={123 as unknown as ObjoPlugin}>
+        <PluginProvider plugin={{} as ObjoPlugin}>
             <ContextStringifier context={PluginContext} />
         </PluginProvider>,
     );
 
-    expect(container.textContent).toEqual(JSON.stringify({ plugin: 123 }));
+    expect(container.textContent).toEqual("{}");
+});
+
+test("context outside of provider", () => {
+    const { container } = render(<ContextStringifier context={PluginContext} />);
+
+    expect(container.textContent).toEqual("");
 });
