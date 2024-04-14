@@ -26,7 +26,8 @@
         "obsidian": "latest",
         "obsidian-dataview": "latest",
         "preact": "latest",
-        "react": "@preact/compat@latest"
+        "react": "@preact/compat@latest",
+        "temporal-polyfill": "latest"
     },
     "devDependencies": {
         "@commitlint/cli": "latest",
