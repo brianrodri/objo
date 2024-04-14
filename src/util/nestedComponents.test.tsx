@@ -1,6 +1,6 @@
 import { render } from "@testing-library/preact";
 import { expect, test } from "vitest";
-import { nestedComponents } from "./nested";
+import { nestedComponents } from "./nestedComponents";
 
 test("supports components with empty props", () => {
     const TestComponent = nestedComponents(
