@@ -1,7 +1,7 @@
 import { render } from "@testing-library/preact";
 import { expect, test, vi } from "vitest";
+import { Stringify } from "../components";
 import { DataviewApiContext } from "../types/dataviewApiContext";
-import { ContextStringifier } from "../util/contextStringifier";
 import { DataviewApiProvider } from "./dataviewApiProvider";
 
 vi.mock("obsidian-dataview", () => ({ getAPI: vi.fn(() => ({ abc: 123 })) }));
@@ -9,7 +9,7 @@ vi.mock("obsidian-dataview", () => ({ getAPI: vi.fn(() => ({ abc: 123 })) }));
 test("context from within provider", () => {
     const { container } = render(
         <DataviewApiProvider>
-            <ContextStringifier context={DataviewApiContext} />
+            <Stringify context={DataviewApiContext} />
         </DataviewApiProvider>,
     );
 
@@ -17,7 +17,7 @@ test("context from within provider", () => {
 });
 
 test("context outside of provider", () => {
-    const { container } = render(<ContextStringifier context={DataviewApiContext} />);
+    const { container } = render(<Stringify context={DataviewApiContext} />);
 
     expect(container.textContent).toEqual("");
 });

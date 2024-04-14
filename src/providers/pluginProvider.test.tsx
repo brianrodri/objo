@@ -1,14 +1,14 @@
 import { render } from "@testing-library/preact";
 import { expect, test } from "vitest";
+import { Stringify } from "../components";
 import ObjoPlugin from "../main";
 import { PluginContext } from "../types/pluginContext";
-import { ContextStringifier } from "../util/contextStringifier";
 import { PluginProvider } from "./pluginProvider";
 
 test("context from within provider", () => {
     const { container } = render(
         <PluginProvider plugin={{} as ObjoPlugin}>
-            <ContextStringifier context={PluginContext} />
+            <Stringify context={PluginContext} />
         </PluginProvider>,
     );
 
@@ -16,7 +16,7 @@ test("context from within provider", () => {
 });
 
 test("context outside of provider", () => {
-    const { container } = render(<ContextStringifier context={PluginContext} />);
+    const { container } = render(<Stringify context={PluginContext} />);
 
     expect(container.textContent).toEqual("");
 });
