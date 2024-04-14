@@ -29,7 +29,6 @@ export default defineConfig(({ mode }) => ({
         environment: "jsdom",
         coverage: {
             100: true,
-            all: true,
             include: ["src/"],
             exclude: ["src/main.ts"],
         },
