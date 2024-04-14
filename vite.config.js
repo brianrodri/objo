@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => ({
     build: {
         emptyOutDir: false, // Otherwise helpful files like ".hotreload" will be wiped.
         lib: {
-            entry: "src/main.tsx",
+            entry: "src/plugin.tsx",
             fileName: () => "main.js",
             formats: ["cjs"],
         },
@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => ({
         coverage: {
             thresholds: { 100: true },
             include: ["src/"],
-            exclude: ["src/main.tsx", "src/**/index.ts"],
+            exclude: ["src/plugin.tsx", "src/**/index.ts"],
         },
     },
 }));

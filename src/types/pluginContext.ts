@@ -1,4 +1,4 @@
 import { createContext } from "preact";
-import ObjoPlugin from "../main";
+import ObjoPlugin from "../plugin";
 
 export const PluginContext = createContext<ObjoPlugin | undefined>(undefined);

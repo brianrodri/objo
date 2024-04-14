@@ -1,7 +1,7 @@
 import { render } from "@testing-library/preact";
 import { expect, test, vi } from "vitest";
 import { Stringify } from "../components";
-import { DataviewApiContext } from "../types/dataviewApiContext";
+import { DataviewApiContext } from "../types";
 import { DataviewApiProvider } from "./dataviewApiProvider";
 
 vi.mock("obsidian-dataview", () => ({ getAPI: vi.fn(() => ({ abc: 123 })) }));
