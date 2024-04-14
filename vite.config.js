@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
     test: {
         environment: "jsdom",
         coverage: {
-            100: true,
+            thresholds: { 100: true },
             include: ["src/"],
             exclude: ["src/main.tsx", "src/**/index.ts"],
         },
