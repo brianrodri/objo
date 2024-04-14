@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => ({
         coverage: {
             100: true,
             include: ["src/"],
-            exclude: ["src/main.ts"],
+            exclude: ["src/main.tsx", "src/**/index.ts"],
         },
         // TODO: Remove this once there are tests
         passWithNoTests: true,
