@@ -1,11 +1,13 @@
-import { ComponentType, VNode } from "preact";
-import { PropsWithChildren } from "preact/compat";
+import { ComponentType } from "preact/compat";
 
-export interface NestedProps<P> {
-    components: ComponentType<P>[];
-    mergedProps?: P;
-}
-
-export function Nested<P>({ children, components, mergedProps = {} as P }: PropsWithChildren<NestedProps<P>>) {
-    return components.reduceRight((child, C) => <C {...mergedProps}>{child}</C>, children) as VNode;
+export function nestedComponents(...components: ComponentType[]): ComponentType {
+    return components.reduce(
+        (ParentComponent, NextComponent) =>
+            ({ children }) => (
+                <ParentComponent>
+                    <NextComponent>{children}</NextComponent>
+                </ParentComponent>
+            ),
+        ({ children }) => <>{children}</>,
+    );
 }
