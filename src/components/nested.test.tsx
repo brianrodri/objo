@@ -1,14 +1,15 @@
 import { render } from "@testing-library/preact";
 import { expect, test } from "vitest";
-import { makeNestedComponent } from "./makeNestedComponents";
+import { Nested } from "./nested";
+import { ComponentType } from "preact/compat";
 
 test("nesting components", () => {
-    const NestedComponent = makeNestedComponent(
+    const components: ComponentType[] = [
         ({ children }) => <>outer {children} outer</>,
         ({ children }) => <>inner {children} inner</>,
-    );
+    ];
 
-    const { container } = render(<NestedComponent>innermost</NestedComponent>);
+    const { container } = render(<Nested components={components}>innermost</Nested>);
 
     expect(container.textContent).toEqual("outer inner innermost inner outer");
 });
