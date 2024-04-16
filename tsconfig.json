@@ -8,6 +8,7 @@
         "baseUrl": "./src",
         "module": "ESNext",
         "moduleResolution": "Node",
+        "paths": { "@/*": ["./*"] },
 
         // Emit
         "noEmit": true,

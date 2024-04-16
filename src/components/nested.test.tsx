@@ -1,7 +1,8 @@
 import { render } from "@testing-library/preact";
-import { expect, test } from "vitest";
-import { Nested } from "./nested";
 import { ComponentType } from "preact/compat";
+import { expect, test } from "vitest";
+
+import { Nested } from "./nested";
 
 test("nesting components", () => {
     const components: ComponentType[] = [

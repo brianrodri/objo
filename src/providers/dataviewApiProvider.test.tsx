@@ -1,12 +1,17 @@
 import { render } from "@testing-library/preact";
+import { getAPI } from "obsidian-dataview";
 import { expect, test, vi } from "vitest";
-import { Stringify } from "../components";
-import { DataviewApiContext } from "../types";
+
+import { Stringify } from "@/components";
+import { DataviewApiContext } from "@/types";
+
 import { DataviewApiProvider } from "./dataviewApiProvider";
 
-vi.mock("obsidian-dataview", () => ({ getAPI: vi.fn(() => ({ abc: 123 })) }));
+vi.mock("obsidian-dataview", () => ({ getAPI: vi.fn() }));
 
 test("context from within provider", () => {
+    vi.mocked(getAPI).mockReturnValue({ abc: 123 });
+
     const { container } = render(
         <DataviewApiProvider>
             <Stringify context={DataviewApiContext} />

@@ -1,6 +1,7 @@
 import { render } from "@testing-library/preact";
 import { createContext } from "preact/compat";
 import { expect, test } from "vitest";
+
 import { Stringify } from "./stringify";
 
 const TestContext = createContext({ abc: 123 });

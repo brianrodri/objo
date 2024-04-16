@@ -5,5 +5,5 @@ export interface NestedProps {
 }
 
 export function Nested({ children, components }: PropsWithChildren<NestedProps>) {
-    return components.reduceRight((inner, NextOuter) => <NextOuter>{inner}</NextOuter>, children);
+    return components.reduceRight((inner, NextOuter) => <NextOuter>{inner}</NextOuter>, <>{children}</>);
 }

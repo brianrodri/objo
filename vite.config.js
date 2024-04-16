@@ -12,6 +12,9 @@ export default defineConfig(({ mode }) => ({
             ],
         }),
     ],
+    resolve: {
+        alias: { "@": "/src" },
+    },
     build: {
         emptyOutDir: false, // Otherwise helpful files like ".hotreload" will be wiped.
         lib: {
