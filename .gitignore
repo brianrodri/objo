@@ -1,7 +1,8 @@
 coverage/
 dist/
-docs/
 node_modules/
+docs/*
+!docs/adrs
 
 # Exclude (most of) the testing vault
 test-vault/.obsidian/*
