@@ -11,3 +11,9 @@ test("stringify context", () => {
 
     expect(container.textContent).toEqual(JSON.stringify({ abc: 123 }));
 });
+
+test("stringify value", () => {
+    const { container } = render(<Stringify value={{ abc: 123 }} />);
+
+    expect(container.textContent).toEqual(JSON.stringify({ abc: 123 }));
+});

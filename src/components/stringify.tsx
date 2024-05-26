@@ -1,14 +1,13 @@
 import { Context, useContext, useMemo } from "preact/compat";
 
-export interface StringifyProps<T> {
-    context: Context<T>;
+export type StringifyProps<T> = ({ value: T } | { context: Context<T> }) & {
     replacer?: Parameters<typeof JSON.stringify>[1];
     space?: Parameters<typeof JSON.stringify>[2];
-}
+};
 
-/** Renders the JSON stringified value of a context. */
-export function Stringify<T>({ context, replacer, space }: StringifyProps<T>) {
-    const value = useContext(context);
+/** Renders a JSON stringified value. */
+export function Stringify<T>({ replacer, space, ...overloadedProps }: StringifyProps<T>) {
+    const value = "value" in overloadedProps ? overloadedProps.value : useContext(overloadedProps.context);
     const string = useMemo(() => JSON.stringify(value, replacer, space), [value, replacer, space]);
     return <>{string}</>;
 }
