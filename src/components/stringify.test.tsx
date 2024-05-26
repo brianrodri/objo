@@ -4,10 +4,9 @@ import { expect, test } from "vitest";
 
 import { Stringify } from "./stringify";
 
-const TestContext = createContext({ abc: 123 });
-
 test("stringify context", () => {
-    const { container } = render(<Stringify context={TestContext} />);
+    const context = createContext({ abc: 123 });
+    const { container } = render(<Stringify context={context} />);
 
     expect(container.textContent).toEqual(JSON.stringify({ abc: 123 }));
 });

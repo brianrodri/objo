@@ -4,9 +4,9 @@ import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import { useNow } from "./now";
 
-const NOW = DateTime.now();
-
 describe("useNow", () => {
+    const NOW = DateTime.now();
+
     beforeEach(() => {
         vi.useFakeTimers().setSystemTime(NOW.toJSDate());
     });
