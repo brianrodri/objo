@@ -1,5 +1,4 @@
-import { createContext } from "preact";
-import { PropsWithChildren } from "preact/compat";
+import { createContext, PropsWithChildren } from "preact/compat";
 
 import ObjoPlugin from "@/plugin";
 
