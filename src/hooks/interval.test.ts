@@ -2,9 +2,9 @@ import { act, renderHook } from "@testing-library/preact";
 import { DateTime, Duration } from "luxon";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { useNow } from "./now";
+import { useInterval } from "./interval";
 
-describe("useNow", () => {
+describe("useInterval", () => {
     const NOW = DateTime.now();
 
     beforeEach(() => {
@@ -16,13 +16,13 @@ describe("useNow", () => {
     });
 
     test("returns now", () => {
-        const { result } = renderHook(() => useNow());
+        const { result } = renderHook(() => useInterval(DateTime.now));
 
         expect(result.current).toEqual(NOW);
     });
 
     test.each([1000, 60000])("updates with configurable interval", (intervalMs) => {
-        const { result } = renderHook(() => useNow(intervalMs));
+        const { result } = renderHook(() => useInterval(DateTime.now, intervalMs));
 
         act(() => {
             vi.advanceTimersByTime(intervalMs - 1);
@@ -38,7 +38,7 @@ describe("useNow", () => {
     });
 
     test("stops updating after unmount", () => {
-        const { result, unmount } = renderHook(() => useNow());
+        const { result, unmount } = renderHook(() => useInterval(DateTime.now));
         unmount();
         act(() => {
             vi.advanceTimersByTime(Duration.fromObject({ days: 1 }).as("milliseconds"));
