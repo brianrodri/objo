@@ -1,5 +1,5 @@
 import { DateTime } from "luxon";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from "preact/compat";
 
 export function useNow(intervalMs: number = 1000) {
     const [now, setNow] = useState(DateTime.now);

@@ -1,7 +1,9 @@
 import { getAPI } from "obsidian-dataview";
+import { DataviewApi } from "obsidian-dataview";
+import { createContext } from "preact";
 import { PropsWithChildren } from "preact/compat";
 
-import { DataviewApiContext } from "@/types";
+export const DataviewApiContext = createContext<DataviewApi | undefined>(undefined);
 
 export interface DataviewApiProviderProps {}
 

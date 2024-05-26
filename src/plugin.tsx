@@ -1,6 +1,6 @@
 import { Plugin } from "obsidian";
 
-import { DEFAULT_SETTINGS, ObjoPluginSettings } from "@/types";
+import { DEFAULT_SETTINGS, ObjoPluginSettings } from "@/types/settings";
 
 export default class ObjoPlugin extends Plugin {
     private settings: ObjoPluginSettings = { ...DEFAULT_SETTINGS };

@@ -2,7 +2,7 @@ import { act, renderHook } from "@testing-library/preact";
 import { DateTime, Duration } from "luxon";
 import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
-import { useNow } from "@/hooks/now";
+import { useNow } from "./now";
 
 const NOW = DateTime.now();
 

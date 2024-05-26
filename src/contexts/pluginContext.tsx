@@ -1,7 +1,9 @@
+import { createContext } from "preact";
 import { PropsWithChildren } from "preact/compat";
 
 import ObjoPlugin from "@/plugin";
-import { PluginContext } from "@/types";
+
+export const PluginContext = createContext<ObjoPlugin | undefined>(undefined);
 
 export interface PluginProviderProps {
     plugin: ObjoPlugin;

@@ -1,11 +1,10 @@
 import { render } from "@testing-library/preact";
 import { expect, test } from "vitest";
 
-import { Stringify } from "@/components";
+import { Stringify } from "@/components/stringify";
 import ObjoPlugin from "@/plugin";
-import { PluginContext } from "@/types";
 
-import { PluginProvider } from "./pluginProvider";
+import { PluginContext, PluginProvider } from "./pluginContext";
 
 test("context from within provider", () => {
     const { container } = render(
