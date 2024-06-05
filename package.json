@@ -7,7 +7,7 @@
         "test": "vitest run",
         "watch": "vitest run --coverage --watch",
         "coverage": "vitest run --coverage",
-        "hotreload": "git submodule init && git submodule update && vite build --mode development --outDir ./test-vault/.obsidian/plugins/sample-plugin/ --watch",
+        "hotreload": "git submodule init && git submodule update && vite build --mode development --outDir ./test-vault/.obsidian/plugins/objo/ --watch",
         "dev": "vite serve",
         "build": "tsc && vite build",
         "docs": "typedoc src/plugin.tsx --plugin typedoc-plugin-coverage --out docs/ --excludeExternals --excludePrivate --excludeProtected",
@@ -18,7 +18,12 @@
         "commitlint": "commitlint --edit",
         "clean": "rm -rf node_modules/ dist/ coverage/ docs/"
     },
-    "keywords": ["Obsidian", "Obsidian plugins", "Bullet Journal", "bujo"],
+    "keywords": [
+        "Obsidian",
+        "Obsidian plugins",
+        "Bullet Journal",
+        "bujo"
+    ],
     "author": "Brian Rodriguez <brian@brianrodri.com>",
     "license": "MIT",
     "type": "module",
