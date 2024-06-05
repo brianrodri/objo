@@ -30,10 +30,11 @@ export default defineConfig(({ mode }) => ({
     },
     test: {
         environment: "jsdom",
+        dir: "src/",
         coverage: {
             thresholds: { 100: true },
             include: ["src/"],
-            exclude: ["src/plugin.tsx", "src/compat/**.tsx"],
+            exclude: ["src/plugin.tsx", "src/compat/*"],
         },
     },
 }));

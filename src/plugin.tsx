@@ -1,5 +1,6 @@
-import { App, MarkdownView, Plugin, PluginManifest } from "obsidian";
+import { App, MarkdownView, Notice, Plugin, PluginManifest } from "obsidian";
 
+import { ensureDataviewReady } from "@/compat/ensureDataviewReady";
 import { ReactObsidianComponent } from "@/compat/reactObsidianComponent";
 import { createObjoContext, ObjoContextProvider } from "@/contexts/objoContext";
 import { DEFAULT_SETTINGS, ObjoPluginSettings } from "@/types/settings";
@@ -17,6 +18,15 @@ export default class ObjoPlugin extends Plugin {
     }
 
     public override async onload() {
+        try {
+            await ensureDataviewReady(this);
+        } catch (err) {
+            // @ts-expect-error: plugins is a private field
+            await this.app.plugins.disablePluginAndSave("objo");
+            new Notice("Objo requires obsidian-dataview to be enabled.");
+            return;
+        }
+
         await this.loadSettings();
         this.app.workspace.onLayoutReady(() => {
             this.forEachMarkdownView(this.mount);

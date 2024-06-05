@@ -1,5 +1,6 @@
 [
   "hot-reload",
   "sample-plugin",
-  "objo"
+  "objo",
+  "dataview"
 ]
