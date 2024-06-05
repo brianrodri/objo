@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => ({
         coverage: {
             thresholds: { 100: true },
             include: ["src/"],
-            exclude: ["src/plugin.tsx", "src/**/index.ts"],
+            exclude: ["src/plugin.tsx", "src/compat/**.tsx"],
         },
     },
 }));
