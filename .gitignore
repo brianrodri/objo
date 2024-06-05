@@ -6,6 +6,8 @@ docs/*
 *.timestamp-*.mjs
 
 # Exclude (most of) the testing vault
+test-vault/*
+!test-vault/.obsidian/
 test-vault/.obsidian/*
 !test-vault/.obsidian/community-plugins.json
 !test-vault/.obsidian/plugins/
