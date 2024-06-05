@@ -1,65 +1,60 @@
-import { MarkdownView, Plugin } from "obsidian";
-import { VNode } from "preact";
-import { render, unmountComponentAtNode } from "preact/compat";
+import { App, MarkdownView, Plugin, PluginManifest } from "obsidian";
 
-import { DEFAULT_SETTINGS, ObjoPluginSettings } from "@/types/settings";
+import { ReactObsidianComponent } from "@/compat/reactObsidianComponent";
+import { ObjoContext, ObjoContextProvider } from "@/contexts/objoContext";
 
 export default class ObjoPlugin extends Plugin {
-    private settings: ObjoPluginSettings = { ...DEFAULT_SETTINGS };
+    private componentsById: Map<string, ReactObsidianComponent> = new Map();
 
-    public override async onload(): Promise<void> {
-        await this.loadSettings();
+    constructor(app: App, manifest: PluginManifest) {
+        super(app, manifest);
+        // Allows me to pass these functions around as values, rather than having to pass: `() => this.xxx()`.
+        this.mount = this.mount.bind(this);
+        this.remount = this.remount.bind(this);
+        this.unmount = this.unmount.bind(this);
+    }
+
+    public override onload() {
         this.app.workspace.onLayoutReady(() => {
-            this.mountObjoComponents();
-            this.registerEvent(this.app.workspace.on("layout-change", () => this.mountObjoComponents()));
+            this.forEachMarkdownView(this.mount);
+            this.registerEvent(this.app.workspace.on("layout-change", () => this.forEachMarkdownView(this.remount)));
         });
     }
 
-    public getSettings(): ObjoPluginSettings {
-        return this.settings;
+    public override onunload() {
+        this.forEachMarkdownView(this.unmount);
     }
 
-    public overwriteSettings(changes: Partial<ObjoPluginSettings>): void {
-        this.settings = { ...this.settings, ...changes };
-    }
-
-    public async loadSettings(): Promise<void> {
-        const data = await this.loadData();
-        this.settings = { ...DEFAULT_SETTINGS, ...data };
-    }
-
-    public async saveSettings(): Promise<void> {
-        await this.saveData(this.settings);
-    }
-
-    private mountObjoComponents() {
-        for (const { view } of this.app.workspace.getLeavesOfType("markdown")) {
-            if (view instanceof MarkdownView) {
-                const objoComponent = <h1>Hello, World!</h1>;
-                mountObjoComponent(objoComponent, view);
-            }
+    private async mount(view: MarkdownView, id: string) {
+        if (view.getMode() === "preview" && view.file) {
+            const context: ObjoContext = { file: view.file, settings: await this.loadData() };
+            const component = new ReactObsidianComponent(
+                <ObjoContextProvider value={context}>Hello, World!</ObjoContextProvider>,
+                view.containerEl,
+            );
+            view.addChild(component);
+            this.componentsById.set(id, component);
         }
     }
-}
 
-// Used to identify the root element in a workspace leaf.
-const ROOT_CLASS_NAME = "OBJO-ROOT-ELEMENT-CLASS";
+    private unmount(view: MarkdownView, id: string) {
+        const component = this.componentsById.get(id);
+        if (component) {
+            this.componentsById.delete(id);
+            view.removeChild(component);
+        }
+    }
 
-// See: https://forum.obsidian.md/t/header-counter/3525/7
-const REQUIRED_CLASSES = ["markdown-preview-sizer", "markdown-preview-section"];
+    private remount(view: MarkdownView, id: string) {
+        this.unmount(view, id);
+        this.mount(view, id);
+    }
 
-function mountObjoComponent(objoComponent: VNode, view: MarkdownView): void {
-    const containerEl = view.containerEl.querySelector(".markdown-reading-view > .markdown-preview-view");
-    const existingRootEl = view.containerEl.querySelector(`.${ROOT_CLASS_NAME}`);
-
-    if (containerEl && view.getMode() === "preview") {
-        const rootEl = existingRootEl ?? view.containerEl.createDiv({ cls: [ROOT_CLASS_NAME, ...REQUIRED_CLASSES] });
-        if (existingRootEl) unmountComponentAtNode(existingRootEl);
-        containerEl.prepend(rootEl);
-        render(objoComponent, rootEl);
-        view.register(() => unmountComponentAtNode(rootEl));
-    } else if (existingRootEl) {
-        unmountComponentAtNode(existingRootEl);
-        existingRootEl.remove();
+    private forEachMarkdownView(callback: (view: MarkdownView, id: string) => void) {
+        this.app.workspace.iterateAllLeaves((leaf) => {
+            // @ts-expect-error "id" is a private property, but its value seems to work as the name implies.
+            // See: https://discord.com/channels/686053708261228577/707816848615407697/789658157491945472
+            if (leaf.view instanceof MarkdownView && leaf.id) callback(leaf.view, leaf.id);
+        });
     }
 }
