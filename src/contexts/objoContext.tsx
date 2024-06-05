@@ -10,12 +10,16 @@ export interface ObjoContext {
 
 export const objoContext = createContext<Partial<ObjoContext>>({});
 
-export const useObjoContext = () => {
+export function createObjoContext(file: TFile, settings: ObjoPluginSettings): ObjoContext | null {
+    return { file, settings };
+}
+
+export function useObjoContext() {
     const context = useContext(objoContext);
     if (!context.file || !context.settings) {
         throw new Error("useObjoContext must be used within an ObjoContextProvider");
     }
     return context as ObjoContext;
-};
+}
 
 export const ObjoContextProvider = objoContext.Provider;

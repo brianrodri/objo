@@ -5,7 +5,7 @@ import { describe, expect, test } from "vitest";
 import { Stringify } from "@/components/stringify";
 import { DEFAULT_SETTINGS } from "@/types/settings";
 
-import { ObjoContext, ObjoContextProvider, useObjoContext } from "./objoContext";
+import { createObjoContext, ObjoContext, ObjoContextProvider, useObjoContext } from "./objoContext";
 
 describe("ObjoContext", () => {
     const ContextConsumer = () => <Stringify value={useObjoContext()} />;
@@ -24,5 +24,12 @@ describe("ObjoContext", () => {
 
     test("throws error when used outside of provider", () => {
         expect(() => render(<ContextConsumer />)).toThrowError();
+    });
+
+    test("creates context using arguments", () => {
+        const file = {} as TFile;
+        const settings = { ...DEFAULT_SETTINGS };
+
+        expect(createObjoContext(file, settings)).toEqual({ file, settings });
     });
 });

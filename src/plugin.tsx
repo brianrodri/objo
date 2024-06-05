@@ -1,10 +1,12 @@
 import { App, MarkdownView, Plugin, PluginManifest } from "obsidian";
 
 import { ReactObsidianComponent } from "@/compat/reactObsidianComponent";
-import { ObjoContext, ObjoContextProvider } from "@/contexts/objoContext";
+import { createObjoContext, ObjoContextProvider } from "@/contexts/objoContext";
+import { DEFAULT_SETTINGS, ObjoPluginSettings } from "@/types/settings";
 
 export default class ObjoPlugin extends Plugin {
     private componentsById: Map<string, ReactObsidianComponent> = new Map();
+    private settings: ObjoPluginSettings = { ...DEFAULT_SETTINGS };
 
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
@@ -14,7 +16,8 @@ export default class ObjoPlugin extends Plugin {
         this.unmount = this.unmount.bind(this);
     }
 
-    public override onload() {
+    public override async onload() {
+        await this.loadSettings();
         this.app.workspace.onLayoutReady(() => {
             this.forEachMarkdownView(this.mount);
             this.registerEvent(this.app.workspace.on("layout-change", () => this.forEachMarkdownView(this.remount)));
@@ -25,15 +28,22 @@ export default class ObjoPlugin extends Plugin {
         this.forEachMarkdownView(this.unmount);
     }
 
+    private async loadSettings() {
+        const data = await this.loadData();
+        this.settings = { ...(data ?? {}), ...DEFAULT_SETTINGS };
+    }
+
     private async mount(view: MarkdownView, id: string) {
         if (view.getMode() === "preview" && view.file) {
-            const context: ObjoContext = { file: view.file, settings: await this.loadData() };
-            const component = new ReactObsidianComponent(
-                <ObjoContextProvider value={context}>Hello, World!</ObjoContextProvider>,
-                view.containerEl,
-            );
-            view.addChild(component);
-            this.componentsById.set(id, component);
+            const context = createObjoContext(view.file, this.settings);
+            if (context) {
+                const component = new ReactObsidianComponent(
+                    <ObjoContextProvider value={context}>Hello, World!</ObjoContextProvider>,
+                    view.containerEl,
+                );
+                view.addChild(component);
+                this.componentsById.set(id, component);
+            }
         }
     }
 
