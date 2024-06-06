@@ -1,8 +1,6 @@
 coverage/
 dist/
 node_modules/
-docs/*
-!docs/adrs
 *.timestamp-*.mjs
 
 # Exclude (most of) the testing vault
