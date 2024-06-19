@@ -1,35 +1,37 @@
 import { App, MarkdownView, Notice, Plugin, PluginManifest } from "obsidian";
 
-import { ensureDataviewReady } from "@/compat/ensureDataviewReady";
-import { ReactObsidianComponent } from "@/compat/reactObsidianComponent";
-import { createObjoContext, ObjoContextProvider } from "@/contexts/objoContext";
-import { DEFAULT_SETTINGS, ObjoPluginSettings } from "@/types/settings";
+import { ensureDataviewEnabled } from "@/compat/ensureDataviewEnabled";
+import { newObjoContext, ObjoContextProvider } from "@/compat/pluginContext";
+import { PreactComponent } from "@/compat/preactComponent";
+import { DEFAULT_SETTINGS, ObjoSettings } from "@/types/settings";
+import { Breadcrumbs } from "@/views/breadcrumbs";
+import { Header } from "@/views/header";
+import { PendingTasks } from "@/views/pending-tasks";
 
 export default class ObjoPlugin extends Plugin {
-    private componentsById: Map<string, ReactObsidianComponent> = new Map();
-    private settings: ObjoPluginSettings = { ...DEFAULT_SETTINGS };
+    private componentsByLeafId: Map<string, PreactComponent> = new Map();
+    private settings: ObjoSettings = { ...DEFAULT_SETTINGS };
 
     constructor(app: App, manifest: PluginManifest) {
         super(app, manifest);
         // Allows me to pass these functions around as values, rather than having to pass: `() => this.xxx()`.
-        this.mount = this.mount.bind(this);
         this.remount = this.remount.bind(this);
         this.unmount = this.unmount.bind(this);
     }
 
     public override async onload() {
         try {
-            await ensureDataviewReady(this);
+            await ensureDataviewEnabled(this);
         } catch (err) {
-            // @ts-expect-error: plugins is a private field
+            // @ts-expect-error: `plugins` is a private field.
             await this.app.plugins.disablePluginAndSave("objo");
-            new Notice("Objo requires obsidian-dataview to be enabled.");
+            new Notice("Objo requires the Dataview plugin to be enabled.");
             return;
         }
 
         await this.loadSettings();
         this.app.workspace.onLayoutReady(() => {
-            this.forEachMarkdownView(this.mount);
+            this.forEachMarkdownView(this.remount);
             this.registerEvent(this.app.workspace.on("layout-change", () => this.forEachMarkdownView(this.remount)));
         });
     }
@@ -39,42 +41,50 @@ export default class ObjoPlugin extends Plugin {
     }
 
     private async loadSettings() {
-        const data = await this.loadData();
-        this.settings = { ...(data ?? {}), ...DEFAULT_SETTINGS };
+        const data = (await this.loadData()) ?? {};
+        this.settings = { ...DEFAULT_SETTINGS, ...data };
     }
 
-    private async mount(view: MarkdownView, id: string) {
-        if (view.getMode() === "preview" && view.file) {
-            const context = createObjoContext(view.file, this.settings);
-            if (context) {
-                const component = new ReactObsidianComponent(
-                    <ObjoContextProvider value={context}>Hello, World!</ObjoContextProvider>,
-                    view.containerEl,
-                );
-                view.addChild(component);
-                this.componentsById.set(id, component);
+    private remount(leafId: string, leafView: MarkdownView) {
+        const existingComponent = this.componentsByLeafId.get(leafId);
+        if (existingComponent) {
+            if (leafView.getMode() === "preview" && existingComponent.filePath === leafView.file?.path) {
+                // This view and its component are still in-sync; no need to remount.
+                return;
+            } else {
+                this.componentsByLeafId.delete(leafId);
+                leafView.removeChild(existingComponent);
             }
         }
+
+        // Objo only renders in preview mode.
+        if (leafView.getMode() !== "preview") return;
+
+        const context = newObjoContext(this, leafView, this.settings);
+        if (!context) return;
+
+        const reactEl = (
+            <ObjoContextProvider value={context}>
+                <Header />
+                <Breadcrumbs />
+                <PendingTasks />
+            </ObjoContextProvider>
+        );
+        const component = leafView.addChild(new PreactComponent(context.file.path, reactEl, leafView.containerEl));
+        this.componentsByLeafId.set(leafId, component);
     }
 
-    private unmount(view: MarkdownView, id: string) {
-        const component = this.componentsById.get(id);
-        if (component) {
-            this.componentsById.delete(id);
-            view.removeChild(component);
-        }
+    private unmount(leafId: string, leafView: MarkdownView) {
+        const component = this.componentsByLeafId.get(leafId);
+        if (!component) return;
+        this.componentsByLeafId.delete(leafId);
+        leafView.removeChild(component);
     }
 
-    private remount(view: MarkdownView, id: string) {
-        this.unmount(view, id);
-        this.mount(view, id);
-    }
-
-    private forEachMarkdownView(callback: (view: MarkdownView, id: string) => void) {
-        this.app.workspace.iterateAllLeaves((leaf) => {
-            // @ts-expect-error "id" is a private property, but its value seems to work as the name implies.
-            // See: https://discord.com/channels/686053708261228577/707816848615407697/789658157491945472
-            if (leaf.view instanceof MarkdownView && leaf.id) callback(leaf.view, leaf.id);
+    private forEachMarkdownView(callback: (leafId: string, leafView: MarkdownView) => void) {
+        // @ts-expect-error: `id` is a private field.
+        this.app.workspace.iterateAllLeaves(({ id, view }) => {
+            if (id && view instanceof MarkdownView) callback(id, view);
         });
     }
 }
