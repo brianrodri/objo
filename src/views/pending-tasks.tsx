@@ -6,7 +6,7 @@ export function PendingTasks() {
     const { collection } = useObjoContext();
 
     const md = `
-> [!todo] **Carryover**
+> [!todo] **Pending Tasks**
 > \`\`\`dataview
 > ${getDataviewQuery(collection)}
 > \`\`\`
