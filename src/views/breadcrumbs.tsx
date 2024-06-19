@@ -12,7 +12,7 @@ type SMarkdownPageFile = SMarkdownPage["file"];
 export function Breadcrumbs() {
     const {
         file,
-        collection: { fileNameDateFormat, folder },
+        collection: { fileNameDateFormat, folder, linkedFolders },
     } = useObjoContext();
 
     const files: SMarkdownPageFile[] = getAPI().pages(`"${folder}"`).to("file").array();
@@ -38,9 +38,11 @@ export function Breadcrumbs() {
             sortedFiles[curr].name,
             next > curr ? "→" : "↺",
             sortedFiles[next].link,
-        ];
+        ].join(" ");
 
-        return <Markdown md={breadcrumbs.join(" ")} />;
+        const linkedFiles = linkedFolders.map((link) => `[[${link.folder}/${file.basename}|${link.label}]]`);
+
+        return <Markdown md={[breadcrumbs, ...linkedFiles].join(" ｜ ")} />;
     }
     return <p>{file.basename}</p>;
 }

@@ -7,6 +7,7 @@ import { PeriodicLogConfig } from "@/types/settings";
 import { resolvePeriodicLog } from "./periodicLog";
 
 const DAILY_CONFIG_TEMPLATE: Omit<PeriodicLogConfig, "folder"> = {
+    linkedFolders: [],
     fileNameDateFormat: "yyyy-LL-dd",
     unit: "day",
 };
