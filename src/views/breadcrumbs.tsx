@@ -1,37 +1,46 @@
-import { DateTime, Interval } from "luxon";
-import { TFile } from "obsidian";
+import { sortBy, sortedIndexBy } from "lodash";
+import { DateTime } from "luxon";
+import type { TFile } from "obsidian";
 import { getAPI } from "obsidian-dataview";
+import type { SMarkdownPage } from "obsidian-dataview/lib/data-model/serialized/markdown";
 
 import { Markdown } from "@/compat/markdown";
 import { useObjoContext } from "@/compat/pluginContext";
 
+type SMarkdownPageFile = SMarkdownPage["file"];
+
 export function Breadcrumbs() {
-    const { file, collection } = useObjoContext();
+    const {
+        file,
+        collection: { fileNameDateFormat, folder },
+    } = useObjoContext();
 
-    const parseLogDate = (str: string) => DateTime.fromFormat(str, collection.fileNameDateFormat);
-    const files = getSiblingFiles(file)
-        .filter((f: TFile) => parseLogDate(f.name).isValid)
-        .sort((f: TFile) => parseLogDate(f.name));
+    const files: SMarkdownPageFile[] = getAPI().pages(`"${folder}"`).to("file").array();
+    const fileDates = new Map<string, DateTime<true>>(
+        files
+            .map((f) => [f.name, DateTime.fromFormat(f.name, fileNameDateFormat)] as [string, DateTime])
+            .filter(([, date]) => date.isValid),
+    );
 
-    if (file && files.length > 1) {
-        const interval = Interval.after(parseLogDate(file.basename), { [collection.unit]: 1 });
-        const curr = files.findIndex((f: TFile) => interval.contains(parseLogDate(f.name)));
-        const next = (curr + 1) % files.length;
-        const prev = (curr + files.length - 1) % files.length;
+    if (fileDates.size > 1) {
+        const sortedFiles = sortBy(
+            files.filter((f) => fileDates.has(f.name)),
+            (f: SMarkdownPageFile) => fileDates.get(f.name),
+        );
+        const curr = sortedIndexBy(sortedFiles, file, (f: TFile | SMarkdownPageFile) =>
+            fileDates.get("basename" in f ? f.basename : f.name),
+        );
+        const next = (curr + 1) % sortedFiles.length;
+        const prev = (curr + sortedFiles.length - 1) % sortedFiles.length;
         const breadcrumbs = [
-            files[prev].link,
+            sortedFiles[prev].link,
             prev < curr ? "←" : "↻",
-            files[curr].name,
+            sortedFiles[curr].name,
             next > curr ? "→" : "↺",
-            files[next].link,
+            sortedFiles[next].link,
         ];
 
         return <Markdown md={breadcrumbs.join(" ")} />;
     }
-    return <p>{file?.basename}</p>;
-}
-
-function getSiblingFiles(file: TFile) {
-    const folder = file.parent?.path;
-    return folder ? getAPI().pages(`"${folder}"`).file : [];
+    return <p>{file.basename}</p>;
 }
