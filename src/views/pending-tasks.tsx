@@ -21,6 +21,7 @@ function getDataviewQuery({ date, unit }: PeriodicLog) {
 
     return fixWhitespace(`
         TASK
+        FROM -#index
         WHERE !checked
         AND (!date(file.name) OR date(file.name) < date(${lowerBound.toISODate()}))
         AND (!scheduled OR scheduled < date(${upperBound.toISODate()}))
