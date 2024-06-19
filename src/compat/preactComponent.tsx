@@ -7,7 +7,8 @@ export class PreactComponent extends Component {
         private readonly preactEl: ReactElement,
         private readonly viewContainerEl: HTMLElement,
         private readonly rootElContainerSelector = ".markdown-reading-view > .markdown-preview-view",
-        private readonly rootElClass = "OBJO-ROOT-CLASS",
+        private readonly rootElClassIdentifier = "OBJO-ROOT-CLASS",
+        private readonly rootElClasses = ["markdown-preview-sizer", "markdown-preview-section"],
     ) {
         super();
     }
@@ -15,13 +16,13 @@ export class PreactComponent extends Component {
     public override onload() {
         const rootContainerEl = this.viewContainerEl.querySelector(this.rootElContainerSelector);
         if (!rootContainerEl) return;
-        const rootEl = rootContainerEl.createDiv({ cls: this.rootElClass });
+        const rootEl = rootContainerEl.createDiv({ cls: [this.rootElClassIdentifier, ...this.rootElClasses] });
         render(this.preactEl, rootEl);
         rootContainerEl.prepend(rootEl);
     }
 
     public override onunload() {
-        const rootEl = this.viewContainerEl.querySelector(`.${this.rootElClass}`);
+        const rootEl = this.viewContainerEl.querySelector(`.${this.rootElClassIdentifier}`);
         if (!rootEl) return;
         unmountComponentAtNode(rootEl);
         rootEl.remove();
