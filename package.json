@@ -31,6 +31,7 @@
         "luxon": "latest",
         "obsidian": "latest",
         "obsidian-dataview": "latest",
+        "lodash": "latest",
         "preact": "latest",
         "react": "@preact/compat@latest",
         "temporal-polyfill": "latest"
@@ -42,6 +43,7 @@
         "@preact/preset-vite": "latest",
         "@semantic-release/git": "latest",
         "@testing-library/preact": "latest",
+        "@types/lodash": "latest",
         "@types/luxon": "latest",
         "@types/react": "latest",
         "@typescript-eslint/eslint-plugin": "latest",
