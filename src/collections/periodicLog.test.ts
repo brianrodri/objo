@@ -1,4 +1,4 @@
-import { DateTime } from "luxon";
+import { DateTime, Interval } from "luxon";
 import { TFile } from "obsidian";
 import { describe, expect, test } from "vitest";
 
@@ -7,6 +7,8 @@ import { PeriodicLogConfig } from "@/types/settings";
 import { resolvePeriodicLog } from "./periodicLog";
 
 const DAILY_CONFIG_TEMPLATE: Omit<PeriodicLogConfig, "folder"> = {
+    offset: 0,
+    duration: { day: 1 },
     linkedFolders: [],
     fileNameDateFormat: "yyyy-LL-dd",
     unit: "day",
@@ -19,7 +21,7 @@ describe("PeriodicLog", () => {
 
         expect(resolvePeriodicLog(file, [config])).toEqual({
             type: "periodic-log",
-            date: DateTime.fromISO("2024-06-05"),
+            interval: Interval.after(DateTime.fromISO("2024-06-05"), { day: 1 }),
             ...config,
         });
     });
@@ -30,7 +32,7 @@ describe("PeriodicLog", () => {
 
         expect(resolvePeriodicLog(file, [config])).toEqual({
             type: "periodic-log",
-            date: DateTime.fromISO("2024-06-05"),
+            interval: Interval.after(DateTime.fromISO("2024-06-05"), { day: 1 }),
             ...config,
         });
     });

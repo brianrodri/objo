@@ -1,11 +1,11 @@
-import { DateTime } from "luxon";
+import { DateTime, Interval } from "luxon";
 import { TFile } from "obsidian";
 
 import { PeriodicLogConfig } from "@/types/settings";
 
 export interface PeriodicLog extends PeriodicLogConfig {
     type: "periodic-log";
-    date: DateTime<true>;
+    interval: Interval<true>;
 }
 
 export function resolvePeriodicLog(file: TFile, configs: PeriodicLogConfig[]): PeriodicLog | null {
@@ -19,8 +19,11 @@ export function resolvePeriodicLog(file: TFile, configs: PeriodicLogConfig[]): P
     const [config] = matchingConfigs;
     if (!config) return null;
 
-    const date = DateTime.fromFormat(file.basename, config.fileNameDateFormat);
-    if (!date.isValid) return null;
+    const interval = Interval.after(
+        DateTime.fromFormat(file.basename, config.fileNameDateFormat).plus(config.offset),
+        config.duration,
+    );
+    if (!interval.isValid) return null;
 
-    return { type: "periodic-log", date, ...config };
+    return { type: "periodic-log", interval, ...config };
 }

@@ -15,17 +15,14 @@ export function PendingTasks() {
     return <Markdown md={md} />;
 }
 
-function getDataviewQuery({ date, unit }: PeriodicLog) {
-    const lowerBound = date.startOf(unit);
-    const upperBound = lowerBound.plus({ [unit]: 1 });
-
+function getDataviewQuery({ interval }: PeriodicLog) {
     return fixWhitespace(`
         TASK
         FROM -#index
         WHERE !checked
-        AND (!date(file.name) OR date(file.name) < date(${lowerBound.toISODate()}))
-        AND (!scheduled OR scheduled < date(${upperBound.toISODate()}))
-        AND (!start OR start < date(${upperBound.toISODate()}))
+        AND (!date(file.name) OR date(file.name) < date(${interval.start.toISODate()}))
+        AND (!scheduled OR scheduled < date(${interval.end.toISODate()}))
+        AND (!start OR start < date(${interval.end.toISODate()}))
         AND file.path != this.file.path
         GROUP BY file.folder + "/" + file.name AS key
         SORT key DESC

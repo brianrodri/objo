@@ -9,23 +9,26 @@ const REFRESH_INTERVAL: DurationLike = { minutes: 1 };
 
 export function Header() {
     const { collection } = useObjoContext();
-    const getNow = useCallback(() => DateTime.now().startOf(collection.unit), [collection.unit]);
+    const getNow = useCallback(
+        () => DateTime.now().startOf(collection.unit).plus(collection.offset),
+        [collection.unit],
+    );
     const now = useInterval(getNow, REFRESH_INTERVAL);
 
     return <h1>{getHeaderContent(now, collection)}</h1>;
 }
 
 function getHeaderContent(now: DateTime, collection: PeriodicLog) {
-    const { date, unit, headerDateFormat = collection.fileNameDateFormat } = collection;
+    const { interval, unit, label = unit, fileNameDateFormat, headerDateFormat = fileNameDateFormat } = collection;
 
-    switch (date.diff(now, unit).as(unit)) {
+    switch (interval.start.diff(now, unit).as(unit)) {
         case -1:
-            return unit === "day" ? "Yesterday" : `Last ${unit}`;
+            return unit === "day" ? "Yesterday" : `Last ${label}`;
         case 0:
-            return unit === "day" ? "Today" : `This ${unit}`;
+            return unit === "day" ? "Today" : `This ${label}`;
         case 1:
-            return unit === "day" ? "Tomorrow" : `Next ${unit}`;
+            return unit === "day" ? "Tomorrow" : `Next ${label}`;
         default:
-            return date.toFormat(headerDateFormat);
+            return interval.start.toFormat(headerDateFormat);
     }
 }
