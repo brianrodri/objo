@@ -1,6 +1,6 @@
 {
     "name": "objo",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "description": "Bring Bullet Journal practices to your Obsidian vault.",
     "main": "dist/main.js",
     "scripts": {
