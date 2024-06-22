@@ -7,8 +7,8 @@ import { useInterval } from "@/hooks/interval";
 const REFRESH_INTERVAL: DurationLike = { minutes: 1 };
 
 export function Header() {
-    const { collection } = useObjoContext();
     const now = useInterval(DateTime.now, REFRESH_INTERVAL);
+    const { collection } = useObjoContext();
 
     return <h1>{getHeaderContent(now, collection)}</h1>;
 }
@@ -19,10 +19,10 @@ function getHeaderContent(
 ) {
     if (interval.contains(now)) {
         return unit === "day" ? "Today" : `This ${label}`;
-    } else if (interval.mapEndpoints((dt) => dt.minus(duration)).contains(now)) {
-        return unit === "day" ? "Tomorrow" : `Next ${label}`;
-    } else if (interval.mapEndpoints((dt) => dt.plus(duration)).contains(now)) {
+    } else if (interval.contains(now.minus(duration))) {
         return unit === "day" ? "Yesterday" : `Last ${label}`;
+    } else if (interval.contains(now.plus(duration))) {
+        return unit === "day" ? "Tomorrow" : `Next ${label}`;
     } else {
         return interval.start.toFormat(headerDateFormat);
     }
