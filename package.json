@@ -5,7 +5,7 @@
     "main": "dist/main.js",
     "scripts": {
         "test": "vitest run",
-        "watch": "vitest run --coverage --watch",
+        "watch": "vitest watch --coverage",
         "coverage": "vitest run --coverage",
         "hotreload": "git submodule init && git submodule update && vite build --mode development --outDir ./test-vault/.obsidian/plugins/objo/ --watch",
         "dev": "vite serve",
