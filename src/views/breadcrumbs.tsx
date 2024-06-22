@@ -40,7 +40,7 @@ export function Breadcrumbs() {
             sortedFiles[next].link,
         ].join(" ");
 
-        const linkedFiles = linkedFolders.map((link) => `[[${link.folder}/${file.basename}|${link.label}]]`);
+        const linkedFiles = linkedFolders?.map((link) => `[[${link.folder}/${file.basename}|${link.label}]]`) ?? [];
 
         return <Markdown md={[breadcrumbs, ...linkedFiles].join(" ｜ ")} />;
     }

@@ -6,7 +6,7 @@ export interface PeriodicLogConfig {
     offset: DurationLike;
     duration: DurationLike;
     folder: string;
-    linkedFolders: { label: string; folder: string }[];
+    linkedFolders?: { label: string; folder: string }[];
     fileNameDateFormat: string;
     headerDateFormat?: string;
 }
@@ -34,7 +34,6 @@ export const DEFAULT_SETTINGS: ObjoSettings = {
             offset: 0,
             duration: { week: 1 },
             folder: "01-Fleeting Notes/02-Weekly",
-            linkedFolders: [],
             fileNameDateFormat: "YYYY 'W'WW",
         },
         {
@@ -42,7 +41,6 @@ export const DEFAULT_SETTINGS: ObjoSettings = {
             offset: 0,
             duration: { month: 1 },
             folder: "01-Fleeting Notes/03-Monthly",
-            linkedFolders: [],
             fileNameDateFormat: "yyyy-LL",
             headerDateFormat: "LLLL yyyy",
         },
