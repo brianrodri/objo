@@ -27,3 +27,23 @@ export function resolvePeriodicLog(file: TFile, configs: PeriodicLogConfig[]): P
 
     return { type: "periodic-log", interval, ...config };
 }
+
+export const SAMPLE_DAILY_LOG: Omit<PeriodicLog, "interval"> = {
+    type: "periodic-log",
+    unit: "day",
+    offset: 0,
+    duration: { day: 1 },
+    folder: "Daily Logs",
+    fileNameDateFormat: "yyyy-LL-dd",
+    headerDateFormat: "EEEE LLLL d, yyyy",
+};
+
+export const SAMPLE_SPRINT_LOG: Omit<PeriodicLog, "interval"> = {
+    type: "periodic-log",
+    label: "sprint",
+    unit: "week",
+    offset: { days: 4 },
+    duration: { week: 2 },
+    folder: "Sprint Logs",
+    fileNameDateFormat: "kkkk-'W'WW",
+};
