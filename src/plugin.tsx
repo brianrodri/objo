@@ -8,6 +8,8 @@ import { Breadcrumbs } from "@/views/breadcrumbs";
 import { Header } from "@/views/header";
 import { PendingTasks } from "@/views/pending-tasks";
 
+import { CompletedTasks } from "./views/completed-tasks";
+
 export default class ObjoPlugin extends Plugin {
     private componentsByLeafId: Map<string, PreactComponent> = new Map();
     private settings: ObjoSettings = { ...DEFAULT_SETTINGS };
@@ -68,6 +70,7 @@ export default class ObjoPlugin extends Plugin {
                 <Header />
                 <Breadcrumbs />
                 <PendingTasks />
+                <CompletedTasks />
             </ObjoContextProvider>
         );
         const component = leafView.addChild(new PreactComponent(context.file.path, reactEl, leafView.containerEl));
