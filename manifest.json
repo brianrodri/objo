@@ -1,7 +1,7 @@
 {
     "id": "objo",
     "name": "ObJo",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "minAppVersion": "0.15.0",
     "description": "Bring Bullet Journal practices to your Obsidian vault.",
     "author": "brianrodri",
