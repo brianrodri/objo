@@ -6,7 +6,7 @@ export function CompletedTasks() {
     const { collection } = useObjoContext();
 
     const md = `
-> [!done] **Completed Tasks**
+> [!done] **Completed**
 > \`\`\`dataview
 > ${getDataviewQuery(collection)}
 > \`\`\`
