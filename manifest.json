@@ -1,10 +1,10 @@
 {
-    "id": "plugin-name",
-    "name": "plugin-title",
+    "id": "objo",
+    "name": "ObJo",
     "version": "1.0.0",
     "minAppVersion": "0.15.0",
-    "description": "plugin-description",
-    "author": "plugin-author",
-    "authorurl": "plugin-author-url",
+    "description": "Bring Bullet Journal practices to your Obsidian Vault",
+    "author": "Brian Rodriguez",
+    "authorurl": "https://brianrodri.com",
     "isDesktopOnly": false
 }

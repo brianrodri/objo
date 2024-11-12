@@ -8,7 +8,7 @@ test-vault/.obsidian/*
 !test-vault/.obsidian/community-plugins.json
 !test-vault/.obsidian/plugins/
 test-vault/.obsidian/plugins/*
-!test-vault/.obsidian/plugins/sample-plugin/
+!test-vault/.obsidian/plugins/objo/
 !test-vault/.obsidian/plugins/hot-reload/
-test-vault/.obsidian/plugins/sample-plugin/*
-!test-vault/.obsidian/plugins/sample-plugin/.hotreload
+test-vault/.obsidian/plugins/objo/*
+!test-vault/.obsidian/plugins/objo/.hotreload

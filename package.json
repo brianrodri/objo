@@ -1,6 +1,6 @@
 {
-    "name": "plugin-name",
-    "description": "plugin-description",
+    "name": "objo",
+    "description": "Bring Bullet Journal practices to your Obsidian Vault",
     "license": "MIT",
     "version": "1.0.0",
     "type": "module",
@@ -10,7 +10,7 @@
         "clean": "rm -rf node_modules/ dist/ coverage/ docs/",
         "commitlint": "commitlint --edit",
         "docs": "typedoc src/main.tsx --plugin typedoc-plugin-coverage --out docs/ --excludeExternals --excludePrivate --excludeProtected",
-        "hotreload": "git submodule init && git submodule update && vite build --mode development --outDir ./test-vault/.obsidian/plugins/plugin-name/ --watch",
+        "hotreload": "git submodule init && git submodule update && vite build --mode development --outDir ./test-vault/.obsidian/plugins/objo/ --watch",
         "lint": "eslint .",
         "prepare": "husky",
         "test": "vitest run",

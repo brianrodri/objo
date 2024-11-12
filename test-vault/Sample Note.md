@@ -1,3 +1,1 @@
-```sample-plugin
-32
-```
+Hello, World!

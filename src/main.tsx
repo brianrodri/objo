@@ -1,3 +1,5 @@
 import { Plugin } from "@/lib/obsidian/types";
 
-export default class MyPlugin extends Plugin {}
+export class Objo extends Plugin {}
+
+export default Objo;
