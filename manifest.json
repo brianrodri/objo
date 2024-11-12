@@ -1,0 +1,10 @@
+{
+    "id": "plugin-name",
+    "name": "plugin-title",
+    "version": "1.0.0",
+    "minAppVersion": "0.15.0",
+    "description": "plugin-description",
+    "author": "plugin-author",
+    "authorurl": "plugin-author-url",
+    "isDesktopOnly": false
+}

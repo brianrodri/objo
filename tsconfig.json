@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+        // Type Checking
+        "downlevelIteration": true,
+        "strict": true,
+
+        // Modules
+        "baseUrl": ".",
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "paths": {
+            "@/*": ["./src/*"],
+            "react": ["./node_modules/preact/compat"],
+            "react-dom": ["./node_modules/preact/compat"]
+        },
+
+        // Emit
+        "noEmit": true,
+        "inlineSources": true,
+        "inlineSourceMap": true,
+
+        // Interop Constraints
+        "esModuleInterop": true,
+        "isolatedModules": true,
+        "noImplicitOverride": true,
+
+        // Language and Environment
+        "jsx": "react-jsx",
+        "jsxImportSource": "preact",
+        "lib": ["DOM"],
+        "skipLibCheck": true, // Only concerned w/ type checking the package code.
+        "target": "ES2018" // Use same target as obsidian-dataview.
+    },
+    "include": ["src"],
+    "exclude": ["node_modules"]
+}
