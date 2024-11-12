@@ -57,6 +57,7 @@
         "typedoc": "latest",
         "typedoc-plugin-coverage": "latest",
         "typescript": "latest",
+        "utility-types": "latest",
         "vite": "latest",
         "vite-plugin-static-copy": "latest",
         "vitest": "latest"
