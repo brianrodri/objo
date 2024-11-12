@@ -3,6 +3,7 @@ import eslintJs from "@eslint/js";
 import typescriptPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptPluginParser from "@typescript-eslint/parser";
 import prettierConfig from "eslint-config-prettier";
+import boundaries from "eslint-plugin-boundaries";
 import prettierPlugin from "eslint-plugin-prettier";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import globals from "globals";
@@ -52,6 +53,67 @@ export default [
         rules: {
             ...prettierConfig.rules,
             "prettier/prettier": "error",
+        },
+    },
+
+    {
+        files: ["src/**/*"],
+        plugins: { boundaries },
+        settings: {
+            "boundaries/include": ["src/**/*"],
+            "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
+            "boundaries/elements": [
+                { type: "main", pattern: ["src/main.tsx"], mode: "full" },
+                { type: "shared", pattern: ["src/components", "src/context", "src/data", "src/utils"], mode: "folder" },
+                { type: "lib", pattern: ["src/lib/*/**/*"], capture: ["libName"], mode: "full" },
+                { type: "features", pattern: ["src/features/*/**/*"], capture: ["featureName"], mode: "full" },
+                { type: "layout", pattern: ["src/layout/*/**/*"], capture: ["layoutName"], mode: "full" },
+            ],
+            "import/resolver": {
+                typescript: { alwaysTryTypes: true },
+            },
+        },
+        rules: {
+            ...boundaries.configs.recommended.rules,
+            ...boundaries.configs.strict.rules,
+            "boundaries/no-unknown": ["error"],
+            "boundaries/no-unknown-files": ["error"],
+            "boundaries/element-types": [
+                "error",
+                {
+                    default: "disallow",
+                    rules: [
+                        {
+                            from: ["lib", "shared"],
+                            allow: ["lib", "shared"],
+                        },
+                        {
+                            from: ["features"],
+                            allow: ["lib", "shared", ["features", { featureName: "${from.featureName}" }]],
+                        },
+                        {
+                            from: ["layout"],
+                            allow: ["features", "shared", ["layout", { layoutName: "${from.layoutName}" }]],
+                        },
+                        {
+                            from: ["main"],
+                            allow: ["layout", "shared", ["lib", { libName: "obsidian" }]],
+                        },
+                    ],
+                },
+            ],
+            "boundaries/external": [
+                "error",
+                {
+                    default: "disallow",
+                    rules: [
+                        { from: ["*"], allow: ["lodash", "luxon", "utility-types"] },
+                        { from: [["lib", { libName: "obsidian" }]], allow: ["obsidian"] },
+                        { from: [["lib", { libName: "obsidian-dataview" }]], allow: ["obsidian-dataview"] },
+                        { from: ["shared", "layout"], allow: ["preact", "@preact/signals"] },
+                    ],
+                },
+            ],
         },
     },
 ];
