@@ -33,17 +33,17 @@ export function mergeTasks(...parts: DeepPartial<Task>[]): Task {
 }
 
 const CUSTOMIZER: MergeWithCustomizer = (oldValue, newValue, key) => {
-    if (isSet(oldValue) && isSet(newValue)) {
-        return new Set([...oldValue, ...newValue]);
-    }
-    if (DateTime.isDateTime(oldValue) && DateTime.isDateTime(newValue)) {
-        return oldValue.isValid ? oldValue : newValue;
-    }
     if (key === "type" && isString(oldValue) && isString(newValue)) {
         return oldValue !== DEFAULT_TYPE_VALUE ? oldValue : newValue;
     }
     if (key === "priority" && isNumber(oldValue) && isNumber(newValue)) {
         return oldValue !== DEFAULT_PRIORITY_VALUE ? oldValue : newValue;
+    }
+    if (isSet(oldValue) && isSet(newValue)) {
+        return new Set([...oldValue, ...newValue]);
+    }
+    if (DateTime.isDateTime(oldValue) && DateTime.isDateTime(newValue)) {
+        return oldValue.isValid ? oldValue : newValue;
     }
     if (isString(oldValue) && isString(newValue)) {
         return oldValue !== "" ? oldValue : newValue;
