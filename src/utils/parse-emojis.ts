@@ -1,5 +1,5 @@
 import { Dictionary, set } from "lodash";
-import { DateTime } from "luxon";
+import { DateTime, Interval } from "luxon";
 import { DeepPartial } from "utility-types";
 
 import { Task } from "@/data/task";
@@ -7,10 +7,8 @@ import { Task } from "@/data/task";
 export function parseEmojis(text: string): DeepPartial<Task> {
     const matches = [...text.matchAll(EMOJI_REGEXP), /$/.exec(text) as RegExpExecArray];
 
-    const taskParts: DeepPartial<Task> = {
-        description: text.slice(0, matches[0].index).trim(),
-        dates: {},
-    };
+    const taskHeader = text.slice(0, matches[0].index).trim();
+    const taskParts: DeepPartial<Task> = { ...parseTaskHeader(taskHeader), dates: {} };
 
     for (let i = 0; i <= matches.length - 2; ++i) {
         const [start, stop] = matches.slice(i, i + 2);
@@ -31,6 +29,22 @@ export function parseEmojis(text: string): DeepPartial<Task> {
     }
 
     return taskParts;
+}
+
+function parseTaskHeader(header: string): DeepPartial<Task> {
+    const [isoTime, description] = header.split(/\s+/, 2);
+
+    const interval = Interval.fromISO(isoTime);
+    if (interval.isValid) {
+        return { description, times: { start: interval.start, end: interval.end } };
+    }
+
+    const time = DateTime.fromISO(isoTime);
+    if (time.isValid) {
+        return { description, times: { start: time } };
+    }
+
+    return { description: header };
 }
 
 const TASK_PATH_BY_EMOJI: Readonly<Dictionary<string>> = {

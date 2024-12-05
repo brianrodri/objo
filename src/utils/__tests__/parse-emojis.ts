@@ -6,6 +6,11 @@ import { parseEmojis } from "../parse-emojis";
 describe("Parsing emojis", () => {
     it.each([
         [{ description: "task text" }, " \t task text \t "],
+        [{ times: { start: DateTime.fromISO("09:00") } }, "09:00 do at 9am"],
+        [
+            { times: { start: DateTime.fromISO("09:00"), end: DateTime.fromISO("10:00") } },
+            "09:00/10:00 do between 9am and 10am",
+        ],
         [{ priority: 0 }, "🔺"],
         [{ priority: 1 }, "⏫"],
         [{ priority: 2 }, "🔼"],
@@ -27,7 +32,7 @@ describe("Parsing emojis", () => {
     it("parses sequential fields", () => {
         expect(
             parseEmojis(`
-                TODO! 🔺 🔁 every day 🆔 do3rd ⛔ do1st, do2nd
+                09:00/10:00 TODO! 🔺 🔁 every day 🆔 do3rd ⛔ do1st, do2nd
                     ❌ 2024-10-25 ➕ 2024-10-26 ✅ 2024-10-27
                     📅 2024-10-28 ⏳ 2024-10-29 🛫 2024-10-30
             `),
@@ -44,6 +49,10 @@ describe("Parsing emojis", () => {
                 due: DateTime.fromISO("2024-10-28"),
                 scheduled: DateTime.fromISO("2024-10-29"),
                 start: DateTime.fromISO("2024-10-30"),
+            },
+            times: {
+                start: DateTime.fromISO("09:00"),
+                end: DateTime.fromISO("10:00"),
             },
         });
     });
