@@ -35,7 +35,7 @@ describe("Merging tasks", () => {
         expect(task.description).toEqual("wow");
     });
 
-    it("skips invalid DateTime values", () => {
+    it("skips invalid dates", () => {
         const valid = DateTime.now();
         const invalid = DateTime.invalid("asdf");
 
@@ -44,13 +44,31 @@ describe("Merging tasks", () => {
         expect(task.dates.done).toBe(valid);
     });
 
-    it("keeps valid DateTime values", () => {
+    it("keeps valid dates", () => {
         const now = DateTime.now();
         const later = now.plus({ minutes: 10 });
 
         const task = mergeTasks({ dates: { done: now } }, { dates: { done: later } });
 
         expect(task.dates.done).toBe(now);
+    });
+
+    it("skips invalid times", () => {
+        const valid = DateTime.now();
+        const invalid = DateTime.invalid("asdf");
+
+        const task = mergeTasks({ times: { start: invalid } }, { times: { start: valid } });
+
+        expect(task.times.start).toBe(valid);
+    });
+
+    it("keeps valid times", () => {
+        const now = DateTime.now();
+        const later = now.plus({ minutes: 10 });
+
+        const task = mergeTasks({ times: { start: now } }, { times: { start: later } });
+
+        expect(task.times.start).toBe(now);
     });
 
     it("takes union of tags", () => {

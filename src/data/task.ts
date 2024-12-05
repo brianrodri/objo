@@ -6,6 +6,7 @@ export interface Task {
     status: TaskStatus;
     source: DataSource;
     dates: TaskDates;
+    times: TaskTimes;
     description: string;
     priority: number;
     recurrenceRule: string;
@@ -25,4 +26,9 @@ export interface TaskDates {
     due: DateTime;
     scheduled: DateTime;
     start: DateTime;
+}
+
+export interface TaskTimes {
+    start: DateTime;
+    end: DateTime;
 }

@@ -21,6 +21,10 @@ export function mergeTasks(...parts: DeepPartial<Task>[]): Task {
             scheduled: DateTime.invalid("scheduled is unspecified"),
             start: DateTime.invalid("start is unspecified"),
         },
+        times: {
+            start: DateTime.invalid("start is unspecified"),
+            end: DateTime.invalid("end is unspecified"),
+        },
         description: "",
         priority: DEFAULT_PRIORITY_VALUE,
         recurrenceRule: "",
