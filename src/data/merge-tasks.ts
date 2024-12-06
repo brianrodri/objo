@@ -33,7 +33,7 @@ export function mergeTasks(...parts: DeepPartial<Task>[]): Task {
         dependsOn: new Set(),
     };
 
-    return parts.reduce<Task>((task, part) => mergeWith(task, part, CUSTOMIZER), initialTask);
+    return parts.reduce((task: Task, part: DeepPartial<Task>) => mergeWith(task, part, CUSTOMIZER), initialTask);
 }
 
 const CUSTOMIZER: MergeWithCustomizer = (oldValue, newValue, key) => {
