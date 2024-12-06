@@ -15,7 +15,7 @@ export interface Task {
 
 export type TaskStatus = { type: "CANCELLED" | "CUSTOM" | "DONE" | "OPEN"; symbol: string } | { type: "UNKNOWN" };
 
-export type TaskSource = UnknownTaskSource | PageTaskSource;
+export type TaskSource = PageTaskSource | { type: "UNKNOWN" };
 
 export interface TaskDates {
     cancelled: DateTime;
@@ -29,10 +29,6 @@ export interface TaskDates {
 export interface TaskTimes {
     start: DateTime;
     end: DateTime;
-}
-
-export interface UnknownTaskSource {
-    type: "UNKNOWN";
 }
 
 export interface PageTaskSource {
