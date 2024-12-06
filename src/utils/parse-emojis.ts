@@ -1,7 +1,6 @@
-import { Dictionary, set } from "lodash";
 import { DateTime, Interval } from "luxon";
+import { Dictionary, set } from "lodash";
 import { DeepPartial } from "utility-types";
-
 import { Task } from "@/data/task";
 
 export function parseEmojis(text: string): DeepPartial<Task> {

@@ -1,14 +1,13 @@
 import { FlatCompat } from "@eslint/eslintrc";
+import boundaries from "eslint-plugin-boundaries";
+import { dirname } from "path";
+import eslintConfigPrettier from "eslint-config-prettier";
 import eslintJs from "@eslint/js";
+import { fileURLToPath } from "url";
+import globals from "globals";
+import reactHooksPlugin from "eslint-plugin-react-hooks";
 import typescriptPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptPluginParser from "@typescript-eslint/parser";
-import prettierConfig from "eslint-config-prettier";
-import boundaries from "eslint-plugin-boundaries";
-import prettierPlugin from "eslint-plugin-prettier";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
-import globals from "globals";
-import { dirname } from "path";
-import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -27,6 +26,7 @@ export default [
 
     {
         files: ["*.config.js"],
+        rules: { "sort-imports": ["error"] },
         languageOptions: { globals: { ...globals.node } },
     },
 
@@ -40,6 +40,7 @@ export default [
             ...typescriptPlugin.configs.recommended.rules,
             ...typescriptPlugin.configs.strict.rules,
             ...reactHooksPlugin.configs.recommended.rules,
+            "sort-imports": ["error"],
         },
         languageOptions: {
             globals: { ...globals.browser },
@@ -48,13 +49,7 @@ export default [
         },
     },
 
-    {
-        plugins: { prettier: prettierPlugin },
-        rules: {
-            ...prettierConfig.rules,
-            "prettier/prettier": "error",
-        },
-    },
+    eslintConfigPrettier,
 
     {
         files: ["src/**/*"],

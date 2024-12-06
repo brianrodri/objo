@@ -1,9 +1,8 @@
 /* v8 ignore next 2 */
 // TODO: Why does v8 consider this line to be untested?
-import { isNumber, isSet, isString, mergeWith, MergeWithCustomizer } from "lodash";
+import { MergeWithCustomizer, isNumber, isSet, isString, mergeWith } from "lodash";
 import { DateTime } from "luxon";
 import { DeepPartial } from "utility-types";
-
 import { Task } from "@/data/task";
 
 const DEFAULT_TYPE_VALUE = "UNKNOWN" as const;

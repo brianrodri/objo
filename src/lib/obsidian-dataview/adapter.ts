@@ -1,6 +1,6 @@
-import { Task } from "@/data/task";
 import { DataviewApi, getAPI, isPluginEnabled } from "@/lib/obsidian-dataview/types";
 import { Plugin } from "@/lib/obsidian/types";
+import { Task } from "@/data/task";
 import { mergeTasks } from "@/utils/merge-tasks";
 import { parseEmojis } from "@/utils/parse-emojis";
 

@@ -1,5 +1,5 @@
-import { Plugin } from "@/lib/obsidian/types";
 import { Dataview } from "@/lib/obsidian-dataview/adapter";
+import { Plugin } from "@/lib/obsidian/types";
 
 export class Objo extends Plugin {
     override onload() {

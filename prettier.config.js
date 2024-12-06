@@ -6,7 +6,4 @@ export default {
     semi: true,
     useTabs: false,
     experimentalTernaries: true,
-    importOrder: ["^[./]"],
-    importOrderSeparation: true,
-    importOrderSortSpecifiers: true,
 };

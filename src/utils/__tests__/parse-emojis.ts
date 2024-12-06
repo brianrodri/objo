@@ -1,6 +1,5 @@
-import { DateTime } from "luxon";
 import { describe, expect, it } from "vitest";
-
+import { DateTime } from "luxon";
 import { parseEmojis } from "../parse-emojis";
 
 describe("Parsing emojis", () => {

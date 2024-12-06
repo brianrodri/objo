@@ -1,6 +1,6 @@
+import type { SMarkdownPage, STask } from "obsidian-dataview/lib/data-model/serialized/markdown";
 export { DataviewApi, getAPI, isPluginEnabled } from "obsidian-dataview";
 import { DateTime } from "luxon";
-import type { SMarkdownPage, STask } from "obsidian-dataview/lib/data-model/serialized/markdown";
 
 export type Page = SMarkdownPage;
 
