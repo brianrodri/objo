@@ -1,4 +1,4 @@
-import { DataviewApi, getAPI, isPluginEnabled } from "@/lib/obsidian-dataview/types";
+import { DataviewApi, SMarkdownPage, STask, getAPI, isPluginEnabled } from "@/lib/obsidian-dataview/types";
 import { Plugin } from "@/lib/obsidian/types";
 import { Task } from "@/data/task";
 import { mergeTasks } from "@/utils/merge-tasks";
@@ -26,33 +26,39 @@ export class Dataview {
         });
     }
 
+    public getPages(query: string, originFile?: string): SMarkdownPage[] {
+        return [...this.dv.pages(query, originFile)];
+    }
+
     public getTasks(query: string, originFile?: string): Task[] {
-        return [...this.dv.pages(query, originFile)].flatMap((page) =>
-            [...page.file.tasks].map((task) =>
-                mergeTasks(parseEmojis(task.text), {
-                    status: {
-                        symbol: task.status,
-                        type:
-                            task.fullyCompleted ? "DONE"
-                            : task.checked ? "CANCELLED"
-                            : "OPEN",
-                    },
-                    source: {
-                        type: "PAGE",
-                        path: task.path,
-                        name: task.section.fileName(),
-                        section: task.section.subpath,
-                        lineNumber: task.line,
-                        startByte: task.position.start.offset,
-                        stopByte: task.position.end.offset,
-                        obsidianHref: task.section.obsidianLink(),
-                    },
-                    dates: {
-                        scheduled: page.file.day,
-                    },
-                    tags: new Set(task.tags),
-                }),
-            ),
-        );
+        return this.getPages(query, originFile).flatMap((page) => {
+            return [...page.file.tasks].map((task) => this.extractTaskFields(page, task));
+        });
+    }
+
+    private extractTaskFields(page: SMarkdownPage, task: STask): Task {
+        return mergeTasks(parseEmojis(task.text), {
+            dates: {
+                scheduled: page.file.day,
+            },
+            status: {
+                symbol: task.status,
+                type:
+                    task.fullyCompleted ? "DONE"
+                    : task.checked ? "CANCELLED"
+                    : "OPEN",
+            },
+            source: {
+                type: "PAGE",
+                path: task.path,
+                name: task.section.fileName(),
+                section: task.section.subpath,
+                lineNumber: task.line,
+                startByte: task.position.start.offset,
+                stopByte: task.position.end.offset,
+                obsidianHref: task.section.obsidianLink(),
+            },
+            tags: new Set(task.tags),
+        });
     }
 }
