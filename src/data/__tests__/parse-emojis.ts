@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { DateTime } from "luxon";
-import { parseEmojis } from "../parse-emojis";
+import { parseTaskEmojis } from "../parse-task-emojis";
 
 describe("Parsing emojis", () => {
     it.each([
@@ -25,12 +25,12 @@ describe("Parsing emojis", () => {
         [{ dates: { scheduled: DateTime.fromISO("2024-10-30") } }, "⏳ 2024-10-30"],
         [{ dates: { start: DateTime.fromISO("2024-10-31") } }, "🛫 2024-10-31"],
     ])("parses %j from input=%j", (taskParts, text) => {
-        expect(parseEmojis(text)).toEqual(expect.objectContaining(taskParts));
+        expect(parseTaskEmojis(text)).toEqual(expect.objectContaining(taskParts));
     });
 
     it("parses sequential fields", () => {
         expect(
-            parseEmojis(`
+            parseTaskEmojis(`
                 09:00/10:00 TODO! 🔺 🔁 every day 🆔 do3rd ⛔ do1st, do2nd
                     ❌ 2024-10-25 ➕ 2024-10-26 ✅ 2024-10-27
                     📅 2024-10-28 ⏳ 2024-10-29 🛫 2024-10-30

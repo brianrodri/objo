@@ -3,7 +3,7 @@ import { Dictionary, set } from "lodash";
 import { DeepPartial } from "utility-types";
 import { Task } from "@/data/task";
 
-export function parseEmojis(text: string): DeepPartial<Task> {
+export function parseTaskEmojis(text: string): DeepPartial<Task> {
     const matches = [...text.matchAll(EMOJI_REGEXP), /$/.exec(text) as RegExpExecArray];
 
     const taskHeader = text.slice(0, matches[0].index).trim();

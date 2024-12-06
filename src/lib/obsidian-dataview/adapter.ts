@@ -2,7 +2,7 @@ import { DataviewApi, SMarkdownPage, STask, getAPI, isPluginEnabled } from "@/li
 import { Plugin } from "@/lib/obsidian/types";
 import { Task } from "@/data/task";
 import { mergeTasks } from "@/data/merge-tasks";
-import { parseEmojis } from "@/utils/parse-emojis";
+import { parseTaskEmojis } from "@/data/parse-task-emojis";
 
 export class Dataview {
     private constructor(private readonly dv: DataviewApi) {}
@@ -37,7 +37,7 @@ export class Dataview {
     }
 
     private extractTaskFields(page: SMarkdownPage, task: STask): Task {
-        return mergeTasks(parseEmojis(task.text), {
+        return mergeTasks(parseTaskEmojis(task.text), {
             dates: {
                 scheduled: page.file.day,
             },
