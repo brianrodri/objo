@@ -1,12 +1,13 @@
 /* v8 ignore next 2 */
 // TODO: Why does v8 consider this line to be untested?
 import { MergeWithCustomizer, isNumber, isSet, isString, mergeWith } from "lodash";
+import { Task, TaskStatusType } from "@/data/task";
+import { DataSourceType } from "@/data/data-source";
 import { DateTime } from "luxon";
 import { DeepPartial } from "utility-types";
-import { Task } from "@/data/task";
 
-const DEFAULT_TYPE_VALUE = "UNKNOWN" as const;
-const DEFAULT_PRIORITY_VALUE = 3 as const;
+const DEFAULT_TYPE_VALUE = "UNKNOWN" as const satisfies TaskStatusType & DataSourceType;
+const DEFAULT_PRIORITY_VALUE = 3 as const satisfies Task["priority"];
 
 export function mergeTasks(...parts: DeepPartial<Task>[]): Task {
     const initialTask: Task = {
