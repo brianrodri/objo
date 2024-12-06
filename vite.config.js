@@ -39,7 +39,7 @@ export default defineConfig(({ mode }) => ({
         coverage: {
             all: true,
             include: ["src/"],
-            exclude: ["src/main.tsx", "src/lib/*/types.ts"],
+            exclude: ["src/main.tsx", "src/lib/"],
         },
         passWithNoTests: true,
     },

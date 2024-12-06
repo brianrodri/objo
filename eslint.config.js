@@ -97,7 +97,7 @@ export default [
                         },
                         {
                             from: ["main"],
-                            allow: ["layout", "shared", ["lib", { libName: "obsidian" }]],
+                            allow: ["layout", "shared", "lib"],
                         },
                     ],
                 },
