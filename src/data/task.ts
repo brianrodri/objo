@@ -1,9 +1,8 @@
-import { DataSource } from "@/data/data-source";
 import { DateTime } from "luxon";
 
 export interface Task {
     status: TaskStatus;
-    source: DataSource;
+    source: TaskSource;
     dates: TaskDates;
     times: TaskTimes;
     description: string;
@@ -16,7 +15,7 @@ export interface Task {
 
 export type TaskStatus = { type: "CANCELLED" | "CUSTOM" | "DONE" | "OPEN"; symbol: string } | { type: "UNKNOWN" };
 
-export type TaskStatusType = TaskStatus["type"];
+export type TaskSource = UnknownTaskSource | PageTaskSource;
 
 export interface TaskDates {
     cancelled: DateTime;
@@ -30,4 +29,19 @@ export interface TaskDates {
 export interface TaskTimes {
     start: DateTime;
     end: DateTime;
+}
+
+export interface UnknownTaskSource {
+    type: "UNKNOWN";
+}
+
+export interface PageTaskSource {
+    type: "PAGE";
+    path: string;
+    name: string;
+    section?: string;
+    lineNumber: number;
+    startByte: number;
+    stopByte: number;
+    obsidianHref: string;
 }

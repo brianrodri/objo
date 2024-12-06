@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { DateTime } from "luxon";
-import { mergeTasks } from "../merge-tasks";
+import { mergeTaskParts } from "../merge-task-parts";
 
-describe("Merging tasks", () => {
+describe("Merging task parts", () => {
     it("gives default values when called with nothing", () => {
-        const task = mergeTasks();
+        const task = mergeTaskParts();
 
         expect(task.status.type).toEqual("UNKNOWN");
         expect(task.source.type).toEqual("UNKNOWN");
@@ -23,13 +23,13 @@ describe("Merging tasks", () => {
     });
 
     it("skips empty descriptions", () => {
-        const task = mergeTasks({ description: "" }, { description: "desc" });
+        const task = mergeTaskParts({ description: "" }, { description: "desc" });
 
         expect(task.description).toEqual("desc");
     });
 
     it("keeps non-empty descriptions", () => {
-        const task = mergeTasks({ description: "wow" }, { description: "uh-oh!" });
+        const task = mergeTaskParts({ description: "wow" }, { description: "uh-oh!" });
 
         expect(task.description).toEqual("wow");
     });
@@ -38,7 +38,7 @@ describe("Merging tasks", () => {
         const valid = DateTime.now();
         const invalid = DateTime.invalid("asdf");
 
-        const task = mergeTasks({ dates: { done: invalid } }, { dates: { done: valid } });
+        const task = mergeTaskParts({ dates: { done: invalid } }, { dates: { done: valid } });
 
         expect(task.dates.done).toBe(valid);
     });
@@ -47,7 +47,7 @@ describe("Merging tasks", () => {
         const now = DateTime.now();
         const later = now.plus({ minutes: 10 });
 
-        const task = mergeTasks({ dates: { done: now } }, { dates: { done: later } });
+        const task = mergeTaskParts({ dates: { done: now } }, { dates: { done: later } });
 
         expect(task.dates.done).toBe(now);
     });
@@ -56,7 +56,7 @@ describe("Merging tasks", () => {
         const valid = DateTime.now();
         const invalid = DateTime.invalid("asdf");
 
-        const task = mergeTasks({ times: { start: invalid } }, { times: { start: valid } });
+        const task = mergeTaskParts({ times: { start: invalid } }, { times: { start: valid } });
 
         expect(task.times.start).toBe(valid);
     });
@@ -65,85 +65,85 @@ describe("Merging tasks", () => {
         const now = DateTime.now();
         const later = now.plus({ minutes: 10 });
 
-        const task = mergeTasks({ times: { start: now } }, { times: { start: later } });
+        const task = mergeTaskParts({ times: { start: now } }, { times: { start: later } });
 
         expect(task.times.start).toBe(now);
     });
 
     it("takes union of tags", () => {
-        const task = mergeTasks({ tags: new Set(["a", "b"]) }, { tags: new Set(["b", "c"]) });
+        const task = mergeTaskParts({ tags: new Set(["a", "b"]) }, { tags: new Set(["b", "c"]) });
 
         expect(task.tags).toEqual(new Set(["a", "b", "c"]));
     });
 
     it("gives default priority value when unspecified", () => {
-        const task = mergeTasks({});
+        const task = mergeTaskParts({});
 
         expect(task.priority).toEqual(3);
     });
 
     it("skips missing priority value", () => {
-        const task = mergeTasks({}, { priority: 1 });
+        const task = mergeTaskParts({}, { priority: 1 });
 
         expect(task.priority).toEqual(1);
     });
 
     it("skips default priority value", () => {
-        const task = mergeTasks({ priority: 3 }, { priority: 1 });
+        const task = mergeTaskParts({ priority: 3 }, { priority: 1 });
 
         expect(task.priority).toEqual(1);
     });
 
     it("keeps non-default priority", () => {
-        const task = mergeTasks({ priority: 1 }, { priority: 4 });
+        const task = mergeTaskParts({ priority: 1 }, { priority: 4 });
 
         expect(task.priority).toEqual(1);
     });
 
     it("gives default status when unspecified", () => {
-        const task = mergeTasks({});
+        const task = mergeTaskParts({});
 
         expect(task.status.type).toEqual("UNKNOWN");
     });
 
     it("skips missing status", () => {
-        const task = mergeTasks({}, { status: { type: "DONE" } });
+        const task = mergeTaskParts({}, { status: { type: "DONE" } });
 
         expect(task.status.type).toEqual("DONE");
     });
 
     it("skips default status", () => {
-        const task = mergeTasks({ status: { type: "UNKNOWN" } }, { status: { type: "DONE" } });
+        const task = mergeTaskParts({ status: { type: "UNKNOWN" } }, { status: { type: "DONE" } });
 
         expect(task.status.type).toEqual("DONE");
     });
 
     it("keeps non-default status", () => {
-        const task = mergeTasks({ status: { type: "DONE" } }, { status: { type: "UNKNOWN" } });
+        const task = mergeTaskParts({ status: { type: "DONE" } }, { status: { type: "UNKNOWN" } });
 
         expect(task.status.type).toEqual("DONE");
     });
 
     it("gives default source when unspecified", () => {
-        const task = mergeTasks({});
+        const task = mergeTaskParts({});
 
         expect(task.source.type).toEqual("UNKNOWN");
     });
 
     it("skips missing source", () => {
-        const task = mergeTasks({}, { source: { type: "PAGE" } });
+        const task = mergeTaskParts({}, { source: { type: "PAGE" } });
 
         expect(task.source.type).toEqual("PAGE");
     });
 
     it("skips default source", () => {
-        const task = mergeTasks({ source: { type: "UNKNOWN" } }, { source: { type: "PAGE" } });
+        const task = mergeTaskParts({ source: { type: "UNKNOWN" } }, { source: { type: "PAGE" } });
 
         expect(task.source.type).toEqual("PAGE");
     });
 
     it("keeps non-default source", () => {
-        const task = mergeTasks({ source: { type: "PAGE" } }, { source: { type: "UNKNOWN" } });
+        const task = mergeTaskParts({ source: { type: "PAGE" } }, { source: { type: "UNKNOWN" } });
 
         expect(task.source.type).toEqual("PAGE");
     });

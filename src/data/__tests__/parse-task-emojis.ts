@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { DateTime } from "luxon";
 import { parseTaskEmojis } from "../parse-task-emojis";
 
-describe("Parsing emojis", () => {
+describe("Parsing task emojis", () => {
     it.each([
         [{ description: "task text" }, " \t task text \t "],
         [{ times: { start: DateTime.fromISO("09:00") } }, "09:00 do at 9am"],
