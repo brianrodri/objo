@@ -22,6 +22,7 @@
         "@preact/signals": "latest",
         "lodash": "latest",
         "luxon": "latest",
+        "obsidian-dataview": "^0.5.67",
         "preact": "latest",
         "react": "npm:@preact/compat",
         "react-dom": "npm:@preact/compat"
@@ -34,10 +35,10 @@
         "@preact/preset-vite": "latest",
         "@semantic-release/git": "latest",
         "@testing-library/preact": "latest",
-        "@typescript-eslint/eslint-plugin": "latest",
-        "@typescript-eslint/parser": "latest",
         "@types/lodash": "latest",
         "@types/luxon": "latest",
+        "@typescript-eslint/eslint-plugin": "latest",
+        "@typescript-eslint/parser": "latest",
         "@vitest/coverage-v8": "latest",
         "eslint": "latest",
         "eslint-config-preact": "latest",
@@ -61,5 +62,8 @@
         "vite": "latest",
         "vite-plugin-static-copy": "latest",
         "vitest": "latest"
+    },
+    "overrides": {
+        "obsidian-calendar-ui": "brianrodri/obsidian-calendar-ui"
     }
 }
