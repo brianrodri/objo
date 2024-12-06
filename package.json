@@ -22,7 +22,7 @@
         "@preact/signals": "latest",
         "lodash": "latest",
         "luxon": "latest",
-        "obsidian-dataview": "^0.5.67",
+        "obsidian-dataview": "latest",
         "preact": "latest",
         "react": "npm:@preact/compat",
         "react-dom": "npm:@preact/compat"
