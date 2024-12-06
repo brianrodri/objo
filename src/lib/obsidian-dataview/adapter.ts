@@ -1,7 +1,7 @@
 import { DataviewApi, SMarkdownPage, STask, getAPI, isPluginEnabled } from "@/lib/obsidian-dataview/types";
 import { Plugin } from "@/lib/obsidian/types";
 import { Task } from "@/data/task";
-import { mergeTasks } from "@/utils/merge-tasks";
+import { mergeTasks } from "@/data/merge-tasks";
 import { parseEmojis } from "@/utils/parse-emojis";
 
 export class Dataview {
