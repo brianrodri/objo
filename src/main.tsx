@@ -5,8 +5,13 @@ export class Objo extends Plugin {
     override onload() {
         this.app.workspace.onLayoutReady(async () => {
             const dv = await Dataview.getReady(this);
-            console.log(JSON.stringify(dv.getTasks("-#index")));
+            this.log(dv);
+            this.registerEvent(dv.onMetadataChange(() => this.log(dv)));
         });
+    }
+
+    private log(dv: Dataview): void {
+        console.log(JSON.stringify(dv.getTasks("-#index"), null, 4));
     }
 }
 

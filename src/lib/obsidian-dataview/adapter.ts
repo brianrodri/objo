@@ -1,11 +1,14 @@
 import { DataviewApi, SMarkdownPage, STask, getAPI, isPluginEnabled } from "@/lib/obsidian-dataview/types";
-import { Plugin } from "@/lib/obsidian/types";
+import { EventRef, Plugin } from "@/lib/obsidian/types";
 import { Task } from "@/data/task";
 import { mergeTaskParts } from "@/data/merge-task-parts";
 import { parseTaskEmojis } from "@/data/parse-task-emojis";
 
 export class Dataview {
-    private constructor(private readonly dv: DataviewApi) {}
+    private constructor(
+        private readonly plugin: Plugin,
+        private readonly dv: DataviewApi = getAPI(plugin.app),
+    ) {}
 
     /** IMPORTANT: Must be called from within `onLayoutReady` callback, otherwise the plugin will freeze! */
     public static async getReady(plugin: Plugin): Promise<Dataview> {
@@ -15,15 +18,20 @@ export class Dataview {
             } else {
                 const api: DataviewApi = getAPI(plugin.app);
                 if (api?.index.initialized) {
-                    resolve(new Dataview(api));
+                    resolve(new Dataview(plugin, api));
                 } else {
                     plugin.registerEvent(
                         // @ts-expect-error - obsidian doesn't define types for third-party events.
-                        plugin.app.metadataCache.on("dataview:index-ready", () => resolve(new Dataview(api))),
+                        plugin.app.metadataCache.on("dataview:index-ready", () => resolve(new Dataview(plugin, api))),
                     );
                 }
             }
         });
+    }
+
+    public onMetadataChange(callback: () => void): EventRef {
+        // @ts-expect-error - obsidian doesn't define overloads for third-party events.
+        return this.plugin.app.metadataCache.on("dataview:metadata-change", callback);
     }
 
     public getPages(query: string, originFile?: string): SMarkdownPage[] {
