@@ -7,7 +7,7 @@ import { parseTaskEmojis } from "@/data/parse-task-emojis";
 export class Dataview {
     private constructor(
         private readonly plugin: Plugin,
-        private readonly dv: DataviewApi = getAPI(plugin.app),
+        private readonly dv: DataviewApi,
     ) {}
 
     /** IMPORTANT: Must be called from within `onLayoutReady` callback, otherwise the plugin will freeze! */
@@ -16,8 +16,10 @@ export class Dataview {
             if (!isPluginEnabled(plugin.app)) {
                 reject(new Error("obsidian-dataview is not installed and/or enabled"));
             } else {
-                const api: DataviewApi = getAPI(plugin.app);
-                if (api?.index.initialized) {
+                const api = getAPI(plugin.app);
+                if (!api) {
+                    reject(new Error("obsidian-dataview could not be loaded"));
+                } else if (api.index.initialized) {
                     resolve(new Dataview(plugin, api));
                 } else {
                     plugin.registerEvent(
