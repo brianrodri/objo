@@ -28,6 +28,10 @@ describe("Parsing task emojis", () => {
         expect(parseTaskEmojis(text)).toEqual(expect.objectContaining(taskParts));
     });
 
+    it("accepts empty text", () => {
+        expect(() => parseTaskEmojis("")).not.toThrow();
+    });
+
     it("parses sequential fields", () => {
         expect(
             parseTaskEmojis(`
