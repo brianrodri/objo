@@ -4,11 +4,15 @@ docs/
 node_modules/
 
 # Exclude (most of) the testing vault
+!test-vault/
+test-vault/*
+!test-vault/.obsidian/
 test-vault/.obsidian/*
 !test-vault/.obsidian/community-plugins.json
 !test-vault/.obsidian/plugins/
 test-vault/.obsidian/plugins/*
 !test-vault/.obsidian/plugins/objo/
 !test-vault/.obsidian/plugins/hot-reload/
+!test-vault/.obsidian/plugins/dataview/
 test-vault/.obsidian/plugins/objo/*
 !test-vault/.obsidian/plugins/objo/.hotreload
