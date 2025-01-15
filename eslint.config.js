@@ -41,6 +41,8 @@ export default [
             ...typescriptPlugin.configs.strict.rules,
             ...reactHooksPlugin.configs.recommended.rules,
             "sort-imports": ["error"],
+            // TypeScript already checks for duplicates: https://archive.eslint.org/docs/rules/no-dupe-class-members
+            "no-dupe-class-members": "off",
         },
         languageOptions: {
             globals: { ...globals.browser },
