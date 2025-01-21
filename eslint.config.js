@@ -1,28 +1,16 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import boundaries from "eslint-plugin-boundaries";
-import { dirname } from "path";
 import eslintConfigPrettier from "eslint-config-prettier";
-import eslintJs from "@eslint/js";
-import { fileURLToPath } from "url";
 import globals from "globals";
+import preactPlugin from "eslint-config-preact";
 import reactHooksPlugin from "eslint-plugin-react-hooks";
 import typescriptPlugin from "@typescript-eslint/eslint-plugin";
 import typescriptPluginParser from "@typescript-eslint/parser";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 /** @type { import("eslint").Linter.Config[] } */
 export default [
-    { ignores: ["coverage/", "docs/", "dist/", "node_modules/", "test-vault/"] },
+    { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/", "test-vault/"] },
 
-    // TODO: Replace with ESLint v9 config: preactjs/eslint-config-preact#28
-    ...new FlatCompat({
-        baseDirectory: __dirname,
-        resolvePluginsRelativeTo: __dirname,
-        recommendedConfig: eslintJs.configs.recommended,
-        allConfig: eslintJs.configs.all,
-    }).extends("preact"),
+    ...preactPlugin,
 
     {
         files: ["*.config.js"],

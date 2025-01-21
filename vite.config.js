@@ -35,12 +35,12 @@ export default defineConfig(({ mode }) => ({
     },
     test: {
         environment: "jsdom",
-        include: "src/**/__tests__/*",
+        include: ["src/**/__tests__/*"],
         coverage: {
             all: true,
             include: ["src/"],
             exclude: ["src/main.tsx", "src/lib/"],
+            thresholds: { 100: true },
         },
-        passWithNoTests: true,
     },
 }));
