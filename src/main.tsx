@@ -6,7 +6,7 @@ export class Objo extends Plugin {
         this.app.workspace.onLayoutReady(async () => {
             const dv = await Dataview.getReady(this);
             this.log(dv);
-            this.registerEvent(dv.onMetadataChange(() => this.log(dv)));
+            this.registerEvent(dv.on("dataview:metadata-change", () => this.log(dv)));
         });
     }
 

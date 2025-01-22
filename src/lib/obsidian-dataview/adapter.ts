@@ -1,8 +1,11 @@
 import { DataviewApi, SMarkdownPage, STask, getAPI, isPluginEnabled } from "@/lib/obsidian-dataview/types";
-import { EventRef, Plugin } from "@/lib/obsidian/types";
+import { EventRef, MetadataCache, Plugin, TAbstractFile, TFile } from "@/lib/obsidian/types";
+import { OverloadedParameters4 } from "@/utils/type-utils";
 import { Task } from "@/data/task";
 import { mergeTaskParts } from "@/data/merge-task-parts";
 import { parseTaskEmojis } from "@/data/parse-task-emojis";
+
+type MetadataCacheOnFunctionParameters = OverloadedParameters4<MetadataCache["on"]>;
 
 export class Dataview {
     private constructor(
@@ -22,19 +25,38 @@ export class Dataview {
                 } else if (api.index.initialized) {
                     resolve(new Dataview(plugin, api));
                 } else {
-                    plugin.registerEvent(
-                        // @ts-expect-error - obsidian doesn't define types for third-party events.
-                        plugin.app.metadataCache.on("dataview:index-ready", () => resolve(new Dataview(plugin, api))),
-                    );
+                    const dv = new Dataview(plugin, api);
+                    plugin.registerEvent(dv.on("dataview:index-ready", () => resolve(dv)));
                 }
             }
         });
     }
 
-    public onMetadataChange(callback: () => void): EventRef {
-        // @ts-expect-error - obsidian doesn't define overloads for third-party events.
-        return this.plugin.app.metadataCache.on("dataview:metadata-change", callback);
+    /* eslint-disable @typescript-eslint/no-explicit-any */
+
+    public on(name: "dataview:index-ready", callback: () => void, ctx?: any): EventRef;
+
+    public on(
+        name: "dataview:metadata-change",
+        callback:
+            | ((name: "delete", file: TFile) => void)
+            | ((name: "rename", file: TAbstractFile, oldPath: string) => void)
+            | ((name: "update", file: TFile) => void),
+        ctx?: any,
+    ): EventRef;
+
+    public on<Name extends MetadataCacheOnFunctionParameters[0]>(
+        name: Name,
+        callback: MetadataCache["on"] extends (name: Name, callback: infer F, ctx?: any) => EventRef ? F : never,
+        ctx?: any,
+    ): EventRef;
+
+    public on(name: string, callback: (...args: any[]) => any, ctx?: any): EventRef {
+        // @ts-expect-error - Rely on overloads for errors.
+        return this.plugin.app.metadataCache.on(name, callback, ctx);
     }
+
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     public getPages(query: string, originFile?: string): SMarkdownPage[] {
         return [...this.dv.pages(query, originFile)];
