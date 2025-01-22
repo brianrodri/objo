@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => ({
     resolve: {
         alias: {
             "@": resolve(__dirname, "/src"),
-            react: "preact/compat",
+            "react": "preact/compat",
             "react-dom": "preact/compat",
         },
     },

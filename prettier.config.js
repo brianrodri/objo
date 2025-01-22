@@ -6,4 +6,5 @@ export default {
     semi: true,
     useTabs: false,
     experimentalTernaries: true,
+    quoteProps: "consistent",
 };
