@@ -10,7 +10,7 @@ import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 export default [
     { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/", "test-vault/"] },
 
-    ...eslintConfigPreact.configs.recommended,
+    ...eslintConfigPreact.flat,
 
     {
         files: ["*.config.js"],
