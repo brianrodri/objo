@@ -1,16 +1,16 @@
-import boundaries from "eslint-plugin-boundaries";
+import eslintConfigPreact from "eslint-config-preact";
 import eslintConfigPrettier from "eslint-config-prettier";
+import eslintPluginBoundaries from "eslint-plugin-boundaries";
+import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
-import preactPlugin from "eslint-config-preact";
-import reactHooksPlugin from "eslint-plugin-react-hooks";
-import typescriptPlugin from "@typescript-eslint/eslint-plugin";
-import typescriptPluginParser from "@typescript-eslint/parser";
+import typescriptEslintParser from "@typescript-eslint/parser";
+import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 
 /** @type { import("eslint").Linter.Config[] } */
 export default [
     { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/", "test-vault/"] },
 
-    ...preactPlugin,
+    ...eslintConfigPreact.configs.recommended,
 
     {
         files: ["*.config.js"],
@@ -21,20 +21,20 @@ export default [
     {
         files: ["src/**/*.{ts,tsx}"],
         plugins: {
-            "@typescript-eslint": typescriptPlugin,
-            "react-hooks": reactHooksPlugin,
+            "@typescript-eslint": typescriptEslintPlugin,
+            "react-hooks": eslintPluginReactHooks,
         },
         rules: {
-            ...typescriptPlugin.configs.recommended.rules,
-            ...typescriptPlugin.configs.strict.rules,
-            ...reactHooksPlugin.configs.recommended.rules,
+            ...typescriptEslintPlugin.configs.recommended.rules,
+            ...typescriptEslintPlugin.configs.strict.rules,
+            ...eslintPluginReactHooks.configs.recommended.rules,
             "sort-imports": ["error"],
             // TypeScript already checks for duplicates: https://archive.eslint.org/docs/rules/no-dupe-class-members
             "no-dupe-class-members": "off",
         },
         languageOptions: {
             globals: { ...globals.browser },
-            parser: typescriptPluginParser,
+            parser: typescriptEslintParser,
             parserOptions: { ecmaFeatures: { modules: true }, ecmaVersion: "latest" },
         },
     },
@@ -43,7 +43,7 @@ export default [
 
     {
         files: ["src/**/*"],
-        plugins: { boundaries },
+        plugins: { boundaries: eslintPluginBoundaries },
         settings: {
             "boundaries/include": ["src/**/*"],
             "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
@@ -59,8 +59,8 @@ export default [
             },
         },
         rules: {
-            ...boundaries.configs.recommended.rules,
-            ...boundaries.configs.strict.rules,
+            ...eslintPluginBoundaries.configs.recommended.rules,
+            ...eslintPluginBoundaries.configs.strict.rules,
             "boundaries/no-unknown": ["error"],
             "boundaries/no-unknown-files": ["error"],
             "boundaries/element-types": [
