@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { DateTime } from "luxon";
-import { mergeTaskParts } from "../merge-task-parts";
+import { buildTask } from "../build-task";
 
 describe("Merging task parts", () => {
     it("gives default values when called with nothing", () => {
-        const task = mergeTaskParts();
+        const task = buildTask();
 
         expect(task.status.type).toEqual("UNKNOWN");
         expect(task.source.type).toEqual("UNKNOWN");
@@ -23,127 +23,127 @@ describe("Merging task parts", () => {
     });
 
     it("skips empty descriptions", () => {
-        const task = mergeTaskParts({ description: "" }, { description: "desc" });
+        const task = buildTask({ description: "" }, { description: "desc" });
 
         expect(task.description).toEqual("desc");
     });
 
     it("keeps non-empty descriptions", () => {
-        const task = mergeTaskParts({ description: "wow" }, { description: "uh-oh!" });
+        const task = buildTask({ description: "wow" }, { description: "uh-oh!" });
 
         expect(task.description).toEqual("wow");
     });
 
     it("skips invalid dates", () => {
-        const valid = DateTime.now();
-        const invalid = DateTime.invalid("asdf");
+        const valid = DateTime.fromISO("2025-01-01");
+        const invalid = DateTime.invalid("unspecified date");
 
-        const task = mergeTaskParts({ dates: { done: invalid } }, { dates: { done: valid } });
+        const task = buildTask({ dates: { done: invalid } }, { dates: { done: valid } });
 
-        expect(task.dates.done).toBe(valid);
+        expect(task.dates.done).toEqual(valid);
     });
 
     it("keeps valid dates", () => {
-        const now = DateTime.now();
-        const later = now.plus({ minutes: 10 });
+        const validDate = DateTime.fromISO("2025-01-01");
+        const anotherValidDate = DateTime.fromISO("2025-01-02");
 
-        const task = mergeTaskParts({ dates: { done: now } }, { dates: { done: later } });
+        const task = buildTask({ dates: { done: validDate } }, { dates: { done: anotherValidDate } });
 
-        expect(task.dates.done).toBe(now);
+        expect(task.dates.done).toEqual(validDate);
     });
 
     it("skips invalid times", () => {
-        const valid = DateTime.now();
-        const invalid = DateTime.invalid("asdf");
+        const valid = DateTime.fromISO("12:00:00Z");
+        const invalid = DateTime.invalid("unspecified time");
 
-        const task = mergeTaskParts({ times: { start: invalid } }, { times: { start: valid } });
+        const task = buildTask({ times: { start: invalid } }, { times: { start: valid } });
 
-        expect(task.times.start).toBe(valid);
+        expect(task.times.start).toEqual(valid);
     });
 
     it("keeps valid times", () => {
-        const now = DateTime.now();
-        const later = now.plus({ minutes: 10 });
+        const validTime = DateTime.fromISO("12:00:00Z");
+        const anotherValidTime = DateTime.fromISO("13:00:00Z");
 
-        const task = mergeTaskParts({ times: { start: now } }, { times: { start: later } });
+        const task = buildTask({ times: { start: validTime } }, { times: { start: anotherValidTime } });
 
-        expect(task.times.start).toBe(now);
+        expect(task.times.start).toEqual(validTime);
     });
 
     it("takes union of tags", () => {
-        const task = mergeTaskParts({ tags: new Set(["a", "b"]) }, { tags: new Set(["b", "c"]) });
+        const task = buildTask({ tags: new Set(["a", "b"]) }, { tags: new Set(["b", "c"]) });
 
         expect(task.tags).toEqual(new Set(["a", "b", "c"]));
     });
 
     it("gives default priority value when unspecified", () => {
-        const task = mergeTaskParts({});
+        const task = buildTask({});
 
         expect(task.priority).toEqual(3);
     });
 
     it("skips missing priority value", () => {
-        const task = mergeTaskParts({}, { priority: 1 });
+        const task = buildTask({}, { priority: 1 });
 
         expect(task.priority).toEqual(1);
     });
 
     it("skips default priority value", () => {
-        const task = mergeTaskParts({ priority: 3 }, { priority: 1 });
+        const task = buildTask({ priority: 3 }, { priority: 1 });
 
         expect(task.priority).toEqual(1);
     });
 
     it("keeps non-default priority", () => {
-        const task = mergeTaskParts({ priority: 1 }, { priority: 4 });
+        const task = buildTask({ priority: 1 }, { priority: 4 });
 
         expect(task.priority).toEqual(1);
     });
 
     it("gives default status when unspecified", () => {
-        const task = mergeTaskParts({});
+        const task = buildTask({});
 
         expect(task.status.type).toEqual("UNKNOWN");
     });
 
     it("skips missing status", () => {
-        const task = mergeTaskParts({}, { status: { type: "DONE" } });
+        const task = buildTask({}, { status: { type: "DONE" } });
 
         expect(task.status.type).toEqual("DONE");
     });
 
     it("skips default status", () => {
-        const task = mergeTaskParts({ status: { type: "UNKNOWN" } }, { status: { type: "DONE" } });
+        const task = buildTask({ status: { type: "UNKNOWN" } }, { status: { type: "DONE" } });
 
         expect(task.status.type).toEqual("DONE");
     });
 
     it("keeps non-default status", () => {
-        const task = mergeTaskParts({ status: { type: "DONE" } }, { status: { type: "UNKNOWN" } });
+        const task = buildTask({ status: { type: "DONE" } }, { status: { type: "UNKNOWN" } });
 
         expect(task.status.type).toEqual("DONE");
     });
 
     it("gives default source when unspecified", () => {
-        const task = mergeTaskParts({});
+        const task = buildTask({});
 
         expect(task.source.type).toEqual("UNKNOWN");
     });
 
     it("skips missing source", () => {
-        const task = mergeTaskParts({}, { source: { type: "PAGE" } });
+        const task = buildTask({}, { source: { type: "PAGE" } });
 
         expect(task.source.type).toEqual("PAGE");
     });
 
     it("skips default source", () => {
-        const task = mergeTaskParts({ source: { type: "UNKNOWN" } }, { source: { type: "PAGE" } });
+        const task = buildTask({ source: { type: "UNKNOWN" } }, { source: { type: "PAGE" } });
 
         expect(task.source.type).toEqual("PAGE");
     });
 
     it("keeps non-default source", () => {
-        const task = mergeTaskParts({ source: { type: "PAGE" } }, { source: { type: "UNKNOWN" } });
+        const task = buildTask({ source: { type: "PAGE" } }, { source: { type: "UNKNOWN" } });
 
         expect(task.source.type).toEqual("PAGE");
     });

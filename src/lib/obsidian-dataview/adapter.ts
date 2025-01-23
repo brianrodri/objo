@@ -2,7 +2,7 @@ import { DataviewApi, SMarkdownPage, STask, getAPI, isPluginEnabled } from "@/li
 import { EventRef, MetadataCache, Plugin, TAbstractFile, TFile } from "@/lib/obsidian/types";
 import { OverloadedParameters4 } from "@/utils/type-utils";
 import { Task } from "@/data/task";
-import { mergeTaskParts } from "@/data/merge-task-parts";
+import { buildTask } from "@/data/build-task";
 import { parseTaskEmojis } from "@/data/parse-task-emojis";
 
 type MetadataCacheOnFunctionParameters = OverloadedParameters4<MetadataCache["on"]>;
@@ -69,7 +69,7 @@ export class Dataview {
     }
 
     private extractTaskFields(page: SMarkdownPage, task: STask): Task {
-        return mergeTaskParts(parseTaskEmojis(task.text), {
+        return buildTask(parseTaskEmojis(task.text), {
             dates: {
                 scheduled: page.file.day,
             },
