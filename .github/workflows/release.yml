@@ -27,9 +27,9 @@ jobs:
             - name: Audit dependencies
               run: npm audit && npm audit signatures
             - name: Audit code coverage
-              run: npm run coverage
+              run: npm run test:coverage
             - name: Build plugin
-              run: npm run build
+              run: npm run build:release
             - name: Release update
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

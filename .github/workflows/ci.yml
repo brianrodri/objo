@@ -19,7 +19,11 @@ jobs:
             - name: Audit dependencies
               run: npm audit && npm audit signatures
             - name: Audit code coverage
-              run: npm run coverage
+              run: npm run test:coverage
+            - name: Audit code formatting
+              run: npm run format
+            - name: Audit code linting
+              run: npm run lint
             - name: Upload coverage reports to Codecov
               uses: codecov/codecov-action@v4.0.1
               with:
