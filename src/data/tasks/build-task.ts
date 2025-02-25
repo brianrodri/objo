@@ -1,4 +1,4 @@
-import { Task, TaskSource, TaskStatus } from "@/data/task";
+import { Task, TaskSource, TaskStatus } from "@/data/tasks/task-model";
 import { DateTime } from "luxon";
 import { DeepPartial } from "utility-types";
 import _ from "lodash";

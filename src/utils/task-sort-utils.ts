@@ -1,4 +1,4 @@
-import { Task } from "@/data/task";
+import { Task } from "@/data/tasks/task-model";
 
 export function byStartTime(task: Task) {
     const start = task.times.start;

@@ -1,9 +1,9 @@
 import { DataviewApi, SMarkdownPage, STask, getAPI, isPluginEnabled } from "@/lib/obsidian-dataview/types";
 import { EventRef, MetadataCache, Plugin, TAbstractFile, TFile } from "@/lib/obsidian/types";
 import { OverloadedParameters4 } from "@/utils/type-utils";
-import { Task } from "@/data/task";
-import { buildTask } from "@/data/build-task";
-import { parseTaskEmojis } from "@/data/parse-task-emojis";
+import { Task } from "@/data/tasks/task-model";
+import { buildTask } from "@/data/tasks/build-task";
+import { parseTaskEmojis } from "@/data/tasks/parse-task-emojis";
 
 type MetadataCacheOnFunctionParameters = OverloadedParameters4<MetadataCache["on"]>;
 

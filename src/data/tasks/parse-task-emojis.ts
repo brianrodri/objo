@@ -1,7 +1,7 @@
 import { DateTime, Interval } from "luxon";
 import { Dictionary, set } from "lodash";
 import { DeepPartial } from "utility-types";
-import { Task } from "@/data/task";
+import { Task } from "@/data/tasks/task-model";
 
 export function parseTaskEmojis(text: string): DeepPartial<Task> {
     const matches = [...text.matchAll(EMOJI_REGEXP), /$/.exec(text) as RegExpExecArray];

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { DateTime } from "luxon";
 import { DeepPartial } from "utility-types";
-import { Task } from "@/data/task";
+import { Task } from "@/data/tasks/task-model";
 import { byStartTime } from "@/utils/task-sort-utils";
 import { sortBy } from "lodash";
 
