@@ -1,6 +1,7 @@
-import { describe, expect, it } from "vitest";
 import { DateTime } from "luxon";
-import { parseTaskEmojis } from "../parse-task-emojis";
+import { describe, expect, it } from "vitest";
+
+import { parseTaskEmojis } from "../obsidian-tasks";
 
 describe("Parsing task emojis", () => {
     it.each([

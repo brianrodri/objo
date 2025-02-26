@@ -1,10 +1,9 @@
 export { DataviewApi, getAPI, isPluginEnabled } from "obsidian-dataview";
-export type { SMarkdownPage } from "obsidian-dataview/lib/data-model/serialized/markdown";
-
+export type { SMarkdownPage as DataviewMarkdownPage } from "obsidian-dataview/lib/data-model/serialized/markdown";
 import { DateTime } from "luxon";
-import type { STask as STaskActual } from "obsidian-dataview/lib/data-model/serialized/markdown";
+import type { STask } from "obsidian-dataview/lib/data-model/serialized/markdown";
 
-export interface STask extends STaskActual {
+export interface DataviewMarkdownTask extends STask {
     created?: DateTime;
     due?: DateTime;
     completion?: DateTime;

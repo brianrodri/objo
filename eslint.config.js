@@ -1,6 +1,7 @@
 import eslintConfigPreact from "eslint-config-preact";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginBoundaries from "eslint-plugin-boundaries";
+import eslintPluginImport from "eslint-plugin-import";
 import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import typescriptEslintParser from "@typescript-eslint/parser";
@@ -10,11 +11,12 @@ import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 export default [
     { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/", "test-vault/"] },
 
+    eslintPluginImport.flatConfigs.recommended,
     ...eslintConfigPreact.flat,
 
     {
         files: ["*.config.js"],
-        rules: { "sort-imports": ["error"] },
+        rules: { "import/no-named-as-default": "off", "import/no-unresolved": "off" },
         languageOptions: { globals: { ...globals.node } },
     },
 
@@ -28,9 +30,20 @@ export default [
             ...typescriptEslintPlugin.configs.recommended.rules,
             ...typescriptEslintPlugin.configs.strict.rules,
             ...eslintPluginReactHooks.configs.recommended.rules,
-            "sort-imports": ["error"],
+
             // TypeScript already checks for duplicates: https://archive.eslint.org/docs/rules/no-dupe-class-members
             "no-dupe-class-members": "off",
+
+            "import/order": [
+                "error",
+                {
+                    alphabetize: { order: "asc", caseInsensitive: true },
+                    groups: ["external", "builtin", "internal", "parent", "sibling", "index"],
+                },
+            ],
+            "import/no-named-as-default": "error",
+            "import/no-named-as-default-member": "error",
+            "import/no-duplicates": "error",
         },
         languageOptions: {
             globals: { ...globals.browser },
@@ -50,41 +63,35 @@ export default [
             "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
             "boundaries/elements": [
                 { type: "main", pattern: ["src/main.tsx"], mode: "full" },
-                { type: "shared", pattern: ["src/components", "src/context", "src/data", "src/utils"], mode: "folder" },
-                { type: "lib", pattern: ["src/lib/*/**/*"], capture: ["libName"], mode: "full" },
-                { type: "features", pattern: ["src/features/*/**/*"], capture: ["featureName"], mode: "full" },
-                { type: "layout", pattern: ["src/layout/*/**/*"], capture: ["layoutName"], mode: "full" },
+                {
+                    type: "family:lib",
+                    pattern: ["src/*/*/lib/*.*", "src/*/*/lib/*/**/*"],
+                    capture: ["category", "elementName", "libName"],
+                    mode: "full",
+                },
+                { type: "shared", pattern: ["src/util"] },
+                { type: "lib", pattern: ["src/lib/*"], capture: ["libName"] },
+                { type: "family", pattern: ["src/*/*"], capture: ["category", "elementName"] },
             ],
-            "import/resolver": {
-                typescript: { alwaysTryTypes: true },
-            },
+            "import/resolver": { typescript: { alwaysTryTypes: true } },
         },
         rules: {
-            ...eslintPluginBoundaries.configs.recommended.rules,
             ...eslintPluginBoundaries.configs.strict.rules,
-            "boundaries/no-unknown": ["error"],
-            "boundaries/no-unknown-files": ["error"],
             "boundaries/element-types": [
                 "error",
                 {
                     default: "disallow",
                     rules: [
+                        { from: ["main"], allow: ["family", ["lib", { libName: "obsidian" }]] },
+                        { from: ["lib", "family:lib"], allow: [["lib", { libName: "${from.libName}" }]] },
                         {
-                            from: ["lib", "shared"],
-                            allow: ["lib", "shared"],
+                            from: ["family", "family:lib"],
+                            allow: [
+                                ["family", { category: "${from.category}", elementName: "${from.elementName}" }],
+                                ["family:lib", { category: "${from.category}", elementName: "${from.elementName}" }],
+                            ],
                         },
-                        {
-                            from: ["features"],
-                            allow: ["lib", "shared", ["features", { featureName: "${from.featureName}" }]],
-                        },
-                        {
-                            from: ["layout"],
-                            allow: ["features", "shared", ["layout", { layoutName: "${from.layoutName}" }]],
-                        },
-                        {
-                            from: ["main"],
-                            allow: ["layout", "shared", "lib"],
-                        },
+                        { from: ["*"], allow: ["shared"] },
                     ],
                 },
             ],
@@ -93,10 +100,8 @@ export default [
                 {
                     default: "disallow",
                     rules: [
+                        { from: ["lib"], allow: ["${from.libName}"] },
                         { from: ["*"], allow: ["lodash", "luxon", "utility-types"] },
-                        { from: [["lib", { libName: "obsidian" }]], allow: ["obsidian"] },
-                        { from: [["lib", { libName: "obsidian-dataview" }]], allow: ["obsidian-dataview"] },
-                        { from: ["shared", "layout"], allow: ["preact", "@preact/signals"] },
                     ],
                 },
             ],
