@@ -25,16 +25,16 @@ describe("PeriodicLog", () => {
             expect(() => new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days: 1 }, Duration.invalid("!"))).toThrow();
         });
 
+        it.each([+1, 0, -1])("should not throw when interval offset is %j", (days) => {
+            expect(() => new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days: 1 }, { days })).not.toThrow();
+        });
+
         it("should throw when interval duration is 0", () => {
             expect(() => new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days: 0 })).toThrow();
         });
 
         it.each([+1, -1])("should not throw when interval duration is %j", (days) => {
             expect(() => new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days })).not.toThrow();
-        });
-
-        it.each([+1, 0, -1])("should not throw when interval offset is %j", (days) => {
-            expect(() => new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days: 1 }, { days })).not.toThrow();
         });
     });
 
