@@ -1,7 +1,7 @@
 import { DateTime } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { parseTaskEmojis } from "../obsidian-tasks";
+import { parseTaskEmojiFormat } from "../obsidian-tasks";
 
 const isoDateTime = DateTime.fromISO;
 
@@ -25,16 +25,16 @@ describe("Parsing task emojis", () => {
         [{ dates: { scheduled: isoDateTime("2024-10-30") } }, "⏳ 2024-10-30"],
         [{ dates: { start: isoDateTime("2024-10-31") } }, "🛫 2024-10-31"],
     ])("parses %j from input=%j", (taskPart, text) => {
-        expect(parseTaskEmojis(text)).toMatchObject(taskPart);
+        expect(parseTaskEmojiFormat(text)).toMatchObject(taskPart);
     });
 
     it("accepts empty text", () => {
-        expect(() => parseTaskEmojis("")).not.toThrow();
+        expect(() => parseTaskEmojiFormat("")).not.toThrow();
     });
 
     it("parses sequential fields", () => {
         expect(
-            parseTaskEmojis(`
+            parseTaskEmojiFormat(`
                 09:00/10:00 TODO! 🔺 🔁 every day 🆔 do3rd ⛔ do1st, do2nd
                     ❌ 2024-10-25 ➕ 2024-10-26 ✅ 2024-10-27
                     📅 2024-10-28 ⏳ 2024-10-29 🛫 2024-10-30

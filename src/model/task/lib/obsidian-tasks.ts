@@ -5,16 +5,17 @@ import { DeepPartial, PickByValue } from "utility-types";
 import { Task } from "@/model/task/schema";
 import { PathOf } from "@/util/type-utils";
 
-export function parseTaskEmojis(text: string): DeepPartial<Task> {
+export function parseTaskEmojiFormat(text: string): DeepPartial<Task> {
     const matchedSymbols = [...text.matchAll(SYMBOL_REG_EXP), /$/.exec(text) as RegExpExecArray];
     const textBeforeAllSymbols = text.slice(0, matchedSymbols[0].index);
-    const result = parseTaskHeader(textBeforeAllSymbols.trim());
+
+    const result: DeepPartial<Task> = { ...parseTaskHeader(textBeforeAllSymbols.trim()) };
 
     for (let i = 0; i <= matchedSymbols.length - 2; ++i) {
         const [execArray, nextExecArray] = matchedSymbols.slice(i, i + 2);
 
-        const symbol = execArray[0] as keyof typeof SYMBOL_PATH_LOOKUP;
-        const symbolPath = SYMBOL_PATH_LOOKUP[symbol];
+        const symbol = execArray[0];
+        const symbolPath = SYMBOL_PATH_LOOKUP[symbol as keyof typeof SYMBOL_PATH_LOOKUP];
         const textAfterSymbol = text.slice(execArray.index + symbol.length, nextExecArray.index);
 
         if (symbolPath === "priority" && has(SYMBOL_PRIORITY_LOOKUP, symbol)) {
