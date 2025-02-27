@@ -41,16 +41,9 @@ describe("PeriodicLog", () => {
     describe('given daily log in folder: "/vault"', () => {
         const log = new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days: 1 });
 
-        it('should include "/vault/2023-01-01.md"', () => {
-            expect(log.includes("/vault/2023-01-01.md")).toBe(true);
+        it.each(["/vault/2023-01-01.md"])("should include %j", (filePath) => {
+            expect(log.includes(filePath)).toBe(true);
         });
-
-        it.each([["2023-01-01/2023-01-02", "/vault/2023-01-01.md"]])(
-            "should return %j as the interval of %j",
-            (isoInterval, filePath) => {
-                expect(log.getIntervalOf(filePath)).toEqual(Interval.fromISO(isoInterval));
-            },
-        );
 
         it.each([
             "/vault/2023-01-99.md",
@@ -60,20 +53,20 @@ describe("PeriodicLog", () => {
         ])("should not include %j", (filePath) => {
             expect(log.includes(filePath)).toBe(false);
         });
+
+        it.each([["2023-01-01/2023-01-02", "/vault/2023-01-01.md"]])(
+            "should return %j as the interval of %j",
+            (isoInterval, filePath) => {
+                expect(log.getIntervalOf(filePath)).toEqual(Interval.fromISO(isoInterval));
+            },
+        );
     });
 
     describe('given sprint logs starting every other thursday in folder: "/sprints"', () => {
         const log = new PeriodicLog("id", "/sprints", "kkkk-'W'WW", { weeks: 2 }, { days: 3 });
 
-        it('should include "/sprints/2023-W37.md"', () => {
-            expect(log.includes("/sprints/2023-W37.md")).toBe(true);
-        });
-
-        it.each([
-            ["2023-09-14/2023-09-28", "/sprints/2023-W37.md"],
-            ["2025-02-27/2025-03-13", "/sprints/2025-W09.md"],
-        ])("should return %j as the interval of %j", (isoInterval, filePath) => {
-            expect(log.getIntervalOf(filePath)).toEqual(Interval.fromISO(isoInterval));
+        it.each(["/sprints/2023-W37.md"])("should include %j", (filePath) => {
+            expect(log.includes(filePath)).toBe(true);
         });
 
         it.each([
@@ -83,6 +76,13 @@ describe("PeriodicLog", () => {
             "/vault/2023-W37.md",
         ])("should not include %j", (filePath) => {
             expect(log.includes(filePath)).toBe(false);
+        });
+
+        it.each([
+            ["2023-09-14/2023-09-28", "/sprints/2023-W37.md"],
+            ["2025-02-27/2025-03-13", "/sprints/2025-W09.md"],
+        ])("should return %j as the interval of %j", (isoInterval, filePath) => {
+            expect(log.getIntervalOf(filePath)).toEqual(Interval.fromISO(isoInterval));
         });
     });
 });
