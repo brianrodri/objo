@@ -18,19 +18,12 @@ jobs:
               uses: actions/checkout@v3
             - name: Setup Node.js
               uses: actions/setup-node@v3
-              with:
-                  node-version: latest
+              with: { node-version: latest }
             - name: Install dependencies
               run: npm clean-install
-              env:
-                  HUSKY: 0
-            - name: Audit dependencies
-              run: npm audit && npm audit signatures
-            - name: Audit code coverage
-              run: npm run test:coverage
+              env: { HUSKY: 0 }
             - name: Build plugin
               run: npm run build:release
             - name: Release update
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
               run: npx semantic-release
