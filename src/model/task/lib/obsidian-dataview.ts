@@ -1,4 +1,5 @@
 import { DeepPartial } from "utility-types";
+
 import { DataviewMarkdownTask } from "@/lib/obsidian-dataview/types";
 import { Task } from "@/model/task/schema";
 

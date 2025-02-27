@@ -1,4 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
+
 import { Plugin } from "@/lib/obsidian/types";
 import { DataviewMarkdownTask } from "@/lib/obsidian-dataview/types";
 

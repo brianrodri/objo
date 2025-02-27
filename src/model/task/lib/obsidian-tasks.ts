@@ -1,6 +1,7 @@
 import { escapeRegExp, has, keysIn, set } from "lodash";
 import { DateTime, Interval } from "luxon";
 import { DeepPartial, PickByValue } from "utility-types";
+
 import { Task } from "@/model/task/schema";
 import { PathOf } from "@/util/type-utils";
 

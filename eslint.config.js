@@ -37,8 +37,10 @@ export default [
             "import/order": [
                 "error",
                 {
-                    alphabetize: { order: "asc", caseInsensitive: true },
-                    groups: ["external", "builtin", "internal", "parent", "sibling", "index"],
+                    "alphabetize": { order: "asc", caseInsensitive: true },
+                    "groups": [["builtin", "external", "unknown"], "internal", ["parent", "sibling", "index"]],
+                    "named": { enabled: true, types: "types-first" },
+                    "newlines-between": "always",
                 },
             ],
             "import/no-named-as-default": "error",
