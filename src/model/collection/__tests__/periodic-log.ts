@@ -54,12 +54,12 @@ describe("PeriodicLog", () => {
             expect(log.includes(filePath)).toBe(false);
         });
 
-        it.each([["2023-01-01/2023-01-02", "/vault/2023-01-01.md"]])(
-            "should return %j as the interval of %j",
-            (isoInterval, filePath) => {
-                expect(log.getIntervalOf(filePath)).toEqual(Interval.fromISO(isoInterval));
-            },
-        );
+        it.each([
+            ["2023-01-01/2023-01-02", "/vault/2023-01-01.md"],
+            ["2025-02-28/2025-03-01", "/vault/2025-02-28.md"],
+        ])("should return %j as the interval of %j", (isoInterval, filePath) => {
+            expect(log.getIntervalOf(filePath)).toEqual(Interval.fromISO(isoInterval));
+        });
     });
 
     describe('given sprint logs starting every other thursday in folder: "/sprints"', () => {
