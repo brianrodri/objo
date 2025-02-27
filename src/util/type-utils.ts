@@ -1,11 +1,11 @@
 /**
- * Union of all possible dot-separated paths to a sub-field in T
+ * Union of all dot-separated paths in T.
  *
  * ```ts
  * type Obj = { a: { b: { c: string } } };
  *
- * type Paths = PathOf<Obj>;
- * //           ^? - "a" | "a.b" | "a.b.c"
+ * type ObjPaths = PathOf<Obj>;
+ * //   ^? type ObjPaths = "a" | "a.b" | "a.b.c"
  * ```
  */
 export type PathOf<T> =
