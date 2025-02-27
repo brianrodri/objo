@@ -15,15 +15,9 @@ jobs:
             - name: Install dependencies
               run: npm clean-install
               env: { HUSKY: 0 }
-            - name: Capture documentation coverage
-              run: |
-                  npm run build:docs
-                  {
-                      printf "LOGO_SVG<<EOF\n"
-                      cat docs/coverage.svg
-                      printf "\nEOF"
-                  } >>$GITHUB_ENV
-            - name: Deploy coverage badge
+            - name: Build documentation
+              run: npm run build:docs
+            - name: Deploy documentation coverage badge
               uses: exuanbo/actions-deploy-gist@v1
               with:
                   token: ${{ secrets.GIST_SECRET }}
