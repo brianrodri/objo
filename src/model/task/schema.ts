@@ -3,8 +3,18 @@ import { DateTime } from "luxon";
 export interface Task {
     status: TaskStatus;
     source: TaskSource;
-    dates: TaskDates;
-    times: TaskTimes;
+    dates: {
+        cancelled: DateTime;
+        created: DateTime;
+        done: DateTime;
+        due: DateTime;
+        scheduled: DateTime;
+        start: DateTime;
+    };
+    times: {
+        start: DateTime;
+        end: DateTime;
+    };
     description: string;
     priority: number;
     recurrenceRule: string;
@@ -13,31 +23,22 @@ export interface Task {
     dependsOn: ReadonlySet<string>;
 }
 
-export type TaskStatus = { type: "CANCELLED" | "CUSTOM" | "DONE" | "OPEN"; symbol: string } | { type: "UNKNOWN" };
+export type TaskStatus =
+    | { type: "UNKNOWN" }
+    | {
+          type: "OPEN" | "DONE" | "CANCELLED" | "NON_TASK";
+          symbol: string;
+      };
 
-export type TaskSource = PageTaskSource | { type: "UNKNOWN" };
-
-export interface TaskDates {
-    cancelled: DateTime;
-    created: DateTime;
-    done: DateTime;
-    due: DateTime;
-    scheduled: DateTime;
-    start: DateTime;
-}
-
-export interface TaskTimes {
-    start: DateTime;
-    end: DateTime;
-}
-
-export interface PageTaskSource {
-    type: "PAGE";
-    path: string;
-    name: string;
-    section?: string;
-    lineNumber: number;
-    startByte: number;
-    stopByte: number;
-    obsidianHref: string;
-}
+export type TaskSource =
+    | { type: "UNKNOWN" }
+    | {
+          type: "PAGE";
+          path: string;
+          name: string;
+          section?: string;
+          lineNumber: number;
+          startByte: number;
+          stopByte: number;
+          obsidianHref: string;
+      };

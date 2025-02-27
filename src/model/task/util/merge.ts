@@ -5,13 +5,6 @@ import { DeepPartial } from "utility-types";
 import { DEFAULT_PRIORITY_VALUE, DEFAULT_TYPE_VALUE, TASK_WITH_DEFAULT_VALUES } from "@/model/task/constants";
 import { Task } from "@/model/task/schema";
 
-/**
- * Builds a new Task using values from parts.
- *
- * Each property in the Task will use the first non-default value encountered in the list of parts.
- *
- * @see {@link TASK_WITH_DEFAULT_VALUES}
- */
 export function mergeTaskParts(...parts: DeepPartial<Task>[]): Task {
     return parts.reduce(replaceDefaultValues, { ...TASK_WITH_DEFAULT_VALUES });
 }
