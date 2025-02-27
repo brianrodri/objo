@@ -33,12 +33,6 @@ jobs:
               env: { HUSKY: 0 }
             - name: Build documentation
               run: npm run build:docs
-            - name: Deploy documentation coverage badge
-              uses: exuanbo/actions-deploy-gist@v1
-              with:
-                  token: ${{ secrets.GIST_SECRET }}
-                  gist_id: ${{ vars.GIST_ID }}
-                  file_path: docs/coverage.svg
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with: { path: "docs/" }
