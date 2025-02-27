@@ -11,7 +11,7 @@
         "build:clean": "rm -rf node_modules/ dist/ coverage/ docs/",
         "build:release": "tsc && vite build --mode production --outDir ./dist/",
         "build:watch": "git submodule init && git submodule update && vite build --mode development --outDir ./test-vault/.obsidian/plugins/objo/ --watch",
-        "docs:build": "typedoc src/main.tsx --plugin typedoc-plugin-coverage --out docs/ --excludeExternals --excludePrivate --excludeProtected",
+        "build:docs": "typedoc",
         "lint": "eslint .",
         "lint:fix": "eslint --fix .",
         "lint:commit": "commitlint --edit",

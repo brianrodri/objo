@@ -1,0 +1,31 @@
+name: Build Documentation
+
+on: { push: { branches: [main] } }
+
+jobs:
+    build:
+        name: docs
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with: { node-version: latest }
+            - name: Install dependencies
+              run: npm clean-install
+              env: { HUSKY: 0 }
+            - name: Capture documentation coverage
+              run: |
+                  npm run build:docs
+                  {
+                      printf "LOGO_SVG<<EOF\n"
+                      cat docs/coverage.svg
+                      printf "\nEOF"
+                  } >>$GITHUB_ENV
+            - name: Deploy coverage badge
+              uses: exuanbo/actions-deploy-gist@v1
+              with:
+                  token: ${{ secrets.GIST_SECRET }}
+                  gist_id: ${{ vars.GIST_ID }}
+                  file_path: docs/coverage.svg
