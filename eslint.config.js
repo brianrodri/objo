@@ -103,7 +103,7 @@ export default [
                     default: "disallow",
                     rules: [
                         { from: ["lib"], allow: ["${from.libName}"] },
-                        { from: ["*"], allow: ["lodash", "luxon", "utility-types"] },
+                        { from: ["*"], allow: ["assert", "lodash", "luxon", "path", "utility-types"] },
                     ],
                 },
             ],
