@@ -53,7 +53,7 @@ export class PeriodicLog extends Collection {
         }
         const date = DateTime.fromFormat(path.name, this.dateFormat, this.dateOptions);
         if (!date.isValid) {
-            return Interval.invalid(`invalid ${this.id} filename`, `${date.invalidExplanation} ${date.invalidReason}`);
+            return Interval.invalid(`invalid ${this.id} filename`, `${date.invalidReason} ${date.invalidExplanation}`);
         }
         return Interval.after(date.plus(this.dateOffset), this.intervalDuration);
     }
