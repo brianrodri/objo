@@ -29,7 +29,7 @@ describe("PeriodicLog", () => {
             expect(() => new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days: 0 })).toThrow();
         });
 
-        it.each([-1, +1])("should not throw when interval duration is %j", (days) => {
+        it.each([+1, -1])("should not throw when interval duration is %j", (days) => {
             expect(() => new PeriodicLog("id", "/vault", "yyyy-MM-dd", { days })).not.toThrow();
         });
 
