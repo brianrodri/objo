@@ -1,71 +1,76 @@
-import { escapeRegExp, has, set } from "lodash";
+import { escapeRegExp, has, keysIn, set } from "lodash";
 import { DateTime, Interval } from "luxon";
-import { DeepPartial } from "utility-types";
+import { DeepPartial, PickByValue } from "utility-types";
 import { Task } from "@/model/task/schema";
 import { PathOf } from "@/util/type-utils";
 
-const SYMBOL_PATH_MAP: ReadonlyMap<string, PathOf<Task>> = new Map([
-    ["❌", "dates.cancelled"],
-    ["➕", "dates.created"],
-    ["✅", "dates.done"],
-    ["📅", "dates.due"],
-    ["⌛", "dates.scheduled"],
-    ["⏳", "dates.scheduled"],
-    ["🛫", "dates.start"],
-    ["⛔", "dependsOn"],
-    ["🆔", "id"],
-    ["🔺", "priority"],
-    ["⏫", "priority"],
-    ["🔼", "priority"],
-    ["🔽", "priority"],
-    ["⏬", "priority"],
-    ["🔁", "recurrenceRule"],
-]);
-
-const SYMBOL_PRIORITY_MAP = { "🔺": 0, "⏫": 1, "🔼": 2, "🔽": 4, "⏬": 5 };
-
-const SYMBOL_REGEXP = new RegExp([...SYMBOL_PATH_MAP.keys()].map(escapeRegExp).join("|"), "g");
-
 export function parseTaskEmojis(text: string): DeepPartial<Task> {
-    const matches = [...text.matchAll(SYMBOL_REGEXP), /$/.exec(text) as RegExpExecArray];
+    const matchedSymbols = [...text.matchAll(SYMBOL_REG_EXP), /$/.exec(text) as RegExpExecArray];
+    const textBeforeAllSymbols = text.slice(0, matchedSymbols[0].index);
+    const result = parseTaskHeader(textBeforeAllSymbols.trim());
 
-    const taskHeader = text.slice(0, matches[0].index).trim();
-    const taskParts: DeepPartial<Task> = { ...parseTaskHeader(taskHeader), dates: {} };
+    for (let i = 0; i <= matchedSymbols.length - 2; ++i) {
+        const [execArray, nextExecArray] = matchedSymbols.slice(i, i + 2);
 
-    for (let i = 0; i <= matches.length - 2; ++i) {
-        const [execArray, nextExecArray] = matches.slice(i, i + 2);
+        const symbol = execArray[0] as keyof typeof SYMBOL_PATH_LOOKUP;
+        const symbolPath = SYMBOL_PATH_LOOKUP[symbol];
+        const textAfterSymbol = text.slice(execArray.index + symbol.length, nextExecArray.index);
 
-        const symbol = execArray[0];
-        const taskPartPath = SYMBOL_PATH_MAP.get(symbol) as PathOf<Task>;
-        const value = text.slice(execArray.index + symbol.length, nextExecArray.index);
-
-        if (has(SYMBOL_PRIORITY_MAP, symbol)) {
-            // TODO: `value` is unused in this branch; should I do something with it?
-            set(taskParts, taskPartPath, SYMBOL_PRIORITY_MAP[symbol]);
-        } else if (taskPartPath.startsWith("dates.")) {
-            set(taskParts, taskPartPath, DateTime.fromISO(value.trim()));
-        } else if (taskPartPath === "dependsOn") {
-            set(taskParts, taskPartPath, new Set(value.split(",").map((v) => v.trim())));
+        if (symbolPath === "priority" && has(SYMBOL_PRIORITY_LOOKUP, symbol)) {
+            // TODO: `textAfterSymbol` is unused in this branch; should I do something with it?
+            set(result, symbolPath, SYMBOL_PRIORITY_LOOKUP[symbol]);
+        } else if (symbolPath === "dependsOn") {
+            set(result, symbolPath, new Set(textAfterSymbol.split(",").map((v) => v.trim())));
+        } else if (symbolPath.startsWith("dates.")) {
+            set(result, symbolPath, DateTime.fromISO(textAfterSymbol.trim()));
         } else {
-            set(taskParts, taskPartPath, value.trim());
+            set(result, symbolPath, textAfterSymbol.trim());
         }
     }
 
-    return taskParts;
+    return result;
 }
 
-function parseTaskHeader(header: string): DeepPartial<Task> {
-    const [isoTime, description] = header.split(/\s+/, 2);
+function parseTaskHeader(headerText: string): DeepPartial<Task> {
+    const [isoString, isoStringSuffix] = headerText.split(/\s+/, 2);
 
-    const interval = Interval.fromISO(isoTime);
+    const interval = Interval.fromISO(isoString);
     if (interval.isValid) {
-        return { description, times: { start: interval.start, end: interval.end } };
+        return { times: { start: interval.start, end: interval.end }, description: isoStringSuffix };
     }
 
-    const time = DateTime.fromISO(isoTime);
+    const time = DateTime.fromISO(isoString);
     if (time.isValid) {
-        return { description, times: { start: time } };
+        return { times: { start: time }, description: isoStringSuffix };
     }
 
-    return { description: header };
+    return { description: headerText };
 }
+
+const SYMBOL_PATH_LOOKUP = {
+    "❌": "dates.cancelled",
+    "➕": "dates.created",
+    "✅": "dates.done",
+    "📅": "dates.due",
+    "⌛": "dates.scheduled",
+    "⏳": "dates.scheduled",
+    "🛫": "dates.start",
+    "⛔": "dependsOn",
+    "🆔": "id",
+    "🔺": "priority",
+    "⏫": "priority",
+    "🔼": "priority",
+    "🔽": "priority",
+    "⏬": "priority",
+    "🔁": "recurrenceRule",
+} as const satisfies Record<string, PathOf<Task>>;
+
+const SYMBOL_PRIORITY_LOOKUP = {
+    "🔺": 0,
+    "⏫": 1,
+    "🔼": 2,
+    "🔽": 4,
+    "⏬": 5,
+} as const satisfies Record<keyof PickByValue<typeof SYMBOL_PATH_LOOKUP, "priority">, number>;
+
+const SYMBOL_REG_EXP = new RegExp(keysIn(SYMBOL_PATH_LOOKUP).map(escapeRegExp).join("|"), "g");
