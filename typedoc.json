@@ -1,5 +1,5 @@
 {
     "entryPoints": ["src/**/*"],
     "exclude": ["**/node_modules/**/*", "**/__tests__/**/*"],
-    "plugin": ["typedoc-plugin-coverage"]
+    "plugin": ["typedoc-plugin-coverage", "typedoc-github-theme"]
 }
