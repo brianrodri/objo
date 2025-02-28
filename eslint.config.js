@@ -6,6 +6,7 @@ import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import typescriptEslintParser from "@typescript-eslint/parser";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
+import eslintPluginTsdoc from "eslint-plugin-tsdoc";
 
 /** @type { import("eslint").Linter.Config[] } */
 export default [
@@ -23,6 +24,7 @@ export default [
     {
         files: ["src/**/*.{ts,tsx}"],
         plugins: {
+            "tsdoc": eslintPluginTsdoc,
             "@typescript-eslint": typescriptEslintPlugin,
             "react-hooks": eslintPluginReactHooks,
         },
@@ -30,6 +32,8 @@ export default [
             ...typescriptEslintPlugin.configs.recommended.rules,
             ...typescriptEslintPlugin.configs.strict.rules,
             ...eslintPluginReactHooks.configs.recommended.rules,
+
+            "tsdoc/syntax": "error",
 
             // TypeScript already checks for duplicates: https://archive.eslint.org/docs/rules/no-dupe-class-members
             "no-dupe-class-members": "off",
