@@ -41,8 +41,8 @@ export default defineConfig(({ mode }) => ({
             include: ["src/"],
             exclude: ["src/main.tsx", "src/lib/"],
             thresholds: { 100: true },
+            reporter: ["text", "html", "clover", "json", "lcov"],
         },
-        reporters: ["junit"],
-        outputFile: "test-report.junit.xml",
+        reporters: [["junit", { outputFile: "test-report.junit.xml" }]],
     },
 }));
