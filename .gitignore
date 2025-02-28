@@ -1,4 +1,5 @@
 .DS_Store
+test-report.junit.xml
 coverage/
 dist/
 docs/

@@ -42,5 +42,7 @@ export default defineConfig(({ mode }) => ({
             exclude: ["src/main.tsx", "src/lib/"],
             thresholds: { 100: true },
         },
+        reporters: ["junit"],
+        outputFile: "test-report.junit.xml",
     },
 }));
