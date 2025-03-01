@@ -68,16 +68,16 @@ export default [
             "boundaries/include": ["src/**/*"],
             "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
             "boundaries/elements": [
+                getBoundaryScopeDefinition("model"),
                 { type: "main", pattern: ["src/main.tsx"], mode: "full" },
+                { type: "shared", pattern: ["src/util"], mode: "folder" },
+                { type: "lib", pattern: ["src/lib/*/**/*"], capture: ["libName"], mode: "full" },
                 {
-                    type: "family:lib",
+                    type: "lib:scope",
                     pattern: ["src/*/*/lib/*.*", "src/*/*/lib/*/**/*"],
-                    capture: ["category", "elementName", "libName"],
+                    capture: ["scope", "elementName", "libName"],
                     mode: "full",
                 },
-                { type: "shared", pattern: ["src/util"] },
-                { type: "lib", pattern: ["src/lib/*"], capture: ["libName"] },
-                { type: "family", pattern: ["src/*/*"], capture: ["category", "elementName"] },
             ],
             "import/resolver": { typescript: { alwaysTryTypes: true } },
         },
@@ -88,16 +88,17 @@ export default [
                 {
                     default: "disallow",
                     rules: [
-                        { from: ["main"], allow: ["family", ["lib", { libName: "obsidian" }]] },
-                        { from: ["lib", "family:lib"], allow: [["lib", { libName: "${from.libName}" }]] },
+                        getBoundaryScopeRules("model"),
+                        { from: "*", allow: "shared" },
+                        { from: "lib", allow: [["lib", { libName: "${from.libName}" }]] },
                         {
-                            from: ["family", "family:lib"],
+                            from: ["lib:scope"],
                             allow: [
-                                ["family", { category: "${from.category}", elementName: "${from.elementName}" }],
-                                ["family:lib", { category: "${from.category}", elementName: "${from.elementName}" }],
+                                ["lib", { libName: "${from.libName}" }],
+                                ["${from.scope}", { elementName: "${from.elementName}" }],
                             ],
                         },
-                        { from: ["*"], allow: ["shared"] },
+                        { from: "main", allow: ["model", ["lib", { libName: "obsidian" }]] },
                     ],
                 },
             ],
@@ -114,3 +115,23 @@ export default [
         },
     },
 ];
+
+function getBoundaryScopeDefinition(scopeName) {
+    return {
+        type: scopeName,
+        pattern: [`src/(${scopeName})/*`],
+        capture: ["scope", "elementName"],
+        mode: "folder",
+    };
+}
+
+function getBoundaryScopeRules(scopeName, ...otherAllowed) {
+    return {
+        from: scopeName,
+        allow: [
+            [scopeName, { elementName: "${from.elementName}" }],
+            ["lib:scope", { scope: scopeName, elementName: "${from.elementName}" }],
+            ...otherAllowed,
+        ],
+    };
+}
