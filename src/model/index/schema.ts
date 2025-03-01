@@ -20,7 +20,7 @@ export interface VaultIndex {
     /** @returns the list of collections registered with this index. */
     getCollections(): Collection[];
 
-    /** @returns a list of collections that claim to include the given file path. */
+    /** @returns the list of collections that claim to include the given file path. */
     getCollectionsWithFile(filePath: string): Collection[];
 }
 

@@ -6,29 +6,30 @@ import { assertNoOverlaps, newInvalidError } from "../luxon-utils";
 import { WITH_OVERLAPPING_INTERVALS, WITHOUT_OVERLAPPING_INTERVALS } from "./luxon-utils.const";
 
 describe(newInvalidError.name, () => {
-    const reason = "reason";
-    const explanation = "explanation";
+    const reason = "user-provided reason";
+    const explanation = "user-provided explanation";
 
-    describe.each(["user-provided message", undefined])("with message %j", (message) => {
-        it.each([DateTime, Duration, Interval].map((ctor) => ctor.invalid(reason, explanation)))(
-            "should accept invalid $constructor.name",
-            (invalidObj) => {
-                const errorMessage = newInvalidError(invalidObj, message).message;
-                expect(errorMessage).toMatch(message ?? "");
-                expect(errorMessage).toMatch(reason);
-                expect(errorMessage).toMatch(explanation);
-            },
-        );
+    const _throw = (e: Error) => {
+        throw e;
+    };
+
+    describe.each(["user-provided message", undefined])("with message=%j", (message) => {
+        it.each([
+            DateTime.invalid(reason, explanation),
+            Duration.invalid(reason, explanation),
+            Interval.invalid(reason, explanation),
+        ])("should accept $constructor.name", (invalidResult) => {
+            expect(() => _throw(newInvalidError(invalidResult, message))).toThrowErrorMatchingSnapshot();
+        });
 
         it("should accept undefined", () => {
-            const errorMessage = newInvalidError().message;
-            expect(errorMessage).toMatch("unspecified error");
+            expect(() => _throw(newInvalidError(undefined, message))).toThrowErrorMatchingSnapshot();
         });
     });
 });
 
 describe(assertNoOverlaps.name, () => {
-    describe.each(["user-provided message", undefined])("with message %j", (message) => {
+    describe.each(["user-provided message", undefined])("with message=%j", (message) => {
         it.each(entriesIn(WITHOUT_OVERLAPPING_INTERVALS))("should accept %j", (_, intervals) => {
             expect(() => assertNoOverlaps(intervals, message)).not.toThrow();
         });

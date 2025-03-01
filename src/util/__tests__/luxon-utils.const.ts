@@ -1,5 +1,7 @@
 import { Interval } from "luxon";
 
+export type NamedIntervalSequences = { [description: string]: readonly Interval<true>[] };
+
 export const WITH_OVERLAPPING_INTERVALS = {
     "pair of overlapping intervals": [
         Interval.fromISO("2025-03-01/2025-03-04", { zone: "utc" }),
@@ -50,10 +52,11 @@ export const WITH_OVERLAPPING_INTERVALS = {
         Interval.fromISO("2025-03-07/2025-03-10", { zone: "utc" }),
         Interval.fromISO("2025-03-11/2025-03-13", { zone: "utc" }),
     ],
-} as Record<string, Interval<true>[]>;
+} as NamedIntervalSequences;
 
 export const WITHOUT_OVERLAPPING_INTERVALS = {
     "empty group of intervals": [],
+
     "group of one interval": [Interval.fromISO("2025-03-01/2025-03-04", { zone: "utc" })],
 
     "pair of non-overlapping intervals": [
@@ -75,4 +78,4 @@ export const WITHOUT_OVERLAPPING_INTERVALS = {
         Interval.fromISO("2025-03-09/2025-03-11", { zone: "utc" }),
         Interval.fromISO("2025-03-13/2025-03-15", { zone: "utc" }),
     ],
-} as Record<string, Interval<true>[]>;
+} as NamedIntervalSequences;

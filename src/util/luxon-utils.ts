@@ -1,4 +1,3 @@
-import assert from "assert";
 import { isString, sortBy } from "lodash";
 import { DateTime, Duration, Interval } from "luxon";
 
@@ -28,9 +27,8 @@ export function getIndexCollisions(sorted: Interval<true>[]): [number, number][]
 
     let startIncl = 0;
     for (let stopExcl = 2; stopExcl <= sorted.length; ++stopExcl) {
-        const last = sorted[stopExcl - 1];
         const formerStartIncl = startIncl;
-        while (startIncl < stopExcl && !intersects(sorted[startIncl], last)) {
+        while (startIncl < stopExcl && !sorted[startIncl].intersection(sorted[stopExcl - 1])) {
             startIncl += 1;
         }
         if (startIncl - formerStartIncl > 1) {
@@ -45,24 +43,13 @@ export function getIndexCollisions(sorted: Interval<true>[]): [number, number][]
 }
 
 /**
- * @param a - the first interval. Must be _earlier than_ the second interval.
- * @param b - the second interval. Must be _later than_ the first interval.
- *
- * @returns true if the two intervals have a non-empty intersection.
- */
-export function intersects(a: Interval<true>, b: Interval<true>): boolean {
-    assert(a.start <= b.start && a.end <= b.end);
-    return b.overlaps(a) && !b.abutsStart(a);
-}
-
-/**
  * Asserts that the given array of intervals have no intersections.
  *
  * @param unsorted - the array of intervals to check.
  * @param message - optional message to include with the error.
  * @throws an {@link Error} if the array has overlapping intervals.
  */
-export function assertNoOverlaps(unsorted: ReadonlyArray<Interval<true>>, message?: string): void {
+export function assertNoOverlaps(unsorted: readonly Interval<true>[], message?: string): void {
     const sorted = sortBy(unsorted, "start", "end");
     const indexCollisions = getIndexCollisions(sorted);
 
@@ -71,7 +58,7 @@ export function assertNoOverlaps(unsorted: ReadonlyArray<Interval<true>>, messag
         lines.push(
             ...indexCollisions.map(([start, end]) => {
                 const overlap = Interval.fromDateTimes(sorted[start].start, sorted[end - 1].end);
-                return `\t-\tindexes between [${start}, ${end}) all overlap with ${overlap}`;
+                return `\t-\tindexes between [${start}, ${end}) all overlap between ${overlap}`;
             }),
         );
         throw new Error(lines.join("\n"));
