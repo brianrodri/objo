@@ -7,6 +7,7 @@ import globals from "globals";
 import typescriptEslintParser from "@typescript-eslint/parser";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import eslintPluginTsdoc from "eslint-plugin-tsdoc";
+import { ELEMENTS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
 
 /** @type { import("eslint").Linter.Config[] } */
 export default [
@@ -67,71 +68,13 @@ export default [
         settings: {
             "boundaries/include": ["src/**/*"],
             "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
-            "boundaries/elements": [
-                getBoundaryScopeDefinition("model"),
-                { type: "main", pattern: ["src/main.tsx"], mode: "full" },
-                { type: "shared", pattern: ["src/util"], mode: "folder" },
-                { type: "lib", pattern: ["src/lib/*/**/*"], capture: ["libName"], mode: "full" },
-                {
-                    type: "lib:scope",
-                    pattern: ["src/*/*/lib/*.*", "src/*/*/lib/*/**/*"],
-                    capture: ["scope", "elementName", "libName"],
-                    mode: "full",
-                },
-            ],
+            "boundaries/elements": ELEMENTS,
             "import/resolver": { typescript: { alwaysTryTypes: true } },
         },
         rules: {
             ...eslintPluginBoundaries.configs.strict.rules,
-            "boundaries/element-types": [
-                "error",
-                {
-                    default: "disallow",
-                    rules: [
-                        getBoundaryScopeRules("model"),
-                        { from: "*", allow: "shared" },
-                        { from: "lib", allow: [["lib", { libName: "${from.libName}" }]] },
-                        {
-                            from: ["lib:scope"],
-                            allow: [
-                                ["lib", { libName: "${from.libName}" }],
-                                ["${from.scope}", { elementName: "${from.elementName}" }],
-                            ],
-                        },
-                        { from: "main", allow: ["model", ["lib", { libName: "obsidian" }]] },
-                    ],
-                },
-            ],
-            "boundaries/external": [
-                "error",
-                {
-                    default: "disallow",
-                    rules: [
-                        { from: ["lib"], allow: ["${from.libName}"] },
-                        { from: ["*"], allow: ["assert", "lodash", "luxon", "path", "utility-types"] },
-                    ],
-                },
-            ],
+            "boundaries/element-types": ["error", { default: "disallow", rules: ELEMENT_TYPE_RULES }],
+            "boundaries/external": ["error", { default: "disallow", rules: EXTERNAL_RULES }],
         },
     },
 ];
-
-function getBoundaryScopeDefinition(scopeName) {
-    return {
-        type: scopeName,
-        pattern: [`src/(${scopeName})/*`],
-        capture: ["scope", "elementName"],
-        mode: "folder",
-    };
-}
-
-function getBoundaryScopeRules(scopeName, ...otherAllowed) {
-    return {
-        from: scopeName,
-        allow: [
-            [scopeName, { elementName: "${from.elementName}" }],
-            ["lib:scope", { scope: scopeName, elementName: "${from.elementName}" }],
-            ...otherAllowed,
-        ],
-    };
-}
