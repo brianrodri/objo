@@ -1,0 +1,56 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`assertNoOverlaps > with message "user-provided message" > should reject "group of equal intervals" 1`] = `
+[Error: user-provided message
+	-	indexes between [0, 5) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-07T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message "user-provided message" > should reject "group of one interval after an overlapping group" 1`] = `
+[Error: user-provided message
+	-	indexes between [0, 3) all overlap with [2025-03-05T00:00:00.000Z – 2025-03-10T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message "user-provided message" > should reject "group of one interval before an overlapping group" 1`] = `
+[Error: user-provided message
+	-	indexes between [1, 4) all overlap with [2025-03-05T00:00:00.000Z – 2025-03-10T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message "user-provided message" > should reject "group of overlapping intervals with non-overlapping intervals in between" 1`] = `
+[Error: user-provided message
+	-	indexes between [0, 2) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-05T00:00:00.000Z)
+	-	indexes between [3, 5) all overlap with [2025-03-21T00:00:00.000Z – 2025-03-25T00:00:00.000Z)
+	-	indexes between [6, 8) all overlap with [2025-04-13T00:00:00.000Z – 2025-04-17T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message "user-provided message" > should reject "group of overlapping intervals with the same end time" 1`] = `
+[Error: user-provided message
+	-	indexes between [0, 3) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-06T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message "user-provided message" > should reject "group of overlapping intervals with the same start time" 1`] = `
+[Error: user-provided message
+	-	indexes between [0, 3) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-06T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message "user-provided message" > should reject "pair of overlapping intervals" 1`] = `
+[Error: user-provided message
+	-	indexes between [0, 2) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-05T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message undefined > should reject "group of equal intervals" 1`] = `[Error: 	-	indexes between [0, 5) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-07T00:00:00.000Z)]`;
+
+exports[`assertNoOverlaps > with message undefined > should reject "group of one interval after an overlapping group" 1`] = `[Error: 	-	indexes between [0, 3) all overlap with [2025-03-05T00:00:00.000Z – 2025-03-10T00:00:00.000Z)]`;
+
+exports[`assertNoOverlaps > with message undefined > should reject "group of one interval before an overlapping group" 1`] = `[Error: 	-	indexes between [1, 4) all overlap with [2025-03-05T00:00:00.000Z – 2025-03-10T00:00:00.000Z)]`;
+
+exports[`assertNoOverlaps > with message undefined > should reject "group of overlapping intervals with non-overlapping intervals in between" 1`] = `
+[Error: 	-	indexes between [0, 2) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-05T00:00:00.000Z)
+	-	indexes between [3, 5) all overlap with [2025-03-21T00:00:00.000Z – 2025-03-25T00:00:00.000Z)
+	-	indexes between [6, 8) all overlap with [2025-04-13T00:00:00.000Z – 2025-04-17T00:00:00.000Z)]
+`;
+
+exports[`assertNoOverlaps > with message undefined > should reject "group of overlapping intervals with the same end time" 1`] = `[Error: 	-	indexes between [0, 3) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-06T00:00:00.000Z)]`;
+
+exports[`assertNoOverlaps > with message undefined > should reject "group of overlapping intervals with the same start time" 1`] = `[Error: 	-	indexes between [0, 3) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-06T00:00:00.000Z)]`;
+
+exports[`assertNoOverlaps > with message undefined > should reject "pair of overlapping intervals" 1`] = `[Error: 	-	indexes between [0, 2) all overlap with [2025-03-01T00:00:00.000Z – 2025-03-05T00:00:00.000Z)]`;

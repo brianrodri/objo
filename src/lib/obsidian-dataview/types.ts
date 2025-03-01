@@ -1,8 +1,11 @@
 import { DateTime } from "luxon";
-import type { STask } from "obsidian-dataview/lib/data-model/serialized/markdown";
+import { DataArray } from "obsidian-dataview/lib/api/data-array";
+import type { DataviewApi as ActualDataviewApi } from "obsidian-dataview/lib/api/plugin-api";
+import type { SMarkdownPage, STask } from "obsidian-dataview/lib/data-model/serialized/markdown";
 
-export { DataviewApi, getAPI, isPluginEnabled } from "obsidian-dataview";
-export type { SMarkdownPage as DataviewMarkdownPage } from "obsidian-dataview/lib/data-model/serialized/markdown";
+export { getAPI, isPluginEnabled } from "obsidian-dataview";
+
+export type DataviewMarkdownPage = SMarkdownPage;
 
 export interface DataviewMarkdownTask extends STask {
     created?: DateTime;
@@ -10,4 +13,8 @@ export interface DataviewMarkdownTask extends STask {
     completion?: DateTime;
     start?: DateTime;
     scheduled?: DateTime;
+}
+
+export interface DataviewApi extends ActualDataviewApi {
+    pages(query: string): DataArray<SMarkdownPage>;
 }
