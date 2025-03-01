@@ -43,6 +43,6 @@ export default defineConfig(({ mode }) => ({
             thresholds: { 100: true },
             reporter: ["text", "html", "clover", "json", "lcov"],
         },
-        reporters: [["junit", { outputFile: "test-report.junit.xml" }]],
+        reporters: [["junit", { outputFile: "test-report.junit.xml" }], "default"],
     },
 }));
