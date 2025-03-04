@@ -11,7 +11,7 @@ import { ELEMENTS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.confi
 
 /** @type { import("eslint").Linter.Config[] } */
 export default [
-    { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/", "test-vault/"] },
+    { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/"] },
 
     eslintPluginImport.flatConfigs.recommended,
     ...eslintConfigPreact.flat,
