@@ -1,6 +1,0 @@
-{
-    "entryPoints": ["./src"],
-    "entryPointStrategy": "expand",
-    "exclude": ["**/node_modules/**/*", "**/__tests__/**/*", "**/*.const.ts"],
-    "plugin": ["typedoc-plugin-coverage", "typedoc-github-theme"]
-}
