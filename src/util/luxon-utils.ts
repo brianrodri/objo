@@ -23,7 +23,7 @@ export function newInvalidError(obj?: DateTime<false> | Duration<false> | Interv
  *
  * @returns array of [index inclusive, index exclusive) pairs for each sub-sequence of overlapping intervals.
  */
-export function getIndexCollisions(sorted: Interval<true>[]): [number, number][] {
+export function getIndexCollisions(sorted: readonly Interval<true>[]): [number, number][] {
     const collidingRanges: [number, number][] = [];
     let startIncl = 0;
 

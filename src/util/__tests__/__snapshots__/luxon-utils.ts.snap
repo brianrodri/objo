@@ -1,221 +1,74 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`assertNoOverlaps > with message="user-provided message" > should reject "group of equal intervals" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 5) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
+exports[`getIndexCollisions > should return collisions from 3 overlapping pairs with one non-overlapping interval between them 1`] = `
+[
+  [
+    0,
+    2,
+  ],
+  [
+    3,
+    5,
+  ],
+  [
+    6,
+    8,
+  ],
+]
 `;
 
-exports[`assertNoOverlaps > with message="user-provided message" > should reject "group of one interval after an overlapping group" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 3) of [{"s":"2025-03-05T00:00:00.000Z","e":"2025-03-08T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-06T00:00:00.000Z","e":"2025-03-09T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-07T00:00:00.000Z","e":"2025-03-10T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-11T00:00:00.000Z","e":"2025-03-13T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
+exports[`getIndexCollisions > should return collisions from 3-tuple of equal intervals 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
 `;
 
-exports[`assertNoOverlaps > with message="user-provided message" > should reject "group of one interval before an overlapping group" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [1, 4) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-03T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-05T00:00:00.000Z","e":"2025-03-08T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-06T00:00:00.000Z","e":"2025-03-09T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-07T00:00:00.000Z","e":"2025-03-10T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
+exports[`getIndexCollisions > should return collisions from 3-tuple of overlapping intervals with the same end time 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
 `;
 
-exports[`assertNoOverlaps > with message="user-provided message" > should reject "group of overlapping intervals with non-overlapping intervals in between" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 2) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-13T00:00:00.000Z","e":"2025-03-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-21T00:00:00.000Z","e":"2025-03-24T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-22T00:00:00.000Z","e":"2025-03-25T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-02T00:00:00.000Z","e":"2025-04-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-13T00:00:00.000Z","e":"2025-04-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-14T00:00:00.000Z","e":"2025-04-17T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66
-    Error: unexpected overlapping intervals in the index range [3, 5) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-13T00:00:00.000Z","e":"2025-03-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-21T00:00:00.000Z","e":"2025-03-24T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-22T00:00:00.000Z","e":"2025-03-25T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-02T00:00:00.000Z","e":"2025-04-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-13T00:00:00.000Z","e":"2025-04-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-14T00:00:00.000Z","e":"2025-04-17T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66
-    Error: unexpected overlapping intervals in the index range [6, 8) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-13T00:00:00.000Z","e":"2025-03-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-21T00:00:00.000Z","e":"2025-03-24T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-22T00:00:00.000Z","e":"2025-03-25T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-02T00:00:00.000Z","e":"2025-04-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-13T00:00:00.000Z","e":"2025-04-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-14T00:00:00.000Z","e":"2025-04-17T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
+exports[`getIndexCollisions > should return collisions from 3-tuple of overlapping intervals with the same start time 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
 `;
 
-exports[`assertNoOverlaps > with message="user-provided message" > should reject "group of overlapping intervals with the same end time" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 3) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-03T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
+exports[`getIndexCollisions > should return collisions from 3-tuple overlapping intervals after a non-overlapping interval 1`] = `
+[
+  [
+    1,
+    4,
+  ],
+]
 `;
 
-exports[`assertNoOverlaps > with message="user-provided message" > should reject "group of overlapping intervals with the same start time" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 3) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
+exports[`getIndexCollisions > should return collisions from 3-tuple overlapping intervals before a non-overlapping interval 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
 `;
 
-exports[`assertNoOverlaps > with message="user-provided message" > should reject "pair of overlapping intervals" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 2) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
-`;
-
-exports[`assertNoOverlaps > with message=undefined > should reject "group of equal intervals" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 5) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-07T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
-`;
-
-exports[`assertNoOverlaps > with message=undefined > should reject "group of one interval after an overlapping group" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 3) of [{"s":"2025-03-05T00:00:00.000Z","e":"2025-03-08T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-06T00:00:00.000Z","e":"2025-03-09T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-07T00:00:00.000Z","e":"2025-03-10T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-11T00:00:00.000Z","e":"2025-03-13T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
-`;
-
-exports[`assertNoOverlaps > with message=undefined > should reject "group of one interval before an overlapping group" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [1, 4) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-03T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-05T00:00:00.000Z","e":"2025-03-08T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-06T00:00:00.000Z","e":"2025-03-09T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-07T00:00:00.000Z","e":"2025-03-10T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
-`;
-
-exports[`assertNoOverlaps > with message=undefined > should reject "group of overlapping intervals with non-overlapping intervals in between" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 2) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-13T00:00:00.000Z","e":"2025-03-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-21T00:00:00.000Z","e":"2025-03-24T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-22T00:00:00.000Z","e":"2025-03-25T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-02T00:00:00.000Z","e":"2025-04-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-13T00:00:00.000Z","e":"2025-04-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-14T00:00:00.000Z","e":"2025-04-17T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66
-    Error: unexpected overlapping intervals in the index range [3, 5) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-13T00:00:00.000Z","e":"2025-03-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-21T00:00:00.000Z","e":"2025-03-24T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-22T00:00:00.000Z","e":"2025-03-25T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-02T00:00:00.000Z","e":"2025-04-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-13T00:00:00.000Z","e":"2025-04-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-14T00:00:00.000Z","e":"2025-04-17T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66
-    Error: unexpected overlapping intervals in the index range [6, 8) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-13T00:00:00.000Z","e":"2025-03-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-21T00:00:00.000Z","e":"2025-03-24T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-22T00:00:00.000Z","e":"2025-03-25T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-02T00:00:00.000Z","e":"2025-04-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-13T00:00:00.000Z","e":"2025-04-16T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-04-14T00:00:00.000Z","e":"2025-04-17T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
-`;
-
-exports[`assertNoOverlaps > with message=undefined > should reject "group of overlapping intervals with the same end time" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 3) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-03T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
-`;
-
-exports[`assertNoOverlaps > with message=undefined > should reject "group of overlapping intervals with the same start time" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 3) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-06T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
-`;
-
-exports[`assertNoOverlaps > with message=undefined > should reject "pair of overlapping intervals" 1`] = `
-[AggregateError: 
-    Error: unexpected overlapping intervals in the index range [0, 2) of [{"s":"2025-03-01T00:00:00.000Z","e":"2025-03-04T00:00:00.000Z","invalid":null,"isLuxonInterval":true},{"s":"2025-03-02T00:00:00.000Z","e":"2025-03-05T00:00:00.000Z","invalid":null,"isLuxonInterval":true}]
-        at Array.map (<anonymous>)
-        at assertNoOverlaps (/Users/brianrodri/Repositories/objo/src/util/luxon-utils.ts:63:15)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:26
-        at getError (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:321:5)
-        at Proxy.<anonymous> (file:///Users/brianrodri/Repositories/objo/node_modules/vitest/dist/chunks/vi.DT3m61kS.js:456:19)
-        at Proxy.toThrowErrorMatchingSnapshot (file:///Users/brianrodri/Repositories/objo/node_modules/chai/chai.js:1618:25)
-        at /Users/brianrodri/Repositories/objo/src/util/__tests__/luxon-utils.ts:38:64
-        at file:///Users/brianrodri/Repositories/objo/node_modules/@vitest/runner/dist/index.js:677:66]
+exports[`getIndexCollisions > should return collisions from pair of overlapping intervals 1`] = `
+[
+  [
+    0,
+    2,
+  ],
+]
 `;
 
 exports[`newInvalidError > with message="user-provided message" > should accept 'DateTime' 1`] = `

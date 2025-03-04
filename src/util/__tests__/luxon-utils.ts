@@ -2,7 +2,7 @@ import { entriesIn } from "lodash";
 import { DateTime, Duration, Interval } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { assertNoOverlaps, newInvalidError } from "../luxon-utils";
+import { assertNoOverlaps, getIndexCollisions, newInvalidError } from "../luxon-utils";
 import { WITH_OVERLAPPING_INTERVALS, WITHOUT_OVERLAPPING_INTERVALS } from "./luxon-utils.const";
 
 describe(newInvalidError.name, () => {
@@ -29,13 +29,22 @@ describe(newInvalidError.name, () => {
 });
 
 describe(assertNoOverlaps.name, () => {
-    describe.each(["user-provided message", undefined])("with message=%j", (message) => {
-        it.each(entriesIn(WITHOUT_OVERLAPPING_INTERVALS))("should accept %j", (_, intervals) => {
-            expect(() => assertNoOverlaps(intervals, message)).not.toThrow();
-        });
+    it.each(entriesIn(WITHOUT_OVERLAPPING_INTERVALS))("should accept %j", (_, intervals) => {
+        expect(() => assertNoOverlaps(intervals)).not.toThrow();
+    });
 
-        it.each(entriesIn(WITH_OVERLAPPING_INTERVALS))("should reject %j", (_, intervals) => {
-            expect(() => assertNoOverlaps(intervals, message)).toThrowErrorMatchingSnapshot();
-        });
+    it.each(entriesIn(WITH_OVERLAPPING_INTERVALS))("should reject %j", (_, intervals) => {
+        // TODO: Want to use toThrowErrorMatchingSnapshot(), but the snapshot fails on CI due to different paths in the stack traces.
+        expect(() => assertNoOverlaps(intervals)).toThrowError();
+    });
+});
+
+describe(getIndexCollisions.name, () => {
+    it.each(entriesIn(WITHOUT_OVERLAPPING_INTERVALS))("should return nothing from %s", (_, intervals) => {
+        expect(getIndexCollisions(intervals)).toEqual([]);
+    });
+
+    it.each(entriesIn(WITH_OVERLAPPING_INTERVALS))("should return collisions from %s", (_, intervals) => {
+        expect(getIndexCollisions(intervals)).toMatchSnapshot();
     });
 });
