@@ -1,1 +1,2 @@
+npm run build:docs
 npm run test:coverage
