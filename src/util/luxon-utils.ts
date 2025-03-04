@@ -1,3 +1,4 @@
+import AggregateError from "aggregate-error";
 import { isString, sortBy } from "lodash";
 import { DateTime, Duration, Interval } from "luxon";
 
@@ -24,18 +25,21 @@ export function newInvalidError(obj?: DateTime<false> | Duration<false> | Interv
  */
 export function getIndexCollisions(sorted: Interval<true>[]): [number, number][] {
     const collidingRanges: [number, number][] = [];
-
     let startIncl = 0;
-    for (let stopExcl = 2; stopExcl <= sorted.length; ++stopExcl) {
-        const formerStartIncl = startIncl;
+
+    for (let stopExcl = 1; stopExcl <= sorted.length; ++stopExcl) {
+        const oldStartInclusive = startIncl;
+
         while (startIncl < stopExcl && !sorted[startIncl].intersection(sorted[stopExcl - 1])) {
             startIncl += 1;
         }
-        if (startIncl - formerStartIncl > 1) {
-            collidingRanges.push([formerStartIncl, stopExcl - 1]);
+
+        if (startIncl - oldStartInclusive >= 2) {
+            collidingRanges.push([oldStartInclusive, stopExcl - 1]);
         }
     }
-    if (sorted.length - startIncl > 1) {
+
+    if (sorted.length - startIncl >= 2) {
         collidingRanges.push([startIncl, sorted.length]);
     }
 
@@ -49,18 +53,13 @@ export function getIndexCollisions(sorted: Interval<true>[]): [number, number][]
  * @param message - optional message to include with the error.
  * @throws an {@link Error} if the array has overlapping intervals.
  */
-export function assertNoOverlaps(unsorted: readonly Interval<true>[], message?: string): void {
+export function assertNoOverlaps(unsorted: readonly Interval<true>[]): void {
     const sorted = sortBy(unsorted, "start", "end");
-    const indexCollisions = getIndexCollisions(sorted);
+    const errors = getIndexCollisions(sorted).map(([lo, hi]) => {
+        return `unexpected overlapping intervals in the index range [${lo}, ${hi}) of ${JSON.stringify(sorted)}`;
+    });
 
-    if (indexCollisions.length > 0) {
-        const lines = isString(message) ? [message] : [];
-        lines.push(
-            ...indexCollisions.map(([start, end]) => {
-                const overlap = Interval.fromDateTimes(sorted[start].start, sorted[end - 1].end);
-                return `\t-\tindexes between [${start}, ${end}) all overlap between ${overlap}`;
-            }),
-        );
-        throw new Error(lines.join("\n"));
+    if (errors.length > 0) {
+        throw new AggregateError(errors);
     }
 }

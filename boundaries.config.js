@@ -1,5 +1,8 @@
 const libDir = "lib";
 
+// EXPORTS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export const ELEMENTS = [
     { type: "shared", pattern: "src/util", mode: "folder" },
     { type: "main", pattern: "src/main.tsx", mode: "full" },
@@ -36,9 +39,12 @@ export const ELEMENT_TYPE_RULES = [
 ];
 
 export const EXTERNAL_RULES = [
-    { from: "*", allow: ["assert", "lodash", "luxon", "path", "utility-types"] },
+    { from: "*", allow: ["aggregate-error", "assert", "lodash", "luxon", "path", "utility-types"] },
     { from: "lib", allow: "${from.lib}" },
 ];
+
+// HELPERS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function defineFolderScope(folderName) {
     return { type: folderName, pattern: `src/(${folderName})/*`, capture: ["scope", "elementName"], mode: "folder" };
