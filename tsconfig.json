@@ -31,6 +31,6 @@
         "skipLibCheck": true, // Only concerned w/ type checking the package code.
         "target": "ES2018" // Use same target as obsidian-dataview.
     },
-    "include": ["src"],
+    "include": ["./src/**/*"],
     "exclude": ["node_modules"]
 }
