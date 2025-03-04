@@ -1,5 +1,6 @@
 .DS_Store
 test-report.junit.xml
+tsconfig.tsbuildinfo
 coverage/
 dist/
 docs/
