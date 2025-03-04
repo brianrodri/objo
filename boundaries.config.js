@@ -34,7 +34,7 @@ export const ELEMENT_TYPE_RULES = [
     { from: "*", allow: "shared" },
     { from: "main", allow: [["lib", { lib: "obsidian" }]] },
     { from: "(lib|lib:scope)", allow: [["lib", { lib: "${from.lib}" }]] },
-    { from: "const", disallow: "*" },
+    { from: "const", allow: "./*" },
 
     ...fromScopeAllowItself("model"),
     ...fromScopeElementAllowTargetScopeElements("model", "index", [["model", "collection"]]),

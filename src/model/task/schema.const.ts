@@ -1,6 +1,6 @@
 import { DateTime } from "luxon";
 
-import { Task, TaskSource, TaskStatus } from "@/model/task/schema";
+import { Task, TaskSource, TaskStatus } from "./schema";
 
 export const DEFAULT_DATETIME_VALUE = DateTime.invalid("unspecified");
 
