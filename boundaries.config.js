@@ -1,5 +1,8 @@
 const libDir = "lib";
 
+// EXPORTS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 export const ELEMENTS = [
     { type: "shared", pattern: "src/util", mode: "folder" },
     { type: "main", pattern: "src/main.tsx", mode: "full" },
@@ -16,6 +19,11 @@ export const ELEMENTS = [
         capture: ["scope", "elementName", "lib"],
         mode: "full",
     },
+    {
+        type: "const",
+        pattern: "*.const.ts",
+        mode: "file",
+    },
 
     defineFolderScope("model"),
 ];
@@ -24,15 +32,19 @@ export const ELEMENT_TYPE_RULES = [
     { from: "*", allow: "shared" },
     { from: "main", allow: [["lib", { lib: "obsidian" }]] },
     { from: "(lib|lib:scope)", allow: [["lib", { lib: "${from.lib}" }]] },
+    { from: "const", disallow: "*" },
 
     ...fromScopeAllowItself("model"),
     ...fromScopeElementAllowTargetScopeElements("model", "index", [["model", "collection"]]),
 ];
 
 export const EXTERNAL_RULES = [
-    { from: "*", allow: ["assert", "lodash", "luxon", "path", "utility-types"] },
+    { from: "*", allow: ["aggregate-error", "assert", "lodash", "luxon", "path", "utility-types"] },
     { from: "lib", allow: "${from.lib}" },
 ];
+
+// HELPERS
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function defineFolderScope(folderName) {
     return { type: folderName, pattern: `src/(${folderName})/*`, capture: ["scope", "elementName"], mode: "folder" };

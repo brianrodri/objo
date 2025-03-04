@@ -1,0 +1,100 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`getIndexCollisions > should return collisions from 3 overlapping pairs with one non-overlapping interval between them 1`] = `
+[
+  [
+    0,
+    2,
+  ],
+  [
+    3,
+    5,
+  ],
+  [
+    6,
+    8,
+  ],
+]
+`;
+
+exports[`getIndexCollisions > should return collisions from 3-tuple of equal intervals 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
+`;
+
+exports[`getIndexCollisions > should return collisions from 3-tuple of overlapping intervals with the same end time 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
+`;
+
+exports[`getIndexCollisions > should return collisions from 3-tuple of overlapping intervals with the same start time 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
+`;
+
+exports[`getIndexCollisions > should return collisions from 3-tuple overlapping intervals after a non-overlapping interval 1`] = `
+[
+  [
+    1,
+    4,
+  ],
+]
+`;
+
+exports[`getIndexCollisions > should return collisions from 3-tuple overlapping intervals before a non-overlapping interval 1`] = `
+[
+  [
+    0,
+    3,
+  ],
+]
+`;
+
+exports[`getIndexCollisions > should return collisions from pair of overlapping intervals 1`] = `
+[
+  [
+    0,
+    2,
+  ],
+]
+`;
+
+exports[`newInvalidError > with message="user-provided message" > should accept 'DateTime' 1`] = `
+[Error: user-provided message
+InvalidDateTime: user-provided reason. user-provided explanation]
+`;
+
+exports[`newInvalidError > with message="user-provided message" > should accept 'Duration' 1`] = `
+[Error: user-provided message
+InvalidDuration: user-provided reason. user-provided explanation]
+`;
+
+exports[`newInvalidError > with message="user-provided message" > should accept 'Interval' 1`] = `
+[Error: user-provided message
+InvalidInterval: user-provided reason. user-provided explanation]
+`;
+
+exports[`newInvalidError > with message="user-provided message" > should accept undefined 1`] = `
+[Error: user-provided message
+unspecified error]
+`;
+
+exports[`newInvalidError > with message=undefined > should accept 'DateTime' 1`] = `[Error: InvalidDateTime: user-provided reason. user-provided explanation]`;
+
+exports[`newInvalidError > with message=undefined > should accept 'Duration' 1`] = `[Error: InvalidDuration: user-provided reason. user-provided explanation]`;
+
+exports[`newInvalidError > with message=undefined > should accept 'Interval' 1`] = `[Error: InvalidInterval: user-provided reason. user-provided explanation]`;
+
+exports[`newInvalidError > with message=undefined > should accept undefined 1`] = `[Error: unspecified error]`;

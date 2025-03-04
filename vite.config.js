@@ -36,6 +36,7 @@ export default defineConfig(({ mode }) => ({
     test: {
         environment: "jsdom",
         include: ["src/**/__tests__/*"],
+        exclude: ["**/*.const.{ts,tsx}"],
         coverage: {
             all: true,
             include: ["src/"],
@@ -43,6 +44,6 @@ export default defineConfig(({ mode }) => ({
             thresholds: { 100: true },
             reporter: ["text", "html", "clover", "json", "lcov"],
         },
-        reporters: [["junit", { outputFile: "test-report.junit.xml" }], "default"],
+        reporters: [["junit", { outputFile: "test-report.junit.xml" }], "verbose"],
     },
 }));
