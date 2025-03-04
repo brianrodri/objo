@@ -7,10 +7,8 @@ import { Collection } from "../collection/schema";
 export interface VaultIndex {
     /**
      * Register a new {@link Collection} into the index.
-     *
      * All calls to this function will be treated as adding a brand new collection, regardless
      * of whether the input has already been registered in an earlier call.
-     *
      * @param collection - the collection to register with this index.
      * @throws if the index cannot support the given collection.
      * @returns a {@link VaultCollectionIndex} that can be used to interact with the primary index.

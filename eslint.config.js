@@ -6,34 +6,49 @@ import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import globals from "globals";
 import typescriptEslintParser from "@typescript-eslint/parser";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
+import eslintPluginJsdoc from "eslint-plugin-jsdoc";
 import eslintPluginTsdoc from "eslint-plugin-tsdoc";
 import { ELEMENTS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
+import eslintJs from "@eslint/js";
 
 /** @type { import("eslint").Linter.Config[] } */
 export default [
     { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/"] },
 
+    eslintJs.configs.recommended,
     eslintPluginImport.flatConfigs.recommended,
     ...eslintConfigPreact.flat,
 
     {
         files: ["*.config.js"],
-        rules: { "import/no-named-as-default": "off", "import/no-unresolved": "off" },
+        plugins: { jsdoc: eslintPluginJsdoc },
         languageOptions: { globals: { ...globals.node } },
+        ...eslintPluginJsdoc.configs["flat/recommended-error"],
+        rules: {
+            ...eslintPluginJsdoc.configs["flat/recommended-error"].rules,
+            "import/no-named-as-default": "off",
+            "import/no-unresolved": "off",
+        },
+        settings: {
+            "import/core-modules": ["eslint-config-preact", "eslint-plugin-boundaries", "eslint-plugin-import"],
+        },
     },
 
     {
         files: ["src/**/*.{ts,tsx}"],
         plugins: {
-            "tsdoc": eslintPluginTsdoc,
             "@typescript-eslint": typescriptEslintPlugin,
+            "jsdoc": eslintPluginJsdoc,
             "react-hooks": eslintPluginReactHooks,
+            "tsdoc": eslintPluginTsdoc,
         },
         rules: {
             ...typescriptEslintPlugin.configs.recommended.rules,
             ...typescriptEslintPlugin.configs.strict.rules,
+            ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"].rules,
             ...eslintPluginReactHooks.configs.recommended.rules,
 
+            // https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/
             "tsdoc/syntax": "error",
 
             // TypeScript already checks for duplicates: https://archive.eslint.org/docs/rules/no-dupe-class-members
@@ -51,6 +66,9 @@ export default [
             "import/no-named-as-default": "error",
             "import/no-named-as-default-member": "error",
             "import/no-duplicates": "error",
+        },
+        settings: {
+            "import/core-modules": ["obsidian"],
         },
         languageOptions: {
             globals: { ...globals.browser },

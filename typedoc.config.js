@@ -1,3 +1,4 @@
+/** @type {import("typedoc").TypeDocOptions} */
 export default {
     entryPoints: ["./src/"],
     entryPointStrategy: "expand",

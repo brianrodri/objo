@@ -3,6 +3,10 @@ import { DeepPartial } from "utility-types";
 import { DataviewMarkdownTask } from "@/lib/obsidian-dataview/types";
 import { Task } from "@/model/task/schema";
 
+/**
+ * @param task - the {@link DataviewMarkdownTask} to extract metadata from.
+ * @returns a {@link Task} with the extracted metadata.
+ */
 export function adaptDataviewMarkdownTask(task: DataviewMarkdownTask): DeepPartial<Task> {
     return {
         status: {

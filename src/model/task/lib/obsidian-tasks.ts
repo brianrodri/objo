@@ -5,6 +5,19 @@ import { DeepPartial, PickByValue } from "utility-types";
 import { Task } from "@/model/task/schema";
 import { PathOf } from "@/util/type-utils";
 
+/**
+ * Parses {@link Task} metadata from a real markdown task using the Obsidian Task plugin's syntax.
+ * Specifically, the text is expected to find occurrences from the {@link SYMBOL_PATH_LOOKUP} and write to the
+ * corresponding field using the proceeding text.
+ * @example
+ * ```
+ * "the text at the front is assumed to be a description. ❌ cancelled date ➕ created date ✅ completed date"
+ *                                                       ( symbol & value )(symbol & value)( symbol & value  )
+ * ```
+ * @see {@link https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format}
+ * @param text - the text of the task without its' markdown text.
+ * @returns a {@link Task} with the parsed metadata.
+ */
 export function parseTaskEmojiFormat(text: string): DeepPartial<Task> {
     const matchedSymbols = [...text.matchAll(SYMBOL_REG_EXP), /$/.exec(text) as RegExpExecArray];
     const textBeforeAllSymbols = text.slice(0, matchedSymbols[0].index);
@@ -33,6 +46,11 @@ export function parseTaskEmojiFormat(text: string): DeepPartial<Task> {
     return result;
 }
 
+/**
+ * Parses {@link Task} metadata from a task's header.
+ * @param headerText - the text that appears _before_ all of the symbols.
+ * @returns the {@link Task} metadata fields parsed from the header; unparsed data will become {@link Task.description}.
+ */
 function parseTaskHeader(headerText: string): DeepPartial<Task> {
     const [isoString, isoStringSuffix] = headerText.split(/\s+/, 2);
 

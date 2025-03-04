@@ -5,7 +5,6 @@ import { DateTime, Duration, Interval } from "luxon";
 /**
  * @param obj - the invalid luxon object.
  * @param message - optional message to include with the error.
- *
  * @returns an {@link Error} with debug information extracted from the "invalid" input.
  */
 export function newInvalidError(obj?: DateTime<false> | Duration<false> | Interval<false>, message?: string): Error {
@@ -20,7 +19,6 @@ export function newInvalidError(obj?: DateTime<false> | Duration<false> | Interv
 
 /**
  * @param sorted - an array of intervals sorted by start time (primary) and end time (secondary).
- *
  * @returns array of [index inclusive, index exclusive) pairs for each sub-sequence of overlapping intervals.
  */
 export function getIndexCollisions(sorted: readonly Interval<true>[]): [number, number][] {
@@ -48,7 +46,6 @@ export function getIndexCollisions(sorted: readonly Interval<true>[]): [number, 
 
 /**
  * Asserts that the given array of intervals have no intersections.
- *
  * @param unsorted - the array of intervals to check.
  * @throws an {@link Error} if the array has overlapping intervals.
  */
