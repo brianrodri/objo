@@ -50,7 +50,6 @@ export function getIndexCollisions(sorted: readonly Interval<true>[]): [number, 
  * Asserts that the given array of intervals have no intersections.
  *
  * @param unsorted - the array of intervals to check.
- * @param message - optional message to include with the error.
  * @throws an {@link Error} if the array has overlapping intervals.
  */
 export function assertNoOverlaps(unsorted: readonly Interval<true>[]): void {
