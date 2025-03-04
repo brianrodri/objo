@@ -19,11 +19,12 @@ jobs:
             - name: Setup Node.js
               uses: actions/setup-node@v3
               with: { node-version: latest }
+
             - name: Install dependencies
               run: npm clean-install
               env: { HUSKY: 0 }
             - name: Build plugin
-              run: npm run build:release
+              run: npm run build
             - name: Release update
               env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
               run: npx semantic-release
