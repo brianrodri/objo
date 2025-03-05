@@ -34,6 +34,12 @@ describe(PeriodicNotes.name, () => {
         });
     });
 
+    describe("post-conditions", () => {
+        it("should strip trailing slashes from the folder", () => {
+            expect(new PeriodicNotes("/vault/", "yyyy-MM-dd", { days: 1 }).folder).toBe("/vault");
+        });
+    });
+
     describe('given daily log in folder: "/vault"', () => {
         const log = new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 1 });
 
