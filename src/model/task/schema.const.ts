@@ -2,13 +2,20 @@ import { DateTime } from "luxon";
 
 import { Task, TaskSource, TaskStatus } from "./schema";
 
-export const DEFAULT_DATETIME_VALUE = DateTime.invalid("unspecified");
+/** The default date used by {@link Task}s. Valid dates will always take precedence over this value. */
+export const DEFAULT_DATETIME_VALUE: DateTime = DateTime.invalid("unspecified");
 
-export const DEFAULT_PRIORITY_VALUE = 3 as const satisfies Task["priority"];
+/** The default priority used by {@link Task}s. Different values will always take precedence over this value. */
+export const DEFAULT_PRIORITY_VALUE: Task["priority"] = 3;
 
-export const DEFAULT_TYPE_VALUE = "UNKNOWN" as const satisfies TaskSource["type"] & TaskStatus["type"];
+/**
+ * The default type used by {@link TaskSource} and {@link TaskStatus}.
+ * Different values will always take precedence over this value.
+ */
+export const DEFAULT_TYPE_VALUE: TaskSource["type"] & TaskStatus["type"] = "UNKNOWN";
 
-export const TASK_WITH_DEFAULT_VALUES = {
+/** A strongly-typed {@link Task} with all-default values. */
+export const TASK_WITH_DEFAULT_VALUES: Task = {
     status: { type: DEFAULT_TYPE_VALUE },
     source: { type: DEFAULT_TYPE_VALUE },
     dates: {
@@ -24,4 +31,4 @@ export const TASK_WITH_DEFAULT_VALUES = {
     tags: new Set(),
     id: "",
     dependsOn: new Set(),
-} as const satisfies Task;
+};
