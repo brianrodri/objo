@@ -23,8 +23,8 @@ jobs:
             - name: Install dependencies
               run: npm clean-install
               env: { HUSKY: 0 }
-            - name: Build plugin
-              run: npm run build
+            - name: Ensure CI passes
+              run: npm run build:ci
             - name: Release update
               env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
               run: npx semantic-release
