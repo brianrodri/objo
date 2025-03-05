@@ -2,18 +2,18 @@ import assert from "assert";
 import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMaybeValid } from "luxon";
 import { parse } from "path";
 
-import { Collection } from "./schema";
+import { DateBasedCollection } from "./schema";
 
 /**
  * @see {@link https://github.com/liamcain/obsidian-periodic-notes}
  *
- * A {@link Collection} where each file corresponds to a unique {@link Interval} of time. Intended to handle Obsidian's
- * built-in "Daily Notes" plugin and the more-comprehensive "Periodic Notes" community plugin. As a consequence, all
- * files in the collection must be placed in the same folder.
+ * A {@link DateBasedCollection} where each file corresponds to a unique {@link Interval} of time.
+ * Intended to handle Obsidian's built-in "Daily Notes" plugin and the more-comprehensive "Periodic Notes" community
+ * plugin. As a consequence, all files in the collection must be placed in the same folder.
  *
  * TODO: Is it worth supporting files organized into different folders?
  */
-export class PeriodicNotes extends Collection {
+export class PeriodicNotes extends DateBasedCollection {
     /** The folder containing all of the notes. */
     public readonly folder: string;
 
@@ -62,14 +62,6 @@ export class PeriodicNotes extends Collection {
         this.dateOffset = dateOffset;
         this.intervalDuration = intervalDuration;
         this.dateOptions = dateOptions;
-    }
-
-    /**
-     * @param filePath - the path to check.
-     * @returns whether the file at the given path belongs to this collection.
-     */
-    public override includes(filePath: string): boolean {
-        return this.getIntervalOf(filePath).isValid;
     }
 
     /**
