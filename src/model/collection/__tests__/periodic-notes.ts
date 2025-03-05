@@ -36,7 +36,7 @@ describe(PeriodicNotes.name, () => {
 
     describe("post-conditions", () => {
         it("should strip trailing slashes from the folder", () => {
-            expect(new PeriodicNotes("/vault/", "yyyy-MM-dd", { days: 1 }).folder).toBe("/vault");
+            expect(new PeriodicNotes("/vault/", "yyyy-MM-dd", { days: 1 }).folder).toEqual("/vault");
         });
     });
 
