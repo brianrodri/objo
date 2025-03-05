@@ -39,15 +39,15 @@ export default [
         ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"],
         plugins: {
             "@typescript-eslint": typescriptEslintPlugin,
-            "react-hooks": eslintPluginReactHooks,
             "jsdoc": eslintPluginJsdoc,
+            "react-hooks": eslintPluginReactHooks,
             "tsdoc": eslintPluginTsdoc,
         },
         rules: {
             ...typescriptEslintPlugin.configs.recommended.rules,
             ...typescriptEslintPlugin.configs.strict.rules,
-            ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"].rules,
             ...eslintPluginReactHooks.configs.recommended.rules,
+            ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"].rules,
 
             // https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/
             "tsdoc/syntax": "error",
