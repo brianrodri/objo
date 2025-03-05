@@ -5,7 +5,7 @@ import { DateTime, Duration, Interval } from "luxon";
 /**
  * @param obj - the invalid luxon object.
  * @param message - optional message to include with the error.
- * @returns an {@link Error} with debug information extracted from the "invalid" input.
+ * @returns error with debug information extracted from the "invalid" input.
  */
 export function newInvalidError(obj?: DateTime<false> | Duration<false> | Interval<false>, message?: string): Error {
     const lines = isString(message) ? [message] : [];
@@ -47,7 +47,7 @@ export function getIndexCollisions(sorted: readonly Interval<true>[]): [number, 
 /**
  * Asserts that the given array of intervals have no intersections.
  * @param unsorted - the array of intervals to check.
- * @throws an {@link Error} if the array has overlapping intervals.
+ * @throws error if the array has overlapping intervals.
  */
 export function assertNoOverlaps(unsorted: readonly Interval<true>[]): void {
     const sorted = sortBy(unsorted, "start", "end");

@@ -7,12 +7,13 @@ import { PathOf } from "@/util/type-utils";
 
 /**
  * Parses {@link Task} metadata from a real markdown task using the Obsidian Task plugin's syntax.
- * Specifically, the text is expected to find occurrences from the {@link SYMBOL_PATH_LOOKUP} and write to the
- * corresponding field using the proceeding text.
+ * Specifically, the text is expected to find occurrences of "emojis" and use subsequent text as a value.
  * @example
  * ```
  * "the text at the front is assumed to be a description. ❌ cancelled date ➕ created date ✅ completed date"
  *                                                       ( symbol & value )(symbol & value)( symbol & value  )
+ *
+ * { cancelled: "cancelled date", created: "created date", done: "completed date" }
  * ```
  * @see {@link https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format}
  * @param text - the text of the task without its' markdown text.
