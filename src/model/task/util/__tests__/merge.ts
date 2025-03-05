@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { mergeTaskParts } from "../merge";
 
-describe("Merging task parts", () => {
+describe(mergeTaskParts.name, () => {
     it("gives default values when called with nothing", () => {
         const task = mergeTaskParts();
 
