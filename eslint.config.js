@@ -36,14 +36,17 @@ export default [
 
     {
         files: ["src/**/*.{ts,tsx}"],
+        ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"],
         plugins: {
             "@typescript-eslint": typescriptEslintPlugin,
             "react-hooks": eslintPluginReactHooks,
+            "jsdoc": eslintPluginJsdoc,
             "tsdoc": eslintPluginTsdoc,
         },
         rules: {
             ...typescriptEslintPlugin.configs.recommended.rules,
             ...typescriptEslintPlugin.configs.strict.rules,
+            ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"].rules,
             ...eslintPluginReactHooks.configs.recommended.rules,
 
             // https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/

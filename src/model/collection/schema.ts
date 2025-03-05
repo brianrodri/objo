@@ -13,10 +13,9 @@ export abstract class Collection {
     public abstract includes(filePath: string): boolean;
 
     /**
+     * Used to accurately enable date-based queries on collections and to look up "neighboring" files.
      * @param filePath - the path to check.
      * @returns the {@link Interval} corresponding to the file, otherwise an invalid interval.
-     *
-     * Used to accurately enable date-based queries on collections and to look up "neighboring" files.
      */
     public getIntervalOf(filePath: string): IntervalMaybeValid {
         return Interval.invalid(`interval not implemented`, `"${filePath}" was ignored`);

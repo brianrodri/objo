@@ -1,6 +1,5 @@
 /**
  * The union of all dot-separated paths in an object rescursively.
- *
  * @example
  *
  * ```typescript
