@@ -1,40 +1,33 @@
-import _ from "lodash";
+import { isNumber, isSet, isString, mergeWith, MergeWithCustomizer } from "lodash";
 import { DateTime } from "luxon";
 import { DeepPartial } from "utility-types";
 
 import { DEFAULT_PRIORITY_VALUE, DEFAULT_TYPE_VALUE, Task, TASK_WITH_DEFAULT_VALUES } from "@/model/task/schema";
 
 /**
- * @param parts - the task pieces to merge.
- * @returns a new {@link Task} with values taken from the front-most non-default parts encountered.
+ * @param parts - the task parts to merge.
+ * @returns a new {@link Task} with the front-most non-default values taken from the parts.
  * @see {@link TASK_WITH_DEFAULT_VALUES}
  */
 export function mergeTaskParts(...parts: DeepPartial<Task>[]): Task {
-    return parts.reduce(replaceDefaultValues, { ...TASK_WITH_DEFAULT_VALUES });
+    const defaults = { ...TASK_WITH_DEFAULT_VALUES };
+    return parts.reduce<Task>((task, part) => mergeWith(task, part, TAKE_NON_DEFAULT_VALUES), defaults);
 }
 
-/**
- * Replaces any default values in {@link task} with non-default values from {@link part}.
- * @param task - the task to modify.
- * @param part - the task piece to take from.
- * @returns the modified {@link Task}.
- */
-function replaceDefaultValues(task: Task, part: DeepPartial<Task>): Task {
-    return _.mergeWith(task, part, (oldValue, newValue, propName) => {
-        if (propName === "type" && _.isString(oldValue) && _.isString(newValue)) {
-            return oldValue !== DEFAULT_TYPE_VALUE ? oldValue : newValue;
-        }
-        if (propName === "priority" && _.isNumber(oldValue) && _.isNumber(newValue)) {
-            return oldValue !== DEFAULT_PRIORITY_VALUE ? oldValue : newValue;
-        }
-        if (_.isSet(oldValue) && _.isSet(newValue)) {
-            return new Set([...oldValue, ...newValue]);
-        }
-        if (DateTime.isDateTime(oldValue) && DateTime.isDateTime(newValue)) {
-            return oldValue.isValid ? oldValue : newValue;
-        }
-        if (_.isString(oldValue) && _.isString(newValue)) {
-            return oldValue !== "" ? oldValue : newValue;
-        }
-    });
-}
+const TAKE_NON_DEFAULT_VALUES: MergeWithCustomizer = (oldValue, newValue, propName) => {
+    if (propName === "type" && isString(oldValue) && isString(newValue)) {
+        return oldValue !== DEFAULT_TYPE_VALUE ? oldValue : newValue;
+    }
+    if (propName === "priority" && isNumber(oldValue) && isNumber(newValue)) {
+        return oldValue !== DEFAULT_PRIORITY_VALUE ? oldValue : newValue;
+    }
+    if (isSet(oldValue) && isSet(newValue)) {
+        return new Set([...oldValue, ...newValue]);
+    }
+    if (DateTime.isDateTime(oldValue) && DateTime.isDateTime(newValue)) {
+        return oldValue.isValid ? oldValue : newValue;
+    }
+    if (isString(oldValue) && isString(newValue)) {
+        return oldValue !== "" ? oldValue : newValue;
+    }
+};

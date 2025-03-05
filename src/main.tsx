@@ -4,7 +4,7 @@ import { Plugin } from "@/lib/obsidian/types";
 export class Objo extends Plugin {
     /** Called by Obsidian to give the plugin an opportunity to "load" and hook into the ecosystem. */
     override onload() {
-        this.app.workspace.onLayoutReady(() => console.log("started"));
+        this.app.workspace.onLayoutReady(() => console.log("loaded"));
     }
 }
 

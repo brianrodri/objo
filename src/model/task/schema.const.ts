@@ -2,7 +2,7 @@ import { DateTime } from "luxon";
 
 import { Task, TaskSource, TaskStatus } from "./schema";
 
-/** The default date used by {@link Task}s. Valid dates will always take precedence over this value. */
+/** The default date used by {@link Task}s. Valid dates will always take precedence over invalid dates. */
 export const DEFAULT_DATETIME_VALUE: DateTime = DateTime.invalid("unspecified");
 
 /** The default priority used by {@link Task}s. Different values will always take precedence over this value. */

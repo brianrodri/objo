@@ -7,11 +7,11 @@ export {
     TASK_WITH_DEFAULT_VALUES,
 } from "./schema.const";
 
-/** Objo-related metadata for each task in a user's vault. */
+/** Objo-related metadata for the tasks in a user's vault. */
 export interface Task {
     /** Metadata describing the actionable status of the task. */
     status: TaskStatus;
-    /** Metadata describing where the task was taken from. */
+    /** Metadata describing where the task was extracted from. */
     source: TaskSource;
     /** Dates associated with the task. */
     dates: {
@@ -23,66 +23,65 @@ export interface Task {
         done: DateTime;
         /** When the task is due. */
         due: DateTime;
-        /** When the task is scheduled to be worked on. */
+        /** When the task is scheduled to be started. */
         scheduled: DateTime;
         /** When the task is able to be started. */
         start: DateTime;
     };
     /** The description of the task. */
     description: string;
-    /** Integer between 1 and 5; lower numbers represent higher priority tasks. */
+    /** The priority of the task. Lower numbers represent higher priorities. */
     priority: number;
-    /** The tags associated with this task. The leading hash character ("#") is omitted. */
+    /** The tags associated with this task. The leading hashtag ("#") is omitted. */
     tags: ReadonlySet<string>;
-    /** Optional user-defined string for uniquely identifying this task in the vault. */
+    /** An optional user-defined string that uniquely identifying this task across the vault. */
     id: string;
-    /** A set of {@link Task.id}s that need to be completed before starting this task. */
+    /** The set of {@link Task.id}s that need to be completed before this task can be started. */
     dependsOn: ReadonlySet<string>;
 }
 
-/** Metadata about the status of a task (e.g. "OPEN" or "DONE"). */
+/** Metadata about the actionable status of a task. */
 export type TaskStatus =
     | {
           /**
            * The status of the task. Mirrors the status provided by the "obsidian-tasks" plugin.
-           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
+           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
            */
           type: "UNKNOWN";
       }
     | {
           /**
            * The status of the task. Mirrors the status provided by the "obsidian-tasks" plugin.
-           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
+           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
            */
           type: "OPEN" | "DONE" | "CANCELLED" | "NON_TASK";
           /**
-           * The character inside the \[ \] brackets.
-           * Generally a space (" ") for incomplete tasks and an ("x") for completed tasks, but allows for plugins which
-           * support alternative task statuses.
+           * The character inside the `[ ]` brackets on the line with the task.
+           * Generally a space (" ") for incomplete tasks and an ("x") for completed tasks.
            */
           symbol: string;
       };
 
-/** Metadata about where a task was taken or generated from. */
+/** Metadata about where a task was extracted/generated from. */
 export type TaskSource =
     | {
           /**
-           * Identifies where this task was parsed from.
-           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
+           * Identifies where this task was extracted/generated from.
+           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
            */
           type: "UNKNOWN";
       }
     | {
           /**
-           * Identifies where this task was parsed from.
-           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
+           * Identifies where this task was extracted/generated from.
+           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
            */
           type: "PAGE";
           /** The full path of the file this task was taken from. */
           path: string;
           /** The name of the file this task was taken from, excluding its extension. */
           name: string;
-          /** The section this task belongs to (e.g. under a heading). */
+          /** The section this task belongs to, if applicable. */
           section?: string;
           /** The line of the file this task shows up on. */
           lineNumber: number;

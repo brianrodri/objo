@@ -5,10 +5,10 @@ import type { SMarkdownPage, STask } from "obsidian-dataview/lib/data-model/seri
 
 export { getAPI, isPluginEnabled } from "obsidian-dataview";
 
-/** The obsidian-dataview interface for metadata about markdown files. */
+/** Metadata the obsidian-dataview plugin tracks from notes. */
 export type DataviewMarkdownPage = SMarkdownPage;
 
-/** The obsidian-dataview interface for metadata about markdown tasks. Adjusted to narrow types. */
+/** Metadata the obsidian-dataview plugin tracks from tasks. Extended to improve type information. */
 export interface DataviewMarkdownTask extends STask {
     created?: DateTime;
     due?: DateTime;
@@ -17,7 +17,7 @@ export interface DataviewMarkdownTask extends STask {
     scheduled?: DateTime;
 }
 
-/** The obsidian-dataview API used by Objo. Adjusted to narrow types. */
+/** API the obsidian-dataview plugin exposes to plugin authors. Extended to improve type information. */
 export interface DataviewApi extends ActualDataviewApi {
     pages(query: string): DataArray<SMarkdownPage>;
 }

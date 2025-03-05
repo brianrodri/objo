@@ -1,14 +1,16 @@
 /**
- * Union of all dot-separated paths in T.
+ * The union of all dot-separated paths in an object rescursively.
  *
- * ```ts
+ * @example
+ *
+ * ```typescript
  * type Obj = { a: { b: { c: string } } };
  *
  * type ObjPaths = PathOf<Obj>;
  * //   ^? type ObjPaths = "a" | "a.b" | "a.b.c"
  * ```
  */
-export type PathOf<T> =
+export type PathsOf<T> =
     T extends object ?
-        { [K in keyof T]-?: K extends string | number ? `${K}` | `${K}.${PathOf<T[K]>}` : never }[keyof T]
+        { [K in keyof T]-?: K extends string | number ? `${K}` | `${K}.${PathsOf<T[K]>}` : never }[keyof T]
     :   never;

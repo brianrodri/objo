@@ -5,7 +5,7 @@ import { Task } from "@/model/task/schema";
 
 /**
  * @param task - the {@link DataviewMarkdownTask} to extract metadata from.
- * @returns a {@link Task} with the extracted metadata.
+ * @returns a {@link Task} with the extracted metadata and default vaules everywhere else.
  */
 export function adaptDataviewMarkdownTask(task: DataviewMarkdownTask): DeepPartial<Task> {
     return {

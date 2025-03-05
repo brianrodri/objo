@@ -3,19 +3,22 @@ import { DateTime } from "luxon";
 import { DeepPartial, PickByValue } from "utility-types";
 
 import { Task } from "@/model/task/schema";
-import { PathOf } from "@/util/type-utils";
+import { PathsOf } from "@/util/type-utils";
 
 /**
- * Parses {@link Task} metadata from a real markdown task using the Obsidian Task plugin's syntax.
- * Specifically, the text is expected to find occurrences of "emojis" and use subsequent text as a value.
- * @example
- * ```
- * "the text at the front is assumed to be a description. ❌ cancelled date ➕ created date ✅ completed date"
- *                                                       ( symbol & value )(symbol & value)( symbol & value  )
+ * Parses {@link Task} metadata from a real markdown blob using Obsidian Task's emoji format.
  *
- * { cancelled: "cancelled date", created: "created date", done: "completed date" }
- * ```
  * @see {@link https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format}
+ * @example
+ *
+ * ```
+ *                                                                         ( symbol & value )
+ * "the text at the front is assumed to be a description. ❌ cancelled date ➕ creation date ✅ completed date"
+ *                                                       ( symbol & value )                 ( symbol & value  )
+ *
+ * { cancelled: "cancelled date", created: "creation date", done: "completed date" }
+ * ```
+ *
  * @param text - the text of the task without its' markdown text.
  * @returns a {@link Task} with the parsed metadata.
  */
@@ -62,7 +65,7 @@ const SYMBOL_PATH_LOOKUP = {
     "🔼": "priority",
     "🔽": "priority",
     "⏬": "priority",
-} as const satisfies Record<string, PathOf<Task>>;
+} as const satisfies Record<string, PathsOf<Task>>;
 
 const SYMBOL_PRIORITY_LOOKUP = {
     "🔺": 0,
@@ -70,6 +73,6 @@ const SYMBOL_PRIORITY_LOOKUP = {
     "🔼": 2,
     "🔽": 4,
     "⏬": 5,
-} as const satisfies Record<keyof PickByValue<typeof SYMBOL_PATH_LOOKUP, "priority">, number>;
+} as const satisfies { [K in keyof PickByValue<typeof SYMBOL_PATH_LOOKUP, "priority">]: number };
 
 const SYMBOL_REG_EXP = new RegExp(keysIn(SYMBOL_PATH_LOOKUP).map(escapeRegExp).join("|"), "g");
