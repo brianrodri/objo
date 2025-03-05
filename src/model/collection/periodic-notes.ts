@@ -2,7 +2,10 @@ import assert from "assert";
 import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMaybeValid } from "luxon";
 import { parse } from "path";
 
+import { assertLuxonValidity } from "@/util/luxon-utils";
+
 import { DateBasedCollection } from "./schema";
+import { sanitizeFolder } from "./utils";
 
 /**
  * @see {@link https://github.com/liamcain/obsidian-periodic-notes}
@@ -45,14 +48,15 @@ export class PeriodicNotes extends DateBasedCollection {
     ) {
         super();
 
-        folder = folder.trim().replace(/\/$/, ""); // Ensure trailing slashes are removed.
+        folder = sanitizeFolder(folder);
         const intervalOffset = Duration.fromDurationLike(intervalOffsetLike);
         const intervalDuration = Duration.fromDurationLike(intervalDurationLike);
 
         assert(folder.length > 0, "folder must be non-empty");
         assert(dateFormat.length > 0, "dateFormat must be non-empty");
-        assert(intervalOffset.isValid, "dateOffset must be valid");
-        assert(intervalDuration.isValid && intervalDuration.valueOf() !== 0, "intervalDuration must be non-zero");
+        assertLuxonValidity(intervalDuration, "intervalDuration must be valid");
+        assert(intervalDuration.valueOf() !== 0, "intervalDuration must be non-zero");
+        assertLuxonValidity(intervalOffset, "intervalOffset must be valid");
 
         this.folder = folder;
         this.dateFormat = dateFormat;
