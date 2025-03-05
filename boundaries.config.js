@@ -15,7 +15,7 @@ export const ELEMENTS = [
         mode: "full",
     },
     {
-        type: `lib:scope`,
+        type: "lib:scope",
         pattern: [`src/*/*/${libDir}/*.*`, `src/*/*/${libDir}/*/**/*`],
         capture: ["scope", "elementName", "lib"],
         mode: "full",
