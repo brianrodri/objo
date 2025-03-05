@@ -1,27 +1,50 @@
 import AggregateError from "aggregate-error";
-import { isString, sortBy } from "lodash";
+import { sortBy } from "lodash";
 import { DateTime, Duration, Interval } from "luxon";
 
+/** Union of luxon types that can be checked for validity. */
+export type LuxonValue<IsValid extends boolean> = DateTime<IsValid> | Duration<IsValid> | Interval<IsValid>;
+
 /**
- * @param obj - the invalid luxon object.
- * @param message - optional message included with the error.
- * @returns error with debug information extracted from the "invalid" input.
+ * @param value - the {@link LuxonValue} to check.
+ * @param message - the message to use in the error.
+ * @throws error if value is invalid.
  */
-export function newInvalidError(obj?: DateTime<false> | Duration<false> | Interval<false>, message?: string): Error {
-    const lines = isString(message) ? [message] : [];
-    lines.push(
-        obj ?
-            `Invalid${obj.constructor.name}: ${obj.invalidReason}. ${obj.invalidExplanation}`.trim()
-        :   `unspecified error`,
-    );
-    return new Error(lines.join("\n"));
+export function assertLuxonValidity(
+    value?: LuxonValue<true> | LuxonValue<false>,
+    message?: string,
+): asserts value is LuxonValue<true> {
+    const lines = message ? [message] : [];
+    if (!value) {
+        lines.push("undefined luxon value");
+    } else if (!value.isValid) {
+        lines.push(`${value.invalidReason}. ${value.invalidExplanation}`);
+    } else {
+        return;
+    }
+    throw new Error(lines.join("\n"));
 }
 
 /**
- * @param sorted - an array of intervals sorted by start time (primary) and end time (secondary).
- * @returns [index inclusive, index exclusive) pairs for slices in the array with overlapping intervals.
+ * @param unsorted - the {@link Interval}s to check.
+ * @throws error if any of the intervals intersect with each other.
  */
-export function getIndexCollisions(sorted: readonly Interval<true>[]): [number, number][] {
+export function assertIntervalsDoNotIntersect(unsorted: readonly Interval<true>[]): void {
+    const sorted = sortBy(unsorted, "start", "end");
+    const errors = getIntersectionsFromSortedIntervals(sorted).map(([lo, hi]) => {
+        return `overlapping intervals within index range [${lo}, ${hi}) of ${JSON.stringify(sorted)}`;
+    });
+
+    if (errors.length > 0) {
+        throw new AggregateError(errors);
+    }
+}
+
+/**
+ * @param sorted - an array of sorted intervals by start time (primary) and end time (secondary).
+ * @returns [index inclusive, index exclusive) pairs representing slices of the array that intersect with each other.
+ */
+function getIntersectionsFromSortedIntervals(sorted: readonly Interval<true>[]): [number, number][] {
     const collisions: [number, number][] = [];
     let startIncl = 0;
 
@@ -40,20 +63,4 @@ export function getIndexCollisions(sorted: readonly Interval<true>[]): [number, 
     }
 
     return collisions;
-}
-
-/**
- * Asserts that none of the intervals are overlapping.
- * @param unsorted - the array of intervals to check.
- * @throws error if the array has overlapping intervals.
- */
-export function assertNoOverlaps(unsorted: readonly Interval<true>[]): void {
-    const sorted = sortBy(unsorted, "start", "end");
-    const errors = getIndexCollisions(sorted).map(([lo, hi]) => {
-        return `unexpected overlapping intervals in the index range [${lo}, ${hi}) of ${JSON.stringify(sorted)}`;
-    });
-
-    if (errors.length > 0) {
-        throw new AggregateError(errors);
-    }
 }
