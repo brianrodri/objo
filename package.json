@@ -6,7 +6,9 @@
     "type": "module",
     "main": "dist/main.js",
     "scripts": {
+        "audit": "npm audit && npm audit signatures",
         "build": "vite build",
+        "build:ci": "npm run audit && npm run lint && npm run build:typescript && npm run build && npm run test:coverage && npm run build:docs",
         "build:clean": "rm -rf node_modules/ dist/ coverage/ docs/",
         "build:docs": "typedoc --validation",
         "build:typescript": "tsc --build",

@@ -5,7 +5,7 @@ import { parse } from "path";
 import { assertLuxonValidity } from "@/util/luxon-utils";
 
 import { DateBasedCollection } from "./schema";
-import { sanitizeFolder } from "./utils";
+import { sanitizeFolder } from "./util";
 
 /**
  * @see {@link https://github.com/liamcain/obsidian-periodic-notes}

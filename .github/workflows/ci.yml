@@ -18,23 +18,8 @@ jobs:
             - name: Install dependencies
               run: npm clean-install
               env: { HUSKY: 0 }
-
-            - name: Build package
-              run: npm run build
-            - name: Build docs
-              run: npm run build:docs
-
-            - name: Audit dependencies
-              run: >
-                  npm audit
-                  npm audit signatures
-            - name: Audit linting
-              run: npm run lint
-            - name: Audit type checks
-              run: npm run build:typescript
-            - name: Audit code coverage
-              run: npm run test:coverage
-
+            - name: Run CI tasks
+              run: npm run build:ci
             - name: Upload test results to Codecov
               if: ${{ !cancelled() }}
               uses: codecov/test-results-action@v1

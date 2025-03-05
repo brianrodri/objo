@@ -3,7 +3,7 @@ import { DateTime, DateTimeMaybeValid, Duration, DurationMaybeValid, Interval, I
 import { describe, expect, it } from "vitest";
 
 import { assertIntervalsDoNotIntersect, assertLuxonValidity } from "../luxon-utils";
-import { WITH_OVERLAPPING_INTERVALS, WITHOUT_OVERLAPPING_INTERVALS } from "./luxon-utils.const";
+import { WITH_OVERLAPPING_INTERVALS, WITHOUT_OVERLAPPING_INTERVALS } from "./luxon-utils.test.const";
 
 describe(`${assertLuxonValidity.name}`, () => {
     const reason = "user-provided reason";
