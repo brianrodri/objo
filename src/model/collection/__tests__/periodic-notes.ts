@@ -1,41 +1,41 @@
 import { Duration, Interval } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { PeriodicLog } from "../periodic-log";
+import { PeriodicNotes } from "../periodic-notes";
 
-describe(PeriodicLog.name, () => {
+describe(PeriodicNotes.name, () => {
     describe("pre-conditions", () => {
         it("should throw when folder is empty", () => {
-            expect(() => new PeriodicLog("", "yyyy-MM-dd", { days: 1 })).toThrow();
+            expect(() => new PeriodicNotes("", "yyyy-MM-dd", { days: 1 })).toThrow();
         });
 
         it("should throw when date format is empty", () => {
-            expect(() => new PeriodicLog("/vault", "", { days: 1 })).toThrow();
+            expect(() => new PeriodicNotes("/vault", "", { days: 1 })).toThrow();
         });
 
         it("should throw when interval duration is invalid", () => {
-            expect(() => new PeriodicLog("/vault", "yyyy-MM-dd", Duration.invalid("!"))).toThrow();
+            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", Duration.invalid("!"))).toThrow();
         });
 
         it("should throw when interval offset is invalid", () => {
-            expect(() => new PeriodicLog("/vault", "yyyy-MM-dd", { days: 1 }, Duration.invalid("!"))).toThrow();
+            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 1 }, Duration.invalid("!"))).toThrow();
         });
 
         it.each([+1, 0, -1])("should not throw when interval offset is %j", (days) => {
-            expect(() => new PeriodicLog("/vault", "yyyy-MM-dd", { days: 1 }, { days })).not.toThrow();
+            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 1 }, { days })).not.toThrow();
         });
 
         it("should throw when interval duration is 0", () => {
-            expect(() => new PeriodicLog("/vault", "yyyy-MM-dd", { days: 0 })).toThrow();
+            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 0 })).toThrow();
         });
 
         it.each([+1, -1])("should not throw when interval duration is %j", (days) => {
-            expect(() => new PeriodicLog("/vault", "yyyy-MM-dd", { days })).not.toThrow();
+            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days })).not.toThrow();
         });
     });
 
     describe('given daily log in folder: "/vault"', () => {
-        const log = new PeriodicLog("/vault", "yyyy-MM-dd", { days: 1 });
+        const log = new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 1 });
 
         it.each(["/vault/2023-01-01.md"])("should include %j", (filePath) => {
             expect(log.includes(filePath)).toBe(true);
@@ -59,7 +59,7 @@ describe(PeriodicLog.name, () => {
     });
 
     describe('given sprint logs starting every other thursday in folder: "/sprints"', () => {
-        const log = new PeriodicLog("/sprints", "kkkk-'W'WW", { weeks: 2 }, { days: 3 });
+        const log = new PeriodicNotes("/sprints", "kkkk-'W'WW", { weeks: 2 }, { days: 3 });
 
         it.each(["/sprints/2023-W37.md"])("should include %j", (filePath) => {
             expect(log.includes(filePath)).toBe(true);
