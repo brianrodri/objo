@@ -7,7 +7,6 @@ import { DEFAULT_PRIORITY_VALUE, DEFAULT_TYPE_VALUE, Task, TASK_WITH_DEFAULT_VAL
 /**
  * @param parts - the task parts to merge.
  * @returns a new {@link Task} with the front-most non-default values taken from the parts.
- * @see {@link TASK_WITH_DEFAULT_VALUES}
  */
 export function mergeTaskParts(...parts: DeepPartial<Task>[]): Task {
     const defaults = { ...TASK_WITH_DEFAULT_VALUES };
