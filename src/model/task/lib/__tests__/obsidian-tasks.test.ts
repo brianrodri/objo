@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { parseTaskEmojiFormat } from "../obsidian-tasks";
 
-describe(parseTaskEmojiFormat.name, () => {
+describe(`${parseTaskEmojiFormat.name}`, () => {
     it.each([
         [{ description: "task text" }, " \t task text \t "],
         [{ priority: 0 }, "🔺"],

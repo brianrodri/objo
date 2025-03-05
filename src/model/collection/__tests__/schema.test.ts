@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 
 import { DateBasedCollection } from "../schema";
 
-describe(DateBasedCollection.name, () => {
+describe(`${DateBasedCollection.name}`, () => {
     const getIntervalOf = vi.fn();
     class TestCollection extends DateBasedCollection {
         public override getIntervalOf = getIntervalOf;

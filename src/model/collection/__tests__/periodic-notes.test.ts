@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { PeriodicNotes } from "../periodic-notes";
 
-describe(PeriodicNotes.name, () => {
+describe(`${PeriodicNotes.name}`, () => {
     describe("pre-conditions", () => {
         it("should throw when folder is empty", () => {
             expect(() => new PeriodicNotes("", "yyyy-MM-dd", { days: 1 })).toThrow();
@@ -31,6 +31,12 @@ describe(PeriodicNotes.name, () => {
 
         it.each([+1, -1])("should not throw when interval duration is %j", (days) => {
             expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days })).not.toThrow();
+        });
+    });
+
+    describe("post-conditions", () => {
+        it("should strip trailing slashes from the folder", () => {
+            expect(new PeriodicNotes("/vault/", "yyyy-MM-dd", { days: 1 }).folder).toEqual("/vault");
         });
     });
 
