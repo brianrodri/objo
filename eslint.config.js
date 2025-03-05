@@ -8,7 +8,7 @@ import typescriptEslintParser from "@typescript-eslint/parser";
 import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import eslintPluginJsdoc from "eslint-plugin-jsdoc";
 import eslintPluginTsdoc from "eslint-plugin-tsdoc";
-import { ELEMENTS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
+import { ELEMENT_SETTINGS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
 import eslintJs from "@eslint/js";
 import vitestEslintPlugin from "@vitest/eslint-plugin";
 
@@ -93,7 +93,7 @@ export default [
         settings: {
             "boundaries/include": ["src/**/*"],
             "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
-            "boundaries/elements": ELEMENTS,
+            "boundaries/elements": ELEMENT_SETTINGS,
             "import/resolver": { typescript: { alwaysTryTypes: true } },
         },
         rules: {

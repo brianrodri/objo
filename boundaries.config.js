@@ -4,10 +4,20 @@ const libDir = "lib";
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 /** @see {@link https://github.com/javierbrea/eslint-plugin-boundaries#rules-configuration} */
-export const ELEMENTS = [
-    { type: "shared", pattern: "src/util", mode: "folder" },
-    { type: "main", pattern: "src/main.tsx", mode: "full" },
+export const ELEMENT_SETTINGS = [
+    defineFolderScope("model"),
+    defineFolderScope("render"),
 
+    {
+        type: "shared",
+        pattern: "src/util",
+        mode: "folder",
+    },
+    {
+        type: "main",
+        pattern: "src/main.tsx",
+        mode: "full",
+    },
     {
         type: "lib",
         pattern: `src/${libDir}/*/**/*`,
@@ -22,22 +32,33 @@ export const ELEMENTS = [
     },
     {
         type: "const",
-        pattern: "*.const.ts",
+        pattern: "*.const.*",
         mode: "file",
     },
-
-    defineFolderScope("model"),
 ];
 
 /** @see {@link https://github.com/javierbrea/eslint-plugin-boundaries#rules-configuration} */
 export const ELEMENT_TYPE_RULES = [
-    { from: "*", allow: "shared" },
-    { from: "main", allow: [["lib", { lib: "obsidian" }]] },
-    { from: "(lib|lib:scope)", allow: [["lib", { lib: "${from.lib}" }]] },
-    { from: "const", allow: "./*" },
-
-    ...fromScopeAllowItself("model"),
+    fromScopeAllowItself("model"),
+    fromScopeAllowItself("render"),
     ...fromScopeElementAllowTargetScopeElements("model", "index", [["model", "collection"]]),
+
+    {
+        from: "*",
+        allow: ["shared"],
+    },
+    {
+        from: "main",
+        allow: [["(lib|lib:scope)", { lib: "obsidian" }]],
+    },
+    {
+        from: "(lib|lib:scope)",
+        allow: [["lib", { lib: "${from.lib}" }]],
+    },
+    {
+        from: "const",
+        allow: ["./*"],
+    },
 ];
 
 /** @see {@link https://github.com/javierbrea/eslint-plugin-boundaries#rules-configuration} */
@@ -46,7 +67,14 @@ export const EXTERNAL_RULES = [
         from: "*",
         allow: ["aggregate-error", "assert", "lodash", "luxon", "path", "preact", "usehooks-ts", "utility-types"],
     },
-    { from: "lib", allow: "${from.lib}" },
+    {
+        from: [["render", { elementName: "preact" }]],
+        allow: ["preact", "preact/hooks"],
+    },
+    {
+        from: "lib",
+        allow: ["${from.lib}"],
+    },
 ];
 
 /**
@@ -55,7 +83,12 @@ export const EXTERNAL_RULES = [
  * @returns {object} the eslint-plugin-boundaries rule that will define the scope as its own type.
  */
 function defineFolderScope(folderName) {
-    return { type: folderName, pattern: `src/(${folderName})/*`, capture: ["scope", "elementName"], mode: "folder" };
+    return {
+        type: folderName,
+        pattern: `src/(${folderName})/*`,
+        capture: ["scope", "elementName"],
+        mode: "folder",
+    };
 }
 
 /**
@@ -63,12 +96,10 @@ function defineFolderScope(folderName) {
  * @returns {Array} the set of rules that will allow "scopes" to import from code in the same folder.
  */
 function fromScopeAllowItself(scope) {
-    return [
-        {
-            from: `(${scope}|lib:scope)`,
-            allow: [[`(${scope}|lib:scope)`, { scope, elementName: "${from.elementName}" }]],
-        },
-    ];
+    return {
+        from: `(${scope}|lib:scope)`,
+        allow: [[`(${scope}|lib:scope)`, { scope, elementName: "${from.elementName}" }]],
+    };
 }
 
 /**
