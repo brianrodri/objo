@@ -5,7 +5,7 @@ import { describe, expect, it } from "vitest";
 import { assertIntervalsDoNotIntersect, assertLuxonValidity } from "../luxon-utils";
 import { WITH_OVERLAPPING_INTERVALS, WITHOUT_OVERLAPPING_INTERVALS } from "./luxon-utils.const";
 
-describe(assertLuxonValidity.name, () => {
+describe(`${assertLuxonValidity.name}`, () => {
     const reason = "user-provided reason";
     const explanation = "user-provided explanation";
 
@@ -32,7 +32,7 @@ describe(assertLuxonValidity.name, () => {
     });
 });
 
-describe(assertIntervalsDoNotIntersect.name, () => {
+describe(`${assertIntervalsDoNotIntersect.name}`, () => {
     it.each(entriesIn(WITHOUT_OVERLAPPING_INTERVALS))("should accept %j", (_, intervals) => {
         expect(() => assertIntervalsDoNotIntersect(intervals)).not.toThrow();
     });

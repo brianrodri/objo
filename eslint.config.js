@@ -10,6 +10,7 @@ import eslintPluginJsdoc from "eslint-plugin-jsdoc";
 import eslintPluginTsdoc from "eslint-plugin-tsdoc";
 import { ELEMENTS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
 import eslintJs from "@eslint/js";
+import vitestEslintPlugin from "@vitest/eslint-plugin";
 
 /** @type { import("eslint").Linter.Config[] } */
 export default [
@@ -72,6 +73,14 @@ export default [
             globals: { ...globals.browser },
             parser: typescriptEslintParser,
             parserOptions: { ecmaFeatures: { modules: true }, ecmaVersion: "latest" },
+        },
+    },
+
+    {
+        files: ["src/**/*.test.{ts,tsx}"],
+        ...vitestEslintPlugin.configs.recommended,
+        rules: {
+            "vitest/expect-expect": ["off", { assertFunctionNames: ["expect", "expectTypeOf"] }],
         },
     },
 

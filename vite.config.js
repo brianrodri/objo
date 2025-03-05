@@ -35,12 +35,11 @@ export default defineConfig(({ mode }) => ({
     },
     test: {
         environment: "jsdom",
-        include: ["src/**/__tests__/*"],
-        exclude: ["**/*.const.{ts,tsx}"],
+        include: ["src/**/__tests__/**/*.test.{ts,tsx}"],
         coverage: {
             all: true,
             include: ["src/"],
-            exclude: ["src/main.tsx", "src/lib/"],
+            exclude: ["src/main.tsx", "src/lib"],
             thresholds: { 100: true },
             reporter: ["text", "html", "clover", "json", "lcov"],
         },

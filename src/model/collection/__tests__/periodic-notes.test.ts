@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import { PeriodicNotes } from "../periodic-notes";
 
-describe(PeriodicNotes.name, () => {
+describe(`${PeriodicNotes.name}`, () => {
     describe("pre-conditions", () => {
         it("should throw when folder is empty", () => {
             expect(() => new PeriodicNotes("", "yyyy-MM-dd", { days: 1 })).toThrow();
