@@ -4,6 +4,7 @@ export default {
     entryPointStrategy: "expand",
     treatWarningsAsErrors: true,
     treatValidationWarningsAsErrors: true,
-    plugin: ["typedoc-plugin-coverage", "typedoc-github-theme", "typedoc-plugin-dt-links"],
+    plugin: ["typedoc-plugin-coverage", "@typhonjs-typedoc/typedoc-theme-dmt", "typedoc-plugin-dt-links"],
+    theme: "default-modern",
     exclude: ["./docs/**/*", "./node_modules/**/*", "**/__tests__/**/*"],
 };
