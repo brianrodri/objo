@@ -24,7 +24,6 @@ export interface Task {
     };
     description: string;
     priority: number;
-    recurrenceRule: string;
     tags: ReadonlySet<string>;
     id: string;
     dependsOn: ReadonlySet<string>;

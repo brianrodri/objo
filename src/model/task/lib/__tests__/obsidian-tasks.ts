@@ -13,7 +13,6 @@ describe("Parsing task emojis", () => {
         [{ priority: 2 }, "🔼"],
         [{ priority: 4 }, "🔽"],
         [{ priority: 5 }, "⏬"],
-        [{ recurrenceRule: "every day" }, "🔁 every day"],
         [{ id: "due3rd", dependsOn: new Set(["due1st", "due2nd"]) }, "🆔 due3rd ⛔ due1st, due2nd"],
         [{ times: { start: isoDateTime("09:00") } }, "09:00 do at 9am"],
         [{ times: { start: isoDateTime("09:00"), end: isoDateTime("10:00") } }, "09:00/10:00 do between 9am and 10am"],
@@ -35,14 +34,13 @@ describe("Parsing task emojis", () => {
     it("parses sequential fields", () => {
         expect(
             parseTaskEmojiFormat(`
-                09:00/10:00 TODO! 🔺 🔁 every day 🆔 do3rd ⛔ do1st, do2nd
+                09:00/10:00 TODO! 🔺 🆔 do3rd ⛔ do1st, do2nd
                     ❌ 2024-10-25 ➕ 2024-10-26 ✅ 2024-10-27
                     📅 2024-10-28 ⏳ 2024-10-29 🛫 2024-10-30
             `),
         ).toEqual({
             description: "TODO!",
             priority: 0,
-            recurrenceRule: "every day",
             id: "do3rd",
             dependsOn: new Set(["do1st", "do2nd"]),
             dates: {

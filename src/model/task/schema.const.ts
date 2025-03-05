@@ -25,7 +25,6 @@ export const TASK_WITH_DEFAULT_VALUES = {
     },
     description: "",
     priority: DEFAULT_PRIORITY_VALUE,
-    recurrenceRule: "",
     tags: new Set(),
     id: "",
     dependsOn: new Set(),

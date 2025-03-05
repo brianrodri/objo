@@ -17,7 +17,6 @@ describe("Merging task parts", () => {
         expect(task.dates.created).toBeInstanceOf(DateTime);
         expect(task.description).toEqual("");
         expect(task.priority).toEqual(3);
-        expect(task.recurrenceRule).toEqual("");
         expect(task.tags).toEqual(new Set());
         expect(task.id).toEqual("");
         expect(task.dependsOn).toEqual(new Set());

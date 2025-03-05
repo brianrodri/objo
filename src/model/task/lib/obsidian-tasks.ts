@@ -83,7 +83,6 @@ const SYMBOL_PATH_LOOKUP = {
     "🔼": "priority",
     "🔽": "priority",
     "⏬": "priority",
-    "🔁": "recurrenceRule",
 } as const satisfies Record<string, PathOf<Task>>;
 
 const SYMBOL_PRIORITY_LOOKUP = {
