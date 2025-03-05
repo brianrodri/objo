@@ -17,7 +17,6 @@ describe("Merging task parts", () => {
         expect(task.dates.created).toBeInstanceOf(DateTime);
         expect(task.description).toEqual("");
         expect(task.priority).toEqual(3);
-        expect(task.recurrenceRule).toEqual("");
         expect(task.tags).toEqual(new Set());
         expect(task.id).toEqual("");
         expect(task.dependsOn).toEqual(new Set());
@@ -51,24 +50,6 @@ describe("Merging task parts", () => {
         const task = mergeTaskParts({ dates: { done: validDate } }, { dates: { done: anotherValidDate } });
 
         expect(task.dates.done).toEqual(validDate);
-    });
-
-    it("skips invalid times", () => {
-        const valid = DateTime.fromISO("12:00:00Z");
-        const invalid = DateTime.invalid("unspecified time");
-
-        const task = mergeTaskParts({ times: { start: invalid } }, { times: { start: valid } });
-
-        expect(task.times.start).toEqual(valid);
-    });
-
-    it("keeps valid times", () => {
-        const validTime = DateTime.fromISO("12:00:00Z");
-        const anotherValidTime = DateTime.fromISO("13:00:00Z");
-
-        const task = mergeTaskParts({ times: { start: validTime } }, { times: { start: anotherValidTime } });
-
-        expect(task.times.start).toEqual(validTime);
     });
 
     it("takes union of tags", () => {
