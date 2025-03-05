@@ -1,8 +1,6 @@
 name: Documentation
-
 on:
     push: { branches: [main] }
-    workflow_dispatch:
 
 permissions:
     contents: read
@@ -15,28 +13,34 @@ concurrency:
 
 jobs:
     deploy:
-        name: docs
+        name: build:docs
+        runs-on: ubuntu-latest
         environment:
             name: github-pages
             url: ${{ steps.deployment.outputs.page_url }}
-        runs-on: ubuntu-latest
+
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Setup Pages
-              uses: actions/configure-pages@v5
+
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with: { node-version: latest }
 
+            - name: Setup Pages
+              uses: actions/configure-pages@v5
+
             - name: Install dependencies
               run: npm clean-install
               env: { HUSKY: 0 }
+
             - name: Build documentation
               run: npm run build:docs
+
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v3
               with: { path: "docs/" }
+
             - name: Deploy to GitHub Pages
               id: deployment
               uses: actions/deploy-pages@v4

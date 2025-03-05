@@ -1,29 +1,33 @@
 name: CI
 on:
-    push:
-        branches: [main]
-    pull_request:
-        branches: [main]
+    pull_request: { branches: [main] }
+    push: { branches: [main] }
 
 jobs:
     build:
-        name: ci
+        name: build:ci
         runs-on: ubuntu-latest
+
         steps:
             - name: Checkout
               uses: actions/checkout@v4
+
             - name: Setup Node.js
               uses: actions/setup-node@v4
               with: { node-version: latest }
+
             - name: Install dependencies
               run: npm clean-install
               env: { HUSKY: 0 }
-            - name: Run CI tasks
+
+            - name: Build with CI checks
               run: npm run build:ci
+
             - name: Upload test results to Codecov
               if: ${{ !cancelled() }}
               uses: codecov/test-results-action@v1
               with: { token: "${{ secrets.CODECOV_TOKEN }}" }
+
             - name: Upload coverage to Codecov
               if: ${{ !cancelled() }}
               uses: codecov/codecov-action@v5
