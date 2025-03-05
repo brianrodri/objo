@@ -5,11 +5,14 @@ import { parse } from "path";
 import { Collection } from "./schema";
 
 /**
- * Represents a collection of files in a folder where each file represents a specific interval of time.
+ * Represents a collection of date-based files in a folder. Each file corresponds to a specific interval of time.
  * Designed to handle Obsidian's built-in "Daily Log" plugin and the more-comprehensive "Periodic log" community plugin.
  */
 export class PeriodicLog extends Collection {
-    /** The folder containing all of the notes. Periodic logs do not support files organized into different folders. */
+    /**
+     * The folder containing all of the notes.
+     * TODO: Is it worth supporting files organized into different folders?
+     */
     public readonly folder: string;
     /**
      * Luxon format used to parse dates from the file's name.
@@ -17,14 +20,15 @@ export class PeriodicLog extends Collection {
      */
     public readonly dateFormat: string;
     /**
-     * The offset of each file interval with respect to the date parsed from its file name.
-     * Useful for weekly/monthly/etc. collections that start on a more-granular time.
-     * For example a sprint log that uses ISO weeks as titles, but actually _begin_ on Thursdays.
+     * Offset between a file's parsed date and the start of its corresponding interval.
+     * Used to offset weekly/monthly/etc. collections to a more-granular date.
+     * For example, a sprint log may use ISO weeks as titles (i.e. starts on Monday), but the sprint actually _begins_
+     * on Thursdays.
      */
     public readonly dateOffset: Duration<true>;
-    /** The length of each file interval. For example, a daily log's duraation would be one day. */
+    /** The length corresponding to each file's interval. For example, a daily log would use a duration of one day. */
     public readonly intervalDuration: Duration<true>;
-    /** Luxon options for parsing DateTime from file names. */
+    /** Luxon options used when parsing dates from file names. */
     public readonly dateOptions: DateTimeOptions;
 
     public constructor(

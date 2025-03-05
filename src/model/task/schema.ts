@@ -13,7 +13,7 @@ export interface Task {
     status: TaskStatus;
     /** Metadata describing where the task was taken from. */
     source: TaskSource;
-    /** The dates associated with this task. */
+    /** Dates associated with the task. */
     dates: {
         /** When the task was cancelled. */
         cancelled: DateTime;
@@ -41,7 +41,7 @@ export interface Task {
     priority: number;
     /** The tags associated with this task. The leading hash character ("#") is omitted. */
     tags: ReadonlySet<string>;
-    /** Uniquely identifies the task throughout the vault. Optional. */
+    /** Optional user-defined string for uniquely identifying this task in the vault. */
     id: string;
     /** A set of {@link Task.id}s that need to be completed before starting this task. */
     dependsOn: ReadonlySet<string>;
@@ -52,14 +52,14 @@ export type TaskStatus =
     | {
           /**
            * The status of the task. Mirrors the status provided by the "obsidian-tasks" plugin.
-           * "UNKNOWN" is used for tasks that are invalid or unparsable.
+           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
            */
           type: "UNKNOWN";
       }
     | {
           /**
            * The status of the task. Mirrors the status provided by the "obsidian-tasks" plugin.
-           * "UNKNOWN" is used for tasks that are invalid or unparsable.
+           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
            */
           type: "OPEN" | "DONE" | "CANCELLED" | "NON_TASK";
           /**
@@ -73,11 +73,17 @@ export type TaskStatus =
 /** Metadata about where a task was taken or generated from. */
 export type TaskSource =
     | {
-          /** The type of source this task was taken from. */
+          /**
+           * Identifies where this task was parsed from.
+           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
+           */
           type: "UNKNOWN";
       }
     | {
-          /** The type of source this task was taken from. */
+          /**
+           * Identifies where this task was parsed from.
+           * "UNKNOWN" is reserved for tasks that are invalid or unparsable.
+           */
           type: "PAGE";
           /** The full path of the file this task was taken from. */
           path: string;

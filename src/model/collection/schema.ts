@@ -7,15 +7,14 @@ import { Interval, IntervalMaybeValid } from "luxon";
  */
 export abstract class Collection {
     /**
-     * @param filePath - the path to check if it belongs in the collection.
+     * @param filePath - the path to check.
      * @returns whether the file at the given path belongs in the collection.
      */
     public abstract includes(filePath: string): boolean;
 
     /**
-     * @param filePath - the path of the file to parse an interval from.
-     * @returns the interval of the file at the given path, or an invalid interval if the file does not belong in the
-     * collection.
+     * @param filePath - the path to check.
+     * @returns the file's corresponding interval, or an invalid interval if not applicable.
      */
     public getIntervalOf(filePath: string): IntervalMaybeValid {
         return Interval.invalid(`interval not implemented`, `"${filePath}" was ignored`);
