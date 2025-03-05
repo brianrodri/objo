@@ -42,7 +42,10 @@ export const ELEMENT_TYPE_RULES = [
 
 /** @see {@link https://github.com/javierbrea/eslint-plugin-boundaries#rules-configuration} */
 export const EXTERNAL_RULES = [
-    { from: "*", allow: ["aggregate-error", "assert", "lodash", "luxon", "path", "utility-types"] },
+    {
+        from: "*",
+        allow: ["aggregate-error", "assert", "lodash", "luxon", "path", "preact", "usehooks-ts", "utility-types"],
+    },
     { from: "lib", allow: "${from.lib}" },
 ];
 
