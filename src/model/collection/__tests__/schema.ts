@@ -1,14 +1,21 @@
-import { constant } from "lodash";
-import { describe, expect, it } from "vitest";
+import { DateTime, Interval } from "luxon";
+import { describe, expect, it, vi } from "vitest";
 
-import { Collection } from "../schema";
+import { DateBasedCollection } from "../schema";
 
-describe(Collection.name, () => {
-    it("returns invalid intervals", () => {
-        class TestCollection extends Collection {
-            public override includes = constant(false);
-        }
+describe(DateBasedCollection.name, () => {
+    const getIntervalOf = vi.fn();
+    class TestCollection extends DateBasedCollection {
+        public override getIntervalOf = getIntervalOf;
+    }
 
-        expect(new TestCollection().getIntervalOf("path").isValid).toBe(false);
+    it("should include files when its interval is valid", () => {
+        getIntervalOf.mockReturnValue(Interval.after(DateTime.now(), { days: 1 }));
+        expect(new TestCollection().includes("path")).toBe(true);
+    });
+
+    it("should not include files when its interval is invalid", () => {
+        getIntervalOf.mockReturnValue(Interval.invalid("invalid"));
+        expect(new TestCollection().includes("path")).toBe(false);
     });
 });
