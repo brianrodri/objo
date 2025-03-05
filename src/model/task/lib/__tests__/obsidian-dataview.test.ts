@@ -2,7 +2,7 @@ import { constant } from "lodash";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { adaptDataviewMarkdownTask } from "../obsidian-dataview";
-import { NULL_DATAVIEW_TASK } from "./obsidian-dataview.const";
+import { NULL_DATAVIEW_TASK } from "./obsidian-dataview.test.const";
 
 describe(`${adaptDataviewMarkdownTask.name}`, () => {
     afterEach(() => vi.resetAllMocks());

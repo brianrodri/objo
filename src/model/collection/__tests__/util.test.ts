@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { sanitizeFolder } from "../utils";
+import { sanitizeFolder } from "../util";
 
 describe(`${sanitizeFolder.name}`, () => {
     it("should strip trailing slashes", () => {
