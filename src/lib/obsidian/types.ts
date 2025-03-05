@@ -1,2 +1,2 @@
-export { MarkdownRenderer, Plugin } from "obsidian";
-export type { App, Component, EventRef, MetadataCache, TAbstractFile, TFile } from "obsidian";
+export { App, Component, MarkdownRenderer, Plugin } from "obsidian";
+export type { EventRef, MetadataCache, TAbstractFile, TFile } from "obsidian";
