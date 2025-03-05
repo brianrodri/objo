@@ -5,14 +5,16 @@ import { parse } from "path";
 import { Collection } from "./schema";
 
 /**
- * Represents a collection of files, each corresponding to unique {@link Interval} of time, kept inside the same folder.
- * Intended to handle Obsidian's built-in "Daily Log" plugin and the more-comprehensive "Periodic log" community plugin.
+ * @see {@link https://github.com/liamcain/obsidian-periodic-notes}
+ *
+ * A {@link Collection} where each file corresponds to a unique {@link Interval} of time. Intended to handle Obsidian's
+ * built-in "Daily Notes" plugin and the more-comprehensive "Periodic Notes" community plugin. As a consequence, all
+ * files in the collection must be placed in the same folder.
+ *
+ * TODO: Is it worth supporting files organized into different folders?
  */
-export class PeriodicLog extends Collection {
-    /**
-     * The folder containing all of the notes.
-     * TODO: Is it worth supporting files organized into different folders?
-     */
+export class PeriodicNotes extends Collection {
+    /** The folder containing all of the notes. */
     public readonly folder: string;
 
     /**
