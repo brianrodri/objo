@@ -1,12 +1,11 @@
 /**
  * The union of all dot-separated paths in an object rescursively.
- *
  * @example
  *
  * ```typescript
  * type Obj = { a: { b: { c: string } } };
  *
- * type ObjPaths = PathOf<Obj>;
+ * type ObjPaths = PathsOf<Obj>;
  * //   ^? type ObjPaths = "a" | "a.b" | "a.b.c"
  * ```
  */

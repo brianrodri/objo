@@ -23,7 +23,6 @@ export class PeriodicLog extends Collection {
 
     /**
      * Offset between the file's _parsed_ date and the corresponding {@link Interval}'s _start_ date. May be negative.
-     *
      * @example a periodic sprint log using ISO weeks, which start on Monday, as its {@link dateFormat} when sprints
      * _actually_ begin on Thursdays.
      */
@@ -31,7 +30,6 @@ export class PeriodicLog extends Collection {
 
     /**
      * The {@link Duration} of each file's corresponding {@link Interval}.
-     *
      * @example a daily log's duration would be `{ days: 1 }`.
      */
     public readonly intervalDuration: Duration<true>;
@@ -64,12 +62,19 @@ export class PeriodicLog extends Collection {
         this.dateOptions = dateOptions;
     }
 
-    /** {@inheritDoc model/collection/schema.Collection#includes} */
+    /**
+     * @param filePath - the path to check.
+     * @returns whether the file at the given path belongs to this collection.
+     */
     public override includes(filePath: string): boolean {
         return this.getIntervalOf(filePath).isValid;
     }
 
-    /** {@inheritDoc model/collection/schema.Collection#getIntervalOf} */
+    /**
+     * Used to accurately enable date-based queries on collections and to look up "neighboring" files.
+     * @param filePath - the path to check.
+     * @returns the {@link Interval} corresponding to the file, otherwise an invalid interval.
+     */
     public override getIntervalOf(filePath: string): IntervalMaybeValid {
         const path = parse(filePath);
         if (path.dir !== this.folder) {

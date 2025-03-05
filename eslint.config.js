@@ -36,8 +36,10 @@ export default [
 
     {
         files: ["src/**/*.{ts,tsx}"],
+        ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"],
         plugins: {
             "@typescript-eslint": typescriptEslintPlugin,
+            "jsdoc": eslintPluginJsdoc,
             "react-hooks": eslintPluginReactHooks,
             "tsdoc": eslintPluginTsdoc,
         },
@@ -45,12 +47,10 @@ export default [
             ...typescriptEslintPlugin.configs.recommended.rules,
             ...typescriptEslintPlugin.configs.strict.rules,
             ...eslintPluginReactHooks.configs.recommended.rules,
+            ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"].rules,
 
             // https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/
             "tsdoc/syntax": "error",
-
-            // TypeScript already checks for duplicates: https://archive.eslint.org/docs/rules/no-dupe-class-members
-            "no-dupe-class-members": "off",
 
             "import/order": [
                 "error",
