@@ -1,10 +1,11 @@
 import { Duration } from "luxon";
-import { App, Component, MarkdownRenderer } from "obsidian";
 import { createElement, FunctionalComponent, JSX } from "preact";
 import { useEffect, useRef } from "preact/hooks";
 import { useDebounceCallback } from "usehooks-ts";
 
-import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./renderer.const";
+import { App, Component, MarkdownRenderer } from "@/lib/obsidian/types";
+
+import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./obsidian.const";
 
 /**
  * Asynchronously renders the given markdown source code as Obsidian (the app) would.
