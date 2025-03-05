@@ -52,9 +52,6 @@ export default [
             // https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/
             "tsdoc/syntax": "error",
 
-            // TypeScript already checks for duplicates: https://archive.eslint.org/docs/rules/no-dupe-class-members
-            "no-dupe-class-members": "off",
-
             "import/order": [
                 "error",
                 {
