@@ -34,7 +34,7 @@ export interface Task {
     priority: number;
     /** The tags associated with this task. The leading hashtag ("#") is omitted. */
     tags: ReadonlySet<string>;
-    /** An optional user-defined string that uniquely identifying this task across the vault. */
+    /** An optional user-defined string that uniquely identifies this task across the vault. */
     id: string;
     /** The set of {@link Task.id}s that need to be completed before this task can be started. */
     dependsOn: ReadonlySet<string>;

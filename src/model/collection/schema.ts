@@ -3,8 +3,7 @@ import { Interval, IntervalMaybeValid } from "luxon";
 /**
  * Interface for Bullet Journal collections.
  *
- * Answers common questions required by other Objo views and models with regards to how to interpret files belonging to
- * the collection.
+ * Provides efficient functions for common operations required by views and other models.
  */
 export abstract class Collection {
     /**
@@ -15,7 +14,7 @@ export abstract class Collection {
 
     /**
      * @param filePath - the path to check.
-     * @returns an interval corresponding to the file when it belongs in this collection, otherwise an invalid interval.
+     * @returns the {@link Interval} corresponding to the file, otherwise an invalid interval.
      *
      * Used to accurately enable date-based queries on collections and to look up "neighboring" files.
      */
