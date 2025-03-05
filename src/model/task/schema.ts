@@ -28,13 +28,6 @@ export interface Task {
         /** When the task is able to be started. */
         start: DateTime;
     };
-    /** The time-of-day associated with this task. */
-    times: {
-        /** The start time scheduled for the task. The "date" part of the value is ignored. */
-        start: DateTime;
-        /** The end time scheduled for the task. The "date" part of the value is ignored. */
-        end: DateTime;
-    };
     /** The description of the task. */
     description: string;
     /** Integer between 1 and 5; lower numbers represent higher priority tasks. */

@@ -19,10 +19,6 @@ export const TASK_WITH_DEFAULT_VALUES = {
         scheduled: DEFAULT_DATETIME_VALUE,
         start: DEFAULT_DATETIME_VALUE,
     },
-    times: {
-        start: DEFAULT_DATETIME_VALUE,
-        end: DEFAULT_DATETIME_VALUE,
-    },
     description: "",
     priority: DEFAULT_PRIORITY_VALUE,
     tags: new Set(),
