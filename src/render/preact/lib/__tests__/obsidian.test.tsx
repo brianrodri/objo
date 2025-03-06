@@ -1,88 +1,92 @@
 import { render } from "@testing-library/preact";
-import { Duration } from "luxon";
+import { DurationLike } from "luxon";
+import { OmitByValue } from "utility-types";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 
 import { App, Component, MarkdownRenderer } from "@/lib/obsidian/types";
 
-import { ObsidianMarkdown } from "../obsidian";
+import { ObsidianMarkdown, ObsidianMarkdownProps } from "../obsidian";
 
 vi.mock("@/lib/obsidian/types");
 afterEach(() => vi.restoreAllMocks());
 
 describe(`${ObsidianMarkdown.name}`, () => {
+    const requiredProps: OmitByValue<ObsidianMarkdownProps, undefined> = {
+        app: new App(),
+        component: new Component(),
+        sourcePath: "/vault/diary.md",
+        markdown: "Foo",
+    };
+
     beforeAll(() => vi.useFakeTimers());
     afterAll(() => vi.useRealTimers());
 
-    it("should rerender when markdown changes stay stable for a while", async () => {
-        const props = {
-            app: new App(),
-            component: new Component(),
-            sourcePath: "/vault/diary.md",
-            delay: Duration.fromMillis(500),
-        } as const;
-
-        const { rerender } = render(<ObsidianMarkdown {...props} markdown="Apple" />);
+    it("should render eventually", async () => {
+        render(<ObsidianMarkdown {...requiredProps} />);
+        expect(MarkdownRenderer.render).not.toHaveBeenCalled();
         await vi.runAllTimersAsync();
-        rerender(<ObsidianMarkdown {...props} markdown="Banana" />);
+        expect(MarkdownRenderer.render).toHaveBeenCalledTimes(1);
+    });
+
+    it("should throw an error when 'props.delay' is invalid", () => {
+        const invalid = "one hour" as DurationLike;
+        expect(() => render(<ObsidianMarkdown {...requiredProps} delay={invalid} />)).toThrowErrorMatchingSnapshot();
+    });
+
+    it("should rerender when 'props.markdown' stops changing for a while", async () => {
+        const { rerender } = render(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Apple" />);
+        await vi.runAllTimersAsync();
+        rerender(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Banana" />);
         await vi.advanceTimersByTimeAsync(300);
-        rerender(<ObsidianMarkdown {...props} markdown="Banana" />);
+        rerender(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Banana" />);
         await vi.advanceTimersByTimeAsync(300);
 
-        const anySpanElement = expect.any(HTMLSpanElement);
         expect(MarkdownRenderer.render).toHaveBeenCalledTimes(2);
         expect(MarkdownRenderer.render).toHaveBeenCalledWith(
-            props.app,
+            requiredProps.app,
             "Apple",
-            anySpanElement,
-            props.sourcePath,
-            props.component,
+            expect.any(HTMLSpanElement),
+            requiredProps.sourcePath,
+            requiredProps.component,
         );
         expect(MarkdownRenderer.render).toHaveBeenCalledWith(
-            props.app,
+            requiredProps.app,
             "Banana",
-            anySpanElement,
-            props.sourcePath,
-            props.component,
+            expect.any(HTMLSpanElement),
+            requiredProps.sourcePath,
+            requiredProps.component,
         );
     });
 
-    it("should not rerender when markdown changes too frequently", async () => {
-        const props = {
-            app: new App(),
-            component: new Component(),
-            sourcePath: "/vault/diary.md",
-            delay: Duration.fromMillis(500),
-        } as const;
-
-        const { rerender } = render(<ObsidianMarkdown {...props} markdown="Apple" />);
+    it("should not rerender when 'props.markdown' keeps changing", async () => {
+        const { rerender } = render(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Apple" />);
         await vi.runAllTimersAsync();
-        rerender(<ObsidianMarkdown {...props} markdown="Banana" />);
+        rerender(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Banana" />);
         await vi.advanceTimersByTimeAsync(300);
-        rerender(<ObsidianMarkdown {...props} markdown="Cherry" />);
+        rerender(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Cherry" />);
         await vi.advanceTimersByTimeAsync(300);
 
-        const anySpanElement = expect.any(HTMLSpanElement);
         expect(MarkdownRenderer.render).toHaveBeenCalledTimes(1);
         expect(MarkdownRenderer.render).toHaveBeenCalledWith(
-            props.app,
+            requiredProps.app,
             "Apple",
-            anySpanElement,
-            props.sourcePath,
-            props.component,
+            expect.any(HTMLSpanElement),
+            requiredProps.sourcePath,
+            requiredProps.component,
         );
         expect(MarkdownRenderer.render).not.toHaveBeenCalledWith(
-            props.app,
+            requiredProps.app,
             "Banana",
-            anySpanElement,
-            props.sourcePath,
-            props.component,
+            expect.any(HTMLSpanElement),
+            requiredProps.sourcePath,
+            requiredProps.component,
         );
         expect(MarkdownRenderer.render).not.toHaveBeenCalledWith(
-            props.app,
+            requiredProps.app,
             "Cherry",
-            anySpanElement,
-            props.sourcePath,
-            props.component,
+            expect.any(HTMLSpanElement),
+            requiredProps.sourcePath,
+            requiredProps.component,
         );
     });
 });

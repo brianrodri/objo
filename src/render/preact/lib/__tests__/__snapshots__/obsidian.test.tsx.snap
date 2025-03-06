@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`ObsidianMarkdown > should throw an error when 'props.delay' is invalid 1`] = `[Error: Unknown duration argument one hour of type string]`;
