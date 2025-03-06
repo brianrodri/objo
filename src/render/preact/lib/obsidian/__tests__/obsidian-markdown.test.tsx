@@ -5,7 +5,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest
 
 import { App, Component, MarkdownRenderer } from "@/lib/obsidian/types";
 
-import { ObsidianMarkdown, ObsidianMarkdownProps } from "../obsidian";
+import { ObsidianMarkdown, ObsidianMarkdownProps } from "../obsidian-markdown";
 
 vi.mock("@/lib/obsidian/types");
 afterEach(() => vi.restoreAllMocks());

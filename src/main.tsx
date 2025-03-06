@@ -1,7 +1,7 @@
 import { render } from "preact";
 
 import { Plugin } from "@/lib/obsidian/types";
-import { ObsidianMarkdown } from "@/render/preact/lib/obsidian";
+import { ObsidianMarkdown } from "@/render/preact/lib/obsidian/obsidian-markdown";
 
 /** Entry point for the plugin. Obsidian depends on this class to define all lifecycle events and rendering behavior. */
 export class Objo extends Plugin {
