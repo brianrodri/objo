@@ -2,6 +2,7 @@
 export default {
     entryPoints: ["./src/"],
     entryPointStrategy: "expand",
+    cleanOutputDir: false,
     treatWarningsAsErrors: true,
     treatValidationWarningsAsErrors: true,
     plugin: ["typedoc-plugin-coverage", "@typhonjs-typedoc/typedoc-theme-dmt", "typedoc-plugin-dt-links"],
