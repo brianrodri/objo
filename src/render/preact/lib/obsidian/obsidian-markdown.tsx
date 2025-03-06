@@ -5,7 +5,7 @@ import { useDebounceCallback } from "usehooks-ts";
 
 import { App, Component, MarkdownRenderer } from "@/lib/obsidian/types";
 
-import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./obsidian.const";
+import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./obsidian-markdown.const";
 
 /**
  * @param props - props for the component.
