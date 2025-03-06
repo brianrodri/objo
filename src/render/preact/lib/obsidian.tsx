@@ -1,6 +1,6 @@
-import { Duration } from "luxon";
+import { Duration, DurationLike } from "luxon";
 import { createElement, FunctionalComponent, JSX } from "preact";
-import { useEffect, useRef } from "preact/hooks";
+import { useEffect, useMemo, useRef } from "preact/hooks";
 import { useDebounceCallback } from "usehooks-ts";
 
 import { App, Component, MarkdownRenderer } from "@/lib/obsidian/types";
@@ -8,23 +8,22 @@ import { App, Component, MarkdownRenderer } from "@/lib/obsidian/types";
 import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./obsidian.const";
 
 /**
- * Asynchronously renders the given markdown source code as Obsidian (the app) would.
- * Debounces values so that, ideally, renders have enough time to finish before being discarded for newer values.
- * @param props - configures how the markdown is rendered.
- * @returns component for asynchronously rendering the given markdown source code as Obsidian (the app) would.
+ * @param props - props for the component.
+ * @returns component that asynchronously renders the given markdown source code just as Obsidian (the app) would.
  */
 export const ObsidianMarkdown: FunctionalComponent<ObsidianMarkdownProps> = (props) => {
     const { app, component, markdown, sourcePath, tagName = "span", delay = MARKDOWN_RENDER_DEBOUNCE_TIME } = props;
+    const delayMs = useMemo(() => Duration.fromDurationLike(delay).toMillis(), [delay]);
+    const renderObsidianMarkdown = useDebounceCallback(MarkdownRenderer.render, delayMs);
     const elRef = useRef<HTMLElement>();
-    const render = useDebounceCallback(MarkdownRenderer.render, delay.toMillis());
 
     useEffect(() => {
-        const { current: el } = elRef;
+        const el = elRef.current;
         if (el) {
-            render(app, markdown, el, sourcePath, component);
-            return render.cancel;
+            renderObsidianMarkdown(app, markdown, el, sourcePath, component);
+            return renderObsidianMarkdown.cancel;
         }
-    }, [render, app, markdown, sourcePath, component]);
+    }, [renderObsidianMarkdown, app, markdown, sourcePath, component]);
 
     return createElement(tagName, { ref: elRef });
 };
@@ -42,5 +41,5 @@ export interface ObsidianMarkdownProps {
     /** The tag used to contain the rendered Markdown source code. */
     tagName?: keyof JSX.IntrinsicElements;
     /** Custom debounce time for renders. */
-    delay?: Duration<true>;
+    delay?: DurationLike;
 }
