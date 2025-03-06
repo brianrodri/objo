@@ -3,8 +3,13 @@ test-report.junit.xml
 tsconfig.tsbuildinfo
 coverage/
 dist/
-docs/
 node_modules/
+
+# Exclude generated doc files
+!docs/
+docs/*
+!docs/architecture/
+!docs/*.md
 
 # Exclude (most of) the testing vault
 !test-vault/
