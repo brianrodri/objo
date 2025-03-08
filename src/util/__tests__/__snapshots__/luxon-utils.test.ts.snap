@@ -1,29 +1,15 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`assertLuxonValidity > with message="user-provided message" > should reject invalid 'DateTime' 1`] = `
-[Error: user-provided message
-user-provided reason. user-provided explanation]
-`;
+exports[`assertValid > sanity > should be an error 1`] = `[Error: Invalid DateTime: unit out of range: you specified 99 (of type number) as a day, which is invalid]`;
 
-exports[`assertLuxonValidity > with message="user-provided message" > should reject invalid 'Duration' 1`] = `
-[Error: user-provided message
-user-provided reason. user-provided explanation]
-`;
+exports[`assertValid > with message="user-provided message" > should reject invalid 'DateTime' 1`] = `[AssertionError: user-provided message: unit out of range: you specified 99 (of type number) as a day, which is invalid]`;
 
-exports[`assertLuxonValidity > with message="user-provided message" > should reject invalid 'Interval' 1`] = `
-[Error: user-provided message
-user-provided reason. user-provided explanation]
-`;
+exports[`assertValid > with message="user-provided message" > should reject invalid 'Duration' 1`] = `[AssertionError: user-provided message: user-provided reason: user-provided explanation]`;
 
-exports[`assertLuxonValidity > with message="user-provided message" > should reject undefined 1`] = `
-[Error: user-provided message
-undefined luxon value]
-`;
+exports[`assertValid > with message="user-provided message" > should reject invalid 'Interval' 1`] = `[AssertionError: user-provided message: user-provided reason: user-provided explanation]`;
 
-exports[`assertLuxonValidity > with message=undefined > should reject invalid 'DateTime' 1`] = `[Error: user-provided reason. user-provided explanation]`;
+exports[`assertValid > with message=undefined > should reject invalid 'DateTime' 1`] = `[AssertionError: Invalid DateTime: unit out of range: you specified 99 (of type number) as a day, which is invalid]`;
 
-exports[`assertLuxonValidity > with message=undefined > should reject invalid 'Duration' 1`] = `[Error: user-provided reason. user-provided explanation]`;
+exports[`assertValid > with message=undefined > should reject invalid 'Duration' 1`] = `[AssertionError: Invalid Duration: user-provided reason: user-provided explanation]`;
 
-exports[`assertLuxonValidity > with message=undefined > should reject invalid 'Interval' 1`] = `[Error: user-provided reason. user-provided explanation]`;
-
-exports[`assertLuxonValidity > with message=undefined > should reject undefined 1`] = `[Error: undefined luxon value]`;
+exports[`assertValid > with message=undefined > should reject invalid 'Interval' 1`] = `[AssertionError: Invalid Interval: user-provided reason: user-provided explanation]`;

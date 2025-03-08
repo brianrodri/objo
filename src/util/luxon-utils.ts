@@ -1,3 +1,4 @@
+import { AssertionError } from "assert";
 import { DateTime, Duration, Interval } from "luxon";
 
 /** Union of luxon types that can be checked for validity. */
@@ -8,17 +9,14 @@ export type LuxonValue<IsValid extends boolean> = DateTime<IsValid> | Duration<I
  * @param message - the message to use in the error.
  * @throws error if value is invalid.
  */
-export function assertLuxonValidity(
-    value?: LuxonValue<true> | LuxonValue<false>,
+export function assertValid(
+    value: LuxonValue<true> | LuxonValue<false>,
     message?: string,
 ): asserts value is LuxonValue<true> {
-    const lines = message ? [message] : [];
-    if (!value) {
-        lines.push("undefined luxon value");
-    } else if (!value.isValid) {
-        lines.push(`${value.invalidReason}. ${value.invalidExplanation}`);
-    } else {
-        return;
+    if (!value.isValid) {
+        const { invalidReason, invalidExplanation } = value;
+        const header = message ?? `Invalid ${value.constructor.name}`;
+        const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
+        throw new AssertionError({ message: `${header}: ${reason}`, actual: false, expected: true, operator: "==" });
     }
-    throw new Error(lines.join("\n"));
 }

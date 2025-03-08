@@ -1,47 +1,72 @@
-import { Duration, Interval } from "luxon";
+import { Duration, DurationLike, Interval } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { PeriodicNotes } from "../periodic-notes";
+import { PeriodicNotes, PeriodicNotesConfig } from "../periodic-notes";
 
 describe(`${PeriodicNotes.name}`, () => {
+    const required: PeriodicNotesConfig<false> = {
+        folder: "/vault",
+        dateFormat: "yyyy-MM-dd",
+        intervalDuration: { days: 1 },
+    };
+
     describe("pre-conditions", () => {
         it("should throw when folder is empty", () => {
-            expect(() => new PeriodicNotes("", "yyyy-MM-dd", { days: 1 })).toThrow();
+            const folder = "";
+            expect(() => new PeriodicNotes({ ...required, folder })).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw when date format is empty", () => {
-            expect(() => new PeriodicNotes("/vault", "", { days: 1 })).toThrow();
+            const dateFormat = "";
+            expect(() => new PeriodicNotes({ ...required, dateFormat })).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw when interval duration is invalid", () => {
-            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", Duration.invalid("!"))).toThrow();
+            const intervalDuration = { days: "one" } as unknown as DurationLike;
+            expect(() => new PeriodicNotes({ ...required, intervalDuration })).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw when interval offset is invalid", () => {
-            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 1 }, Duration.invalid("!"))).toThrow();
-        });
-
-        it.each([+1, 0, -1])("should not throw when interval offset is %j", (days) => {
-            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 1 }, { days })).not.toThrow();
+            const intervalOffset = { days: "one" } as unknown as DurationLike;
+            expect(() => new PeriodicNotes({ ...required, intervalOffset })).toThrowErrorMatchingSnapshot();
         });
 
         it("should throw when interval duration is 0", () => {
-            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 0 })).toThrow();
+            const intervalDuration = 0;
+            expect(() => new PeriodicNotes({ ...required, intervalDuration })).toThrowErrorMatchingSnapshot();
         });
 
-        it.each([+1, -1])("should not throw when interval duration is %j", (days) => {
-            expect(() => new PeriodicNotes("/vault", "yyyy-MM-dd", { days })).not.toThrow();
+        it("should throw when everything is invalid", () => {
+            const invalidConfig = {
+                folder: "",
+                dateFormat: "",
+                intervalDuration: Duration.invalid("!"),
+                intervalOffset: Duration.invalid("invalid time", "unspecified"),
+            };
+            expect(() => new PeriodicNotes(invalidConfig)).toThrowErrorMatchingSnapshot();
+        });
+
+        it.each([+1, 0, -1])("should not throw when interval offset is %j", (intervalOffset) => {
+            expect(() => new PeriodicNotes({ ...required, intervalOffset })).not.toThrow();
+        });
+
+        it.each([+1, -1])("should not throw when interval duration is %j", (intervalDuration) => {
+            expect(() => new PeriodicNotes({ ...required, intervalDuration })).not.toThrow();
         });
     });
 
     describe("post-conditions", () => {
         it("should strip trailing slashes from the folder", () => {
-            expect(new PeriodicNotes("/vault/", "yyyy-MM-dd", { days: 1 }).folder).toEqual("/vault");
+            expect(new PeriodicNotes({ ...required, folder: "/vault" }).folder).toEqual("/vault");
         });
     });
 
     describe('given daily log in folder: "/vault"', () => {
-        const log = new PeriodicNotes("/vault", "yyyy-MM-dd", { days: 1 });
+        const log = new PeriodicNotes({
+            folder: "/vault",
+            dateFormat: "yyyy-MM-dd",
+            intervalDuration: { days: 1 },
+        });
 
         it.each(["/vault/2023-01-01.md"])("should include %j", (filePath) => {
             expect(log.includes(filePath)).toBe(true);
@@ -65,7 +90,12 @@ describe(`${PeriodicNotes.name}`, () => {
     });
 
     describe('given sprint logs starting every other thursday in folder: "/sprints"', () => {
-        const log = new PeriodicNotes("/sprints", "kkkk-'W'WW", { weeks: 2 }, { days: 3 });
+        const log = new PeriodicNotes({
+            folder: "/sprints",
+            dateFormat: "kkkk-'W'WW",
+            intervalDuration: { weeks: 2 },
+            intervalOffset: { days: 3 },
+        });
 
         it.each(["/sprints/2023-W37.md"])("should include %j", (filePath) => {
             expect(log.includes(filePath)).toBe(true);

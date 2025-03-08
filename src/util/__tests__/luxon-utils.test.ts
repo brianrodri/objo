@@ -1,9 +1,9 @@
 import { DateTime, DateTimeMaybeValid, Duration, DurationMaybeValid, Interval, IntervalMaybeValid } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { assertLuxonValidity } from "../luxon-utils";
+import { assertValid } from "../luxon-utils";
 
-describe(`${assertLuxonValidity.name}`, () => {
+describe(`${assertValid.name}`, () => {
     const reason = "user-provided reason";
     const explanation = "user-provided explanation";
 
@@ -13,19 +13,15 @@ describe(`${assertLuxonValidity.name}`, () => {
             Duration.fromDurationLike({ days: 1 }),
             Interval.after(DateTime.now(), { days: 1 }),
         ])("should accept valid $constructor.name", (value) => {
-            expect(() => assertLuxonValidity(value, message)).not.toThrow();
+            expect(() => assertValid(value, message)).not.toThrow();
         });
 
         it.each([
-            DateTime.invalid(reason, explanation) as DateTimeMaybeValid,
+            DateTime.fromISO("2025-03-99") as DateTimeMaybeValid,
             Duration.invalid(reason, explanation) as DurationMaybeValid,
             Interval.invalid(reason, explanation) as IntervalMaybeValid,
         ])("should reject invalid $constructor.name", (value) => {
-            expect(() => assertLuxonValidity(value, message)).toThrowErrorMatchingSnapshot();
-        });
-
-        it("should reject undefined", () => {
-            expect(() => assertLuxonValidity(undefined, message)).toThrowErrorMatchingSnapshot();
+            expect(() => assertValid(value, message)).toThrowErrorMatchingSnapshot();
         });
     });
 });
