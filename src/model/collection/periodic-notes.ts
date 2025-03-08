@@ -1,9 +1,9 @@
 import assert from "assert";
-import { attempt, isEmpty, isError } from "lodash";
+import { attempt, isError } from "lodash";
 import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMaybeValid } from "luxon";
 import { parse } from "path";
 
-import { assertValid } from "@/util/luxon-utils";
+import { assertLuxonFormat, assertValid } from "@/util/luxon-utils";
 
 import { DateBasedCollection } from "./schema";
 import { sanitizeFolder } from "./util";
@@ -115,24 +115,15 @@ function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true
 
     const errors = [
         attempt(() => assert(folder.length > 0, "folder must be non-empty")),
-        attempt(() => {
-            const now = DateTime.now();
-            const nowFormatted = now.toFormat(dateFormat, dateOptions);
-            assert(!isEmpty(nowFormatted.trim()), "date format must be non-empty");
-            assert.equal(
-                nowFormatted,
-                DateTime.fromFormat(nowFormatted, dateFormat, dateOptions).toFormat(dateFormat, dateOptions),
-                "date format must only use standalone tokens",
-            );
-        }),
+        attempt(() => assertLuxonFormat(dateFormat, dateOptions)),
         attempt(() => assertValid(intervalOffset, "interval offset is invalid")),
         attempt(() => assertValid(intervalDuration, "interval duration is invalid")),
         attempt(() => assert(intervalDuration.valueOf() !== 0, "interval duration must not be zero")),
     ].filter(isError);
 
     if (errors.length > 0) {
-        const indentedErrors = errors.map((error) => `${error.name}: ${error.message}`.replace(/^/gm, "\t"));
-        throw new AggregateError(errors, ["invalid config", ...indentedErrors].join("\n"));
+        const indentedMessages = errors.map((error) => `${error.name}: ${error.message}`.replace(/^/gm, "\t"));
+        throw new AggregateError(errors, ["invalid config", ...indentedMessages].join("\n"));
     }
     return { folder, dateFormat, dateOptions, intervalDuration, intervalOffset };
 }
