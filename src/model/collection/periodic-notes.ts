@@ -102,9 +102,16 @@ export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesC
 }
 
 /**
- * @param config - the config to validate.
- * @throws if any of the config's properties are invalid.
- * @returns a valid config.
+ * Validates and transforms a periodic notes configuration.
+ *
+ * This function checks that the required configuration properties are valid and properly formatted.
+ * It sanitizes the folder path, verifies that the date format is non-empty, converts the interval duration and offset
+ * into their standardized duration objects, and applies default values when needed. Specifically, the interval duration must
+ * be a valid, non-zero duration.
+ *
+ * @param config - The raw configuration object with properties that require validation.
+ * @returns A configuration object with sanitized folder, validated date format, properly parsed durations, and default options.
+ * @throws {AggregateError} When one or more configuration properties are invalid.
  */
 function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true> {
     const folder = sanitizeFolder(config.folder);

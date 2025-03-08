@@ -5,9 +5,17 @@ import { DateTime, Duration, Interval } from "luxon";
 export type LuxonValue<IsValid extends boolean> = DateTime<IsValid> | Duration<IsValid> | Interval<IsValid>;
 
 /**
- * @param value - the {@link LuxonValue} to check.
- * @param message - the message to use in the error.
- * @throws error if value is invalid.
+ * Asserts that the provided Luxon value is valid.
+ *
+ * Checks the `isValid` property of the given Luxon value and throws an {@link AssertionError}
+ * if the value is invalid. When invalid, the error message incorporates a custom header (if provided)
+ * or a default header based on the value's type, along with details from its `invalidReason` and,
+ * if available, `invalidExplanation`.
+ *
+ * @param value - A Luxon date/time, duration, or interval to validate.
+ * @param message - Optional custom message to use in the error header.
+ *
+ * @throws {AssertionError} If the provided value is not valid.
  */
 export function assertValid(
     value: LuxonValue<true> | LuxonValue<false>,
