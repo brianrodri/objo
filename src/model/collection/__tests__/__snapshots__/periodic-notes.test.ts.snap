@@ -2,13 +2,13 @@
 
 exports[`PeriodicNotes > pre-conditions > should throw when date format is empty 1`] = `
 [AggregateError: invalid config
-	AssertionError: date format must be non-empty]
+	AssertionError: date format must parse the formatted strings it produces]
 `;
 
 exports[`PeriodicNotes > pre-conditions > should throw when everything is invalid 1`] = `
 [AggregateError: invalid config
 	AssertionError: folder must be non-empty
-	AssertionError: date format must be non-empty
+	AssertionError: date format must parse the formatted strings it produces
 	AssertionError: interval offset is invalid: invalid time: unspecified
 	AssertionError: interval duration is invalid: invalid time: infinity]
 `;
