@@ -82,8 +82,24 @@ export const EXTERNAL_RULES = [
         allow: ["preact", "preact/hooks"],
     },
     {
-        from: "config",
-        allow: ["**/*"],
+        from: [["config", { name: "eslint" }]],
+        allow: [
+            "@eslint/js",
+            "@vitest/eslint-plugin",
+            "eslint",
+            "eslint/config",
+            "eslint-plugin-boundaries",
+            "eslint-plugin-import",
+            "eslint-plugin-jsdoc",
+            "eslint-plugin-react-hooks",
+            "eslint-plugin-tsdoc",
+            "globals",
+            "typescript-eslint",
+        ],
+    },
+    {
+        from: [["config", { name: "vite" }]],
+        allow: ["@preact/preset-vite", "vite", "vite-plugin-static-copy"],
     },
     {
         from: "lib",
