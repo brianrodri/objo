@@ -9,6 +9,12 @@ export const ELEMENT_SETTINGS = [
     defineFolderScope("render"),
 
     {
+        type: "config",
+        pattern: "*.config.js",
+        capture: ["name"],
+        mode: "full",
+    },
+    {
         type: "shared",
         pattern: "src/util",
         mode: "folder",
@@ -59,6 +65,10 @@ export const ELEMENT_TYPE_RULES = [
         from: "const",
         allow: ["./*"],
     },
+    {
+        from: [["config", { name: "eslint" }]],
+        allow: [["config", { name: "boundaries" }]],
+    },
 ];
 
 /** @see {@link https://github.com/javierbrea/eslint-plugin-boundaries#rules-configuration} */
@@ -70,6 +80,10 @@ export const EXTERNAL_RULES = [
     {
         from: [["render", { elementName: "preact" }]],
         allow: ["preact", "preact/hooks"],
+    },
+    {
+        from: "config",
+        allow: ["**/*"],
     },
     {
         from: "lib",

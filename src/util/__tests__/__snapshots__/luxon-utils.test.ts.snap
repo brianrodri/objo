@@ -1,7 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`assertValid > sanity > should be an error 1`] = `[Error: Invalid DateTime: unit out of range: you specified 99 (of type number) as a day, which is invalid]`;
-
 exports[`assertValid > with message="user-provided message" > should reject invalid 'DateTime' 1`] = `[AssertionError: user-provided message: unit out of range: you specified 99 (of type number) as a day, which is invalid]`;
 
 exports[`assertValid > with message="user-provided message" > should reject invalid 'Duration' 1`] = `[AssertionError: user-provided message: user-provided reason: user-provided explanation]`;

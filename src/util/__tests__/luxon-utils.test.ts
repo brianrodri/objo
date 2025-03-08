@@ -1,4 +1,4 @@
-import { DateTime, DateTimeMaybeValid, Duration, DurationMaybeValid, Interval, IntervalMaybeValid } from "luxon";
+import { DateTime, Duration, Interval } from "luxon";
 import { describe, expect, it } from "vitest";
 
 import { assertValid } from "../luxon-utils";
@@ -17,9 +17,9 @@ describe(`${assertValid.name}`, () => {
         });
 
         it.each([
-            DateTime.fromISO("2025-03-99") as DateTimeMaybeValid,
-            Duration.invalid(reason, explanation) as DurationMaybeValid,
-            Interval.invalid(reason, explanation) as IntervalMaybeValid,
+            DateTime.fromISO("2025-03-99"),
+            Duration.invalid(reason, explanation),
+            Interval.invalid(reason, explanation),
         ])("should reject invalid $constructor.name", (value) => {
             expect(() => assertValid(value, message)).toThrowErrorMatchingSnapshot();
         });

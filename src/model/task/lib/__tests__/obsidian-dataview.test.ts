@@ -1,8 +1,11 @@
 import { constant } from "lodash";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { adaptDataviewMarkdownTask } from "../obsidian-dataview";
+import { DataviewMarkdownTask } from "@/lib/obsidian-dataview/types";
+import { Task } from "@/model/task/schema";
+
 import { NULL_DATAVIEW_TASK } from "./obsidian-dataview.test.const";
+import { adaptDataviewMarkdownTask } from "../obsidian-dataview";
 
 describe(`${adaptDataviewMarkdownTask.name}`, () => {
     afterEach(() => vi.resetAllMocks());
@@ -22,7 +25,10 @@ describe(`${adaptDataviewMarkdownTask.name}`, () => {
             { position: { start: { offset: 42, line: 2, col: 6 }, end: { offset: 83, line: 2, col: 47 } } },
             { source: { startByte: 42, stopByte: 83 } },
         ],
-    ])("converts dvTask=%j to objoTask=%j", (dataviewTaskPart, objoTaskPart) => {
-        expect(adaptDataviewMarkdownTask({ ...NULL_DATAVIEW_TASK, ...dataviewTaskPart })).toMatchObject(objoTaskPart);
-    });
+    ] as [Partial<DataviewMarkdownTask>, Partial<Task>][])(
+        "converts task from dataview=%j to objo=%j",
+        (dataviewPart, objoPart) => {
+            expect(adaptDataviewMarkdownTask({ ...NULL_DATAVIEW_TASK, ...dataviewPart })).toMatchObject(objoPart);
+        },
+    );
 });

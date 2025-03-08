@@ -9,7 +9,7 @@ export class Objo extends Plugin {
     override onload() {
         this.app.workspace.onLayoutReady(() => console.log("loaded"));
 
-        this.registerMarkdownCodeBlockProcessor("objo", async (source, el, ctx) => {
+        this.registerMarkdownCodeBlockProcessor("objo", (source, el, ctx) => {
             render(
                 <ObsidianMarkdown markdown={source} app={this.app} component={this} sourcePath={ctx.sourcePath} />,
                 el,
