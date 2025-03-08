@@ -14,13 +14,14 @@ import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./obsidian-markdown.const";
 export const ObsidianMarkdown: FunctionalComponent<ObsidianMarkdownProps> = (props) => {
     const { app, component, markdown, sourcePath, tagName = "span", delay = MARKDOWN_RENDER_DEBOUNCE_TIME } = props;
     const delayMs = useMemo(() => Duration.fromDurationLike(delay).toMillis(), [delay]);
-    const renderObsidianMarkdown = useDebounceCallback(MarkdownRenderer.render, delayMs);
+    const renderObsidianMarkdown = useDebounceCallback(MarkdownRenderer["render"], delayMs);
     const elRef = useRef<HTMLElement>();
 
     useEffect(() => {
         const el = elRef.current;
         if (el) {
-            renderObsidianMarkdown(app, markdown, el, sourcePath, component);
+            const runAsync = async () => await renderObsidianMarkdown(app, markdown, el, sourcePath, component);
+            runAsync().catch(console.error);
             return renderObsidianMarkdown.cancel;
         }
     }, [renderObsidianMarkdown, app, markdown, sourcePath, component]);

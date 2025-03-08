@@ -1,27 +1,21 @@
-import { constant } from "lodash";
+import { vi } from "vitest";
+import { mockDeep } from "vitest-mock-extended";
 
 import { DataviewMarkdownTask } from "@/lib/obsidian-dataview/types";
 
-export const NULL_DATAVIEW_TASK: DataviewMarkdownTask = {
+export const NULL_DATAVIEW_TASK: DataviewMarkdownTask = mockDeep<DataviewMarkdownTask>({
     task: true,
     status: " ",
     checked: false,
     completed: false,
     fullyCompleted: false,
     symbol: "",
-    link: undefined,
-    section: {
-        fileName: constant(undefined),
-        obsidianLink: constant(undefined),
-        subpath: undefined,
-    },
+    link: { fileName: vi.fn(() => "F"), obsidianLink: vi.fn(() => "L") },
+    section: { fileName: vi.fn(() => "F"), obsidianLink: vi.fn(() => "L") },
     path: "",
     line: 0,
     lineCount: 0,
-    position: {
-        start: { line: 0, col: 0, offset: 0 },
-        end: { line: 0, col: 0, offset: 0 },
-    },
+    position: { start: { offset: 0 }, end: { offset: 0 } },
     list: 0,
     children: [],
     outlinks: [],
@@ -29,5 +23,5 @@ export const NULL_DATAVIEW_TASK: DataviewMarkdownTask = {
     tags: [],
     subtasks: [],
     real: false,
-    header: undefined,
-} as const;
+    header: { fileName: vi.fn(() => "F"), obsidianLink: vi.fn(() => "L") },
+});

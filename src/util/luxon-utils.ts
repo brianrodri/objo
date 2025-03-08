@@ -1,66 +1,41 @@
-import AggregateError from "aggregate-error";
-import { sortBy } from "lodash";
-import { DateTime, Duration, Interval } from "luxon";
+import { AssertionError, ok as assert } from "assert";
+import { DateTime, DateTimeOptions, Duration, Interval } from "luxon";
+import { Brand } from "utility-types";
 
 /** Union of luxon types that can be checked for validity. */
 export type LuxonValue<IsValid extends boolean> = DateTime<IsValid> | Duration<IsValid> | Interval<IsValid>;
+
+/** A format string that can correctly format and parse {@link DateTime}s. */
+export type LuxonFormat = Brand<string, "LuxonFormat">;
 
 /**
  * @param value - the {@link LuxonValue} to check.
  * @param message - the message to use in the error.
  * @throws error if value is invalid.
  */
-export function assertLuxonValidity(
-    value?: LuxonValue<true> | LuxonValue<false>,
+export function assertValid(
+    value: LuxonValue<true> | LuxonValue<false>,
     message?: string,
 ): asserts value is LuxonValue<true> {
-    const lines = message ? [message] : [];
-    if (!value) {
-        lines.push("undefined luxon value");
-    } else if (!value.isValid) {
-        lines.push(`${value.invalidReason}. ${value.invalidExplanation}`);
-    } else {
-        return;
-    }
-    throw new Error(lines.join("\n"));
-}
-
-/**
- * @param unsorted - the {@link Interval}s to check.
- * @throws error if any of the intervals intersect with each other.
- */
-export function assertIntervalsDoNotIntersect(unsorted: readonly Interval<true>[]): void {
-    const sorted = sortBy(unsorted, "start", "end");
-    const errors = getIntersectionsFromSortedIntervals(sorted).map(([lo, hi]) => {
-        return `overlapping intervals within index range [${lo}, ${hi}) of ${JSON.stringify(sorted)}`;
-    });
-
-    if (errors.length > 0) {
-        throw new AggregateError(errors);
+    if (!value.isValid) {
+        const { invalidReason, invalidExplanation } = value;
+        const header = message ?? `Invalid ${value.constructor.name}`;
+        const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
+        throw new AssertionError({ message: `${header}: ${reason}`, actual: false, expected: true, operator: "==" });
     }
 }
 
 /**
- * @param sorted - an array of sorted intervals by start time (primary) and end time (secondary).
- * @returns [index inclusive, index exclusive) pairs representing slices of the array that intersect with each other.
+ * @param format - the format to check.
+ * @param dateOptions - the options to use when parsing and formatting.
+ * @see {@link https://moment.github.io/luxon/#/parsing?id=table-of-tokens}
  */
-function getIntersectionsFromSortedIntervals(sorted: readonly Interval<true>[]): [number, number][] {
-    const collisions: [number, number][] = [];
-    let startIncl = 0;
-
-    for (let stopExcl = startIncl; stopExcl <= sorted.length; ++stopExcl) {
-        const oldStartIncl = startIncl;
-
-        while (startIncl < stopExcl && !sorted[startIncl].intersection(sorted[stopExcl - 1])) {
-            startIncl += 1;
-        }
-        if (startIncl - oldStartIncl >= 2) {
-            collisions.push([oldStartIncl, stopExcl - 1]);
-        }
-    }
-    if (sorted.length - startIncl >= 2) {
-        collisions.push([startIncl, sorted.length]);
-    }
-
-    return collisions;
+export function assertLuxonFormat(format: string, dateOptions?: DateTimeOptions): asserts format is LuxonFormat {
+    // NOTE: Actual date used here doesn't matter so long as it's valid.
+    const date = DateTime.fromISO("2025-07-03T10:29:14-04:00").setZone("utc");
+    const dateParsed = DateTime.fromFormat(date.toFormat(format, dateOptions), format, dateOptions);
+    assert(
+        dateParsed.isValid && date.toFormat(format, dateOptions) === dateParsed.toFormat(format, dateOptions),
+        "date format must parse the formatted strings it produces",
+    );
 }

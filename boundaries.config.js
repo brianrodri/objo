@@ -9,6 +9,12 @@ export const ELEMENT_SETTINGS = [
     defineFolderScope("render"),
 
     {
+        type: "config",
+        pattern: "*.config.js",
+        capture: ["name"],
+        mode: "full",
+    },
+    {
         type: "shared",
         pattern: "src/util",
         mode: "folder",
@@ -59,6 +65,10 @@ export const ELEMENT_TYPE_RULES = [
         from: "const",
         allow: ["./*"],
     },
+    {
+        from: [["config", { name: "eslint" }]],
+        allow: [["config", { name: "boundaries" }]],
+    },
 ];
 
 /** @see {@link https://github.com/javierbrea/eslint-plugin-boundaries#rules-configuration} */
@@ -70,6 +80,26 @@ export const EXTERNAL_RULES = [
     {
         from: [["render", { elementName: "preact" }]],
         allow: ["preact", "preact/hooks"],
+    },
+    {
+        from: [["config", { name: "eslint" }]],
+        allow: [
+            "@eslint/js",
+            "@vitest/eslint-plugin",
+            "eslint",
+            "eslint/config",
+            "eslint-plugin-boundaries",
+            "eslint-plugin-import",
+            "eslint-plugin-jsdoc",
+            "eslint-plugin-react-hooks",
+            "eslint-plugin-tsdoc",
+            "globals",
+            "typescript-eslint",
+        ],
+    },
+    {
+        from: [["config", { name: "vite" }]],
+        allow: ["@preact/preset-vite", "vite", "vite-plugin-static-copy"],
     },
     {
         from: "lib",

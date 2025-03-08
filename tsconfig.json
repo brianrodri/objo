@@ -27,8 +27,8 @@
         // Language and Environment
         "jsx": "react-jsx",
         "jsxImportSource": "preact",
-        "lib": ["DOM"],
+        "lib": ["DOM", "ESNext"],
         "skipLibCheck": true, // Only concerned w/ type checking the package code.
-        "target": "ES2018" // Use same target as obsidian-dataview.
+        "target": "ESNext" // Use latest target supported by Chromium.
     }
 }

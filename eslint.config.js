@@ -1,58 +1,41 @@
-import eslintConfigPreact from "eslint-config-preact";
-import eslintConfigPrettier from "eslint-config-prettier";
-import eslintPluginBoundaries from "eslint-plugin-boundaries";
-import eslintPluginImport from "eslint-plugin-import";
+import js from "@eslint/js";
+import vitest from "@vitest/eslint-plugin";
+import { defineConfig } from "eslint/config";
+import boundaries from "eslint-plugin-boundaries";
+import importPlugin from "eslint-plugin-import";
+import jsdoc from "eslint-plugin-jsdoc";
 import eslintPluginReactHooks from "eslint-plugin-react-hooks";
+import tsdoc from "eslint-plugin-tsdoc";
 import globals from "globals";
-import typescriptEslintParser from "@typescript-eslint/parser";
-import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
-import eslintPluginJsdoc from "eslint-plugin-jsdoc";
-import eslintPluginTsdoc from "eslint-plugin-tsdoc";
-import { ELEMENT_SETTINGS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
-import eslintJs from "@eslint/js";
-import vitestEslintPlugin from "@vitest/eslint-plugin";
+import typescriptEslint from "typescript-eslint";
 
-/** @type { import("eslint").Linter.Config[] } */
-export default [
+import { ELEMENT_SETTINGS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
+
+export default defineConfig([
     { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/"] },
 
-    eslintJs.configs.recommended,
-    eslintPluginImport.flatConfigs.recommended,
-    ...eslintConfigPreact.flat,
+    { plugins: { js }, extends: ["js/recommended"] },
+    { plugins: { jsdoc }, files: ["**/*.{js,jsx}"], extends: ["jsdoc/flat/recommended-error"] },
+    { plugins: { jsdoc }, files: ["**/*.{ts,tsx}"], extends: ["jsdoc/flat/recommended-typescript-error"] },
+    { plugins: { tsdoc }, files: ["**/*.{ts,tsx}"], rules: { "tsdoc/syntax": "error" } },
 
     {
-        files: ["*.config.js"],
-        plugins: { jsdoc: eslintPluginJsdoc },
-        languageOptions: { globals: { ...globals.node } },
-        ...eslintPluginJsdoc.configs["flat/recommended-error"],
-        rules: {
-            ...eslintPluginJsdoc.configs["flat/recommended-error"].rules,
-            "import/no-named-as-default": "off",
-            "import/no-unresolved": "off",
-        },
-        settings: {
-            "import/core-modules": ["eslint-config-preact", "eslint-plugin-boundaries", "eslint-plugin-import"],
+        extends: [typescriptEslint.configs.recommendedTypeChecked],
+        files: ["**/*.{ts,tsx}"],
+        languageOptions: {
+            parser: typescriptEslint.parser,
+            parserOptions: { ecmaVersion: "latest", projectService: true, tsconfigRootDir: import.meta.dirname },
         },
     },
 
     {
-        files: ["src/**/*.{ts,tsx}"],
-        ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"],
-        plugins: {
-            "@typescript-eslint": typescriptEslintPlugin,
-            "jsdoc": eslintPluginJsdoc,
-            "react-hooks": eslintPluginReactHooks,
-            "tsdoc": eslintPluginTsdoc,
-        },
+        extends: [eslintPluginReactHooks.configs["recommended-latest"]],
+        files: ["**/*.{ts,tsx}"],
+    },
+
+    {
+        extends: [importPlugin.flatConfigs.recommended],
         rules: {
-            ...typescriptEslintPlugin.configs.recommended.rules,
-            ...typescriptEslintPlugin.configs.strict.rules,
-            ...eslintPluginReactHooks.configs.recommended.rules,
-            ...eslintPluginJsdoc.configs["flat/recommended-typescript-error"].rules,
-
-            // https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/
-            "tsdoc/syntax": "error",
-
             "import/order": [
                 "error",
                 {
@@ -68,38 +51,33 @@ export default [
         },
         settings: {
             "import/core-modules": ["obsidian"],
-        },
-        languageOptions: {
-            globals: { ...globals.browser },
-            parser: typescriptEslintParser,
-            parserOptions: { ecmaFeatures: { modules: true }, ecmaVersion: "latest" },
-        },
-    },
-
-    {
-        files: ["src/**/*.test.{ts,tsx}"],
-        ...vitestEslintPlugin.configs.recommended,
-        rules: {
-            "vitest/expect-expect": ["off", { assertFunctionNames: ["expect", "expectTypeOf"] }],
-        },
-    },
-
-    // Turns off all rules that are unnecessary or might conflict with Prettier.
-    eslintConfigPrettier,
-
-    {
-        files: ["src/**/*"],
-        plugins: { boundaries: eslintPluginBoundaries },
-        settings: {
-            "boundaries/include": ["src/**/*"],
-            "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
-            "boundaries/elements": ELEMENT_SETTINGS,
             "import/resolver": { typescript: { alwaysTryTypes: true } },
         },
+    },
+
+    {
+        files: ["*.config.js"],
+        languageOptions: { globals: { ...globals.node }, ecmaVersion: "latest", sourceType: "module" },
+    },
+
+    {
+        plugins: { vitest },
+        extends: ["vitest/recommended"],
+        files: ["**/*.test.{ts,tsx}"],
+        rules: { "vitest/expect-expect": ["error", { assertFunctionNames: ["expect", "expectTypeOf"] }] },
+    },
+
+    {
+        plugins: { boundaries },
+        extends: ["boundaries/strict"],
+        settings: {
+            "boundaries/include": ["**/*"],
+            "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
+            "boundaries/elements": ELEMENT_SETTINGS,
+        },
         rules: {
-            ...eslintPluginBoundaries.configs.strict.rules,
             "boundaries/element-types": ["error", { default: "disallow", rules: ELEMENT_TYPE_RULES }],
             "boundaries/external": ["error", { default: "disallow", rules: EXTERNAL_RULES }],
         },
     },
-];
+]);

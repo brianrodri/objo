@@ -23,9 +23,9 @@ describe(`${ObsidianMarkdown.name}`, () => {
 
     it("should render eventually", async () => {
         render(<ObsidianMarkdown {...requiredProps} />);
-        expect(MarkdownRenderer.render).not.toHaveBeenCalled();
+        expect(MarkdownRenderer["render"]).not.toHaveBeenCalled();
         await vi.runAllTimersAsync();
-        expect(MarkdownRenderer.render).toHaveBeenCalledTimes(1);
+        expect(MarkdownRenderer["render"]).toHaveBeenCalledTimes(1);
     });
 
     it("should throw an error when 'props.delay' is invalid", () => {
@@ -41,15 +41,15 @@ describe(`${ObsidianMarkdown.name}`, () => {
         rerender(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Banana" />);
         await vi.advanceTimersByTimeAsync(300);
 
-        expect(MarkdownRenderer.render).toHaveBeenCalledTimes(2);
-        expect(MarkdownRenderer.render).toHaveBeenCalledWith(
+        expect(MarkdownRenderer["render"]).toHaveBeenCalledTimes(2);
+        expect(MarkdownRenderer["render"]).toHaveBeenCalledWith(
             requiredProps.app,
             "Apple",
             expect.any(HTMLSpanElement),
             requiredProps.sourcePath,
             requiredProps.component,
         );
-        expect(MarkdownRenderer.render).toHaveBeenCalledWith(
+        expect(MarkdownRenderer["render"]).toHaveBeenCalledWith(
             requiredProps.app,
             "Banana",
             expect.any(HTMLSpanElement),
@@ -66,22 +66,22 @@ describe(`${ObsidianMarkdown.name}`, () => {
         rerender(<ObsidianMarkdown {...requiredProps} delay={500} markdown="Cherry" />);
         await vi.advanceTimersByTimeAsync(300);
 
-        expect(MarkdownRenderer.render).toHaveBeenCalledTimes(1);
-        expect(MarkdownRenderer.render).toHaveBeenCalledWith(
+        expect(MarkdownRenderer["render"]).toHaveBeenCalledTimes(1);
+        expect(MarkdownRenderer["render"]).toHaveBeenCalledWith(
             requiredProps.app,
             "Apple",
             expect.any(HTMLSpanElement),
             requiredProps.sourcePath,
             requiredProps.component,
         );
-        expect(MarkdownRenderer.render).not.toHaveBeenCalledWith(
+        expect(MarkdownRenderer["render"]).not.toHaveBeenCalledWith(
             requiredProps.app,
             "Banana",
             expect.any(HTMLSpanElement),
             requiredProps.sourcePath,
             requiredProps.component,
         );
-        expect(MarkdownRenderer.render).not.toHaveBeenCalledWith(
+        expect(MarkdownRenderer["render"]).not.toHaveBeenCalledWith(
             requiredProps.app,
             "Cherry",
             expect.any(HTMLSpanElement),

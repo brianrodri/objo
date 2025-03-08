@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`PeriodicNotes > pre-conditions > should throw when date format is empty 1`] = `
+[AggregateError: invalid config
+	AssertionError: date format must be non-empty]
+`;
+
+exports[`PeriodicNotes > pre-conditions > should throw when everything is invalid 1`] = `
+[AggregateError: invalid config
+	AssertionError: folder must be non-empty
+	AssertionError: date format must be non-empty
+	AssertionError: interval offset is invalid: invalid time: unspecified
+	AssertionError: interval duration is invalid: invalid time: infinity]
+`;
+
+exports[`PeriodicNotes > pre-conditions > should throw when folder is empty 1`] = `
+[AggregateError: invalid config
+	AssertionError: folder must be non-empty]
+`;
+
+exports[`PeriodicNotes > pre-conditions > should throw when interval duration is 0 1`] = `
+[AggregateError: invalid config
+	AssertionError: interval duration must not be zero]
+`;
+
+exports[`PeriodicNotes > pre-conditions > should throw when interval duration is invalid 1`] = `[Error: Invalid unit value one]`;
+
+exports[`PeriodicNotes > pre-conditions > should throw when interval offset is invalid 1`] = `[Error: Invalid unit value one]`;
