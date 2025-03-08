@@ -10,7 +10,7 @@ exports[`PeriodicNotes > pre-conditions > should throw when everything is invali
 	AssertionError: folder must be non-empty
 	AssertionError: date format must be non-empty
 	AssertionError: interval offset is invalid: invalid time: unspecified
-	AssertionError: interval duration is invalid: !]
+	AssertionError: interval duration is invalid: invalid time: infinity]
 `;
 
 exports[`PeriodicNotes > pre-conditions > should throw when folder is empty 1`] = `

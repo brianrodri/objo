@@ -1,5 +1,5 @@
 import assert from "assert";
-import { attempt, isError } from "lodash";
+import { attempt, isEmpty, isError } from "lodash";
 import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMaybeValid } from "luxon";
 import { parse } from "path";
 
@@ -50,7 +50,7 @@ export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesC
     public readonly folder: string;
 
     /**
-     * The format used to parse a {@link DateTime} from file names.
+     * The format used to parse a {@link DateTime} from file names. Must work for both parsing and formatting.
      * @see {@link https://moment.github.io/luxon/#/parsing?id=table-of-tokens}
      */
     public readonly dateFormat: string;
@@ -115,7 +115,16 @@ function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true
 
     const errors = [
         attempt(() => assert(folder.length > 0, "folder must be non-empty")),
-        attempt(() => assert(dateFormat.length > 0, "date format must be non-empty")),
+        attempt(() => {
+            const now = DateTime.now();
+            const nowFormatted = now.toFormat(dateFormat, dateOptions);
+            assert(!isEmpty(nowFormatted.trim()), "date format must be non-empty");
+            assert.equal(
+                nowFormatted,
+                DateTime.fromFormat(nowFormatted, dateFormat, dateOptions).toFormat(dateFormat, dateOptions),
+                "date format must only use standalone tokens",
+            );
+        }),
         attempt(() => assertValid(intervalOffset, "interval offset is invalid")),
         attempt(() => assertValid(intervalDuration, "interval duration is invalid")),
         attempt(() => assert(intervalDuration.valueOf() !== 0, "interval duration must not be zero")),

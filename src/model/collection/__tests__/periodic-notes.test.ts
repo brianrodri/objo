@@ -40,7 +40,7 @@ describe(`${PeriodicNotes.name}`, () => {
             const invalidConfig = {
                 folder: "",
                 dateFormat: "",
-                intervalDuration: Duration.invalid("!"),
+                intervalDuration: Duration.invalid("invalid time", "infinity"),
                 intervalOffset: Duration.invalid("invalid time", "unspecified"),
             };
             expect(() => new PeriodicNotes(invalidConfig)).toThrowErrorMatchingSnapshot();
