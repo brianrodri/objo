@@ -1,37 +1,51 @@
+import eslintJs from "@eslint/js";
+import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
+import typescriptEslintParser from "@typescript-eslint/parser";
+import vitestEslintPlugin from "@vitest/eslint-plugin";
+import { defineConfig } from "eslint/config";
 import eslintConfigPreact from "eslint-config-preact";
 import eslintConfigPrettier from "eslint-config-prettier";
 import eslintPluginBoundaries from "eslint-plugin-boundaries";
 import eslintPluginImport from "eslint-plugin-import";
-import eslintPluginReactHooks from "eslint-plugin-react-hooks";
-import globals from "globals";
-import typescriptEslintParser from "@typescript-eslint/parser";
-import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
 import eslintPluginJsdoc from "eslint-plugin-jsdoc";
+import eslintPluginReactHooks from "eslint-plugin-react-hooks";
 import eslintPluginTsdoc from "eslint-plugin-tsdoc";
-import { ELEMENT_SETTINGS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
-import eslintJs from "@eslint/js";
-import vitestEslintPlugin from "@vitest/eslint-plugin";
+import globals from "globals";
 
-/** @type { import("eslint").Linter.Config[] } */
-export default [
+import { ELEMENT_SETTINGS, ELEMENT_TYPE_RULES, EXTERNAL_RULES } from "./boundaries.config.js";
+
+export default defineConfig([
     { ignores: [".husky/", "coverage/", "docs/", "dist/", "node_modules/"] },
 
     eslintJs.configs.recommended,
-    eslintPluginImport.flatConfigs.recommended,
     ...eslintConfigPreact.flat,
+    eslintPluginJsdoc.configs["flat/recommended-error"],
 
     {
-        files: ["*.config.js"],
-        plugins: { jsdoc: eslintPluginJsdoc },
-        languageOptions: { globals: { ...globals.node } },
-        ...eslintPluginJsdoc.configs["flat/recommended-error"],
+        files: ["*.config.js", "src/**/*.{ts,tsx}"],
+        ...eslintPluginImport.flatConfigs.recommended,
         rules: {
-            ...eslintPluginJsdoc.configs["flat/recommended-error"].rules,
-            "import/no-named-as-default": "off",
-            "import/no-unresolved": "off",
+            "import/order": [
+                "error",
+                {
+                    "alphabetize": { order: "asc", caseInsensitive: true },
+                    "groups": [["builtin", "external", "unknown"], "internal", ["parent", "sibling", "index"]],
+                    "named": { enabled: true, types: "types-first" },
+                    "newlines-between": "always",
+                },
+            ],
+            "import/no-named-as-default": "error",
+            "import/no-named-as-default-member": "error",
+            "import/no-duplicates": "error",
         },
         settings: {
-            "import/core-modules": ["eslint-config-preact", "eslint-plugin-boundaries", "eslint-plugin-import"],
+            "import/core-modules": [
+                "eslint-config-preact",
+                "eslint-plugin-boundaries",
+                "eslint-plugin-import",
+                "obsidian",
+            ],
+            "import/resolver": { typescript: { alwaysTryTypes: true } },
         },
     },
 
@@ -52,19 +66,6 @@ export default [
 
             // https://tsdoc.org/pages/packages/eslint-plugin-tsdoc/
             "tsdoc/syntax": "error",
-
-            "import/order": [
-                "error",
-                {
-                    "alphabetize": { order: "asc", caseInsensitive: true },
-                    "groups": [["builtin", "external", "unknown"], "internal", ["parent", "sibling", "index"]],
-                    "named": { enabled: true, types: "types-first" },
-                    "newlines-between": "always",
-                },
-            ],
-            "import/no-named-as-default": "error",
-            "import/no-named-as-default-member": "error",
-            "import/no-duplicates": "error",
         },
         settings: {
             "import/core-modules": ["obsidian"],
@@ -94,7 +95,6 @@ export default [
             "boundaries/include": ["src/**/*"],
             "boundaries/ignore": ["**/__tests__/**/*", "**/__mocks__/**/*"],
             "boundaries/elements": ELEMENT_SETTINGS,
-            "import/resolver": { typescript: { alwaysTryTypes: true } },
         },
         rules: {
             ...eslintPluginBoundaries.configs.strict.rules,
@@ -102,4 +102,4 @@ export default [
             "boundaries/external": ["error", { default: "disallow", rules: EXTERNAL_RULES }],
         },
     },
-];
+]);
