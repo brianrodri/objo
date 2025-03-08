@@ -9,8 +9,8 @@ import { DateBasedCollection } from "./schema";
 import { sanitizeFolder } from "./util";
 
 /** Configuration options for {@link PeriodicNotes}. */
-export type PeriodicNotesConfig<IsValid extends boolean> =
-    IsValid extends true ?
+export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
+    IsValidConfiguration extends true ?
         {
             /** {@inheritDoc PeriodicNotes.folder} */
             folder: string;
