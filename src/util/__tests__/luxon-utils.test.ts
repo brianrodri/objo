@@ -1,9 +1,7 @@
-import { entriesIn } from "lodash";
 import { DateTime, DateTimeMaybeValid, Duration, DurationMaybeValid, Interval, IntervalMaybeValid } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { assertIntervalsDoNotIntersect, assertLuxonValidity } from "../luxon-utils";
-import { WITH_OVERLAPPING_INTERVALS, WITHOUT_OVERLAPPING_INTERVALS } from "./luxon-utils.test.const";
+import { assertLuxonValidity } from "../luxon-utils";
 
 describe(`${assertLuxonValidity.name}`, () => {
     const reason = "user-provided reason";
@@ -29,16 +27,5 @@ describe(`${assertLuxonValidity.name}`, () => {
         it("should reject undefined", () => {
             expect(() => assertLuxonValidity(undefined, message)).toThrowErrorMatchingSnapshot();
         });
-    });
-});
-
-describe(`${assertIntervalsDoNotIntersect.name}`, () => {
-    it.each(entriesIn(WITHOUT_OVERLAPPING_INTERVALS))("should accept %j", (_, intervals) => {
-        expect(() => assertIntervalsDoNotIntersect(intervals)).not.toThrow();
-    });
-
-    it.each(entriesIn(WITH_OVERLAPPING_INTERVALS))("should reject %j", (_, intervals) => {
-        // TODO: Want to use toThrowErrorMatchingSnapshot(), but the snapshot fails on CI due to different paths in the stack traces.
-        expect(() => assertIntervalsDoNotIntersect(intervals)).toThrowError();
     });
 });

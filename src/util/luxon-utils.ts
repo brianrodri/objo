@@ -1,5 +1,3 @@
-import AggregateError from "aggregate-error";
-import { sortBy } from "lodash";
 import { DateTime, Duration, Interval } from "luxon";
 
 /** Union of luxon types that can be checked for validity. */
@@ -23,44 +21,4 @@ export function assertLuxonValidity(
         return;
     }
     throw new Error(lines.join("\n"));
-}
-
-/**
- * @param unsorted - the {@link Interval}s to check.
- * @throws error if any of the intervals intersect with each other.
- */
-export function assertIntervalsDoNotIntersect(unsorted: readonly Interval<true>[]): void {
-    const sorted = sortBy(unsorted, "start", "end");
-    const errors = getIntersectionsFromSortedIntervals(sorted).map(([lo, hi]) => {
-        return `overlapping intervals within index range [${lo}, ${hi}) of ${JSON.stringify(sorted)}`;
-    });
-
-    if (errors.length > 0) {
-        throw new AggregateError(errors);
-    }
-}
-
-/**
- * @param sorted - an array of sorted intervals by start time (primary) and end time (secondary).
- * @returns [index inclusive, index exclusive) pairs representing slices of the array that intersect with each other.
- */
-function getIntersectionsFromSortedIntervals(sorted: readonly Interval<true>[]): [number, number][] {
-    const collisions: [number, number][] = [];
-    let startIncl = 0;
-
-    for (let stopExcl = startIncl; stopExcl <= sorted.length; ++stopExcl) {
-        const oldStartIncl = startIncl;
-
-        while (startIncl < stopExcl && !sorted[startIncl].intersection(sorted[stopExcl - 1])) {
-            startIncl += 1;
-        }
-        if (startIncl - oldStartIncl >= 2) {
-            collisions.push([oldStartIncl, stopExcl - 1]);
-        }
-    }
-    if (sorted.length - startIncl >= 2) {
-        collisions.push([startIncl, sorted.length]);
-    }
-
-    return collisions;
 }
