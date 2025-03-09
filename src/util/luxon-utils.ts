@@ -18,22 +18,28 @@ export type LuxonFormat = Brand<string, "LuxonFormat">;
  * @param message - Optional custom header for the error message.
  * @throws If the provided value is invalid.
  */
-export function assertValid(
+export function assertValidLuxonValue(
     value: LuxonValue<true> | LuxonValue<false>,
     message?: string,
 ): asserts value is LuxonValue<true> {
-    const { invalidReason, invalidExplanation } = value;
-    const header = message ?? `Invalid ${value.constructor.name}`;
-    const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
-    assert(value.isValid, `${header}: ${reason}`);
+    message ??= `Invalid ${value.constructor.name}`;
+    const help = value.invalidExplanation ? `${value.invalidReason}: ${value.invalidExplanation}` : value.invalidReason;
+    assert(value.isValid, `${message}: ${help}`);
 }
 
 /**
- * @param dateFormat - the format to check.
- * @param dateOptions - the options to use when parsing and formatting.
+ * Asserts that the provided date format yields consistent results when formatting and parsing a date.
+ *
+ * This function formats a fixed UTC reference date into a string using the given format and optional options,
+ * then parses that string back into a date. It verifies that the parsed date is valid and that reformatting it
+ * produces the original string. Failing this consistency check triggers an error, indicating that the format is invalid
+ * for round-trip date conversions.
+ * @param dateFormat - The date format string to validate.
+ * @param dateOptions - Optional formatting and parsing options for date-time operations.
  * @see {@link https://moment.github.io/luxon/#/parsing?id=table-of-tokens}
+ * @throws If the date format does not produce matching formatted strings upon parsing.
  */
-export function assertLuxonFormat(
+export function assertValidDateTimeFormat(
     dateFormat: string,
     dateOptions?: DateTimeOptions,
 ): asserts dateFormat is LuxonFormat {

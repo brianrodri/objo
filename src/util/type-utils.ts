@@ -1,14 +1,14 @@
 /**
  * The union of all dot-separated paths in an object rescursively.
- * @typeParam T - the object to get paths from.
- * @example
  *
+ * Here's an illustration:
  * ```typescript
  * type Obj = { a: { b: { c: string } } };
  *
  * type ObjPaths = PathsOf<Obj>;
  * //   ^? type ObjPaths = "a" | "a.b" | "a.b.c"
  * ```
+ * @typeParam T - the object to get paths from.
  */
 export type PathsOf<T> =
     T extends object ?

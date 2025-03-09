@@ -4,7 +4,7 @@ import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMa
 import { parse } from "path";
 import { DeepReadonly } from "utility-types";
 
-import { assertLuxonFormat, assertValid } from "@/util/luxon-utils";
+import { assertValidDateTimeFormat, assertValidLuxonValue } from "@/util/luxon-utils";
 
 import { DateBasedCollection } from "./schema";
 import { stripTrailingSlash } from "./util";
@@ -29,16 +29,13 @@ export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesC
 
     /**
      * The {@link Duration} of each file's corresponding {@link Interval}.
-     * @example
-     * Daily notes should use a duration of `{ days: 1 }`.
+     * Daily notes, for example, should use a duration of `{ days: 1 }`.
      */
     public readonly intervalDuration: Duration<true>;
 
     /**
      * Offset between the file's _parsed_ date and the corresponding {@link Interval}'s _start_ date. May be negative.
-     * @example
-     * Sprint notes may use ISO weeks as their {@link dateFormat}, for example: `2025-W10.md`.
-     * If sprints _actually_ begin on Thursdays rather than Mondays, then we can adjust the interval with `{ days: 3 }`.
+     * Sprint notes, for example, can use ISO weeks for {@link dateFormat} and {@link intervalOffset} for their weekday.
      */
     public readonly intervalOffset: Duration<true>;
 
@@ -125,10 +122,10 @@ function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true
 
     const errors = [
         attempt(() => assertNotStrictEqual(folder.length, 0, "folder must be non-empty")),
-        attempt(() => assertLuxonFormat(dateFormat, dateOptions)),
-        attempt(() => assertValid(intervalDuration, "interval duration is invalid")),
+        attempt(() => assertValidDateTimeFormat(dateFormat, dateOptions)),
+        attempt(() => assertValidLuxonValue(intervalDuration, "interval duration is invalid")),
         attempt(() => assertNotStrictEqual(intervalDuration.valueOf(), 0, "interval duration must not be zero")),
-        attempt(() => assertValid(intervalOffset, "interval offset is invalid")),
+        attempt(() => assertValidLuxonValue(intervalOffset, "interval offset is invalid")),
     ].filter(isError);
 
     if (errors.length > 0) {

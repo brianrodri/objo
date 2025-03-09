@@ -1,9 +1,9 @@
 import { DateTime, Duration, Interval } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { assertLuxonFormat, assertValid } from "../luxon-utils";
+import { assertValidDateTimeFormat, assertValidLuxonValue } from "../luxon-utils";
 
-describe(`${assertValid.name}`, () => {
+describe(`${assertValidLuxonValue.name}`, () => {
     const reason = "user-provided reason";
     const explanation = "user-provided explanation";
 
@@ -13,24 +13,24 @@ describe(`${assertValid.name}`, () => {
             Duration.fromDurationLike({ days: 1 }),
             Interval.after(DateTime.now(), { days: 1 }),
         ])("should accept valid $constructor.name", (value) => {
-            expect(() => assertValid(value, message)).not.toThrow();
+            expect(() => assertValidLuxonValue(value, message)).not.toThrow();
         });
 
         it.each([DateTime.fromISO("2025-03-99"), Duration.invalid(reason), Interval.invalid(reason, explanation)])(
             "should reject invalid $constructor.name",
             (value) => {
-                expect(() => assertValid(value, message)).toThrowErrorMatchingSnapshot();
+                expect(() => assertValidLuxonValue(value, message)).toThrowErrorMatchingSnapshot();
             },
         );
     });
 });
 
-describe(`${assertLuxonFormat.name}`, () => {
+describe(`${assertValidDateTimeFormat.name}`, () => {
     it.each(["yyyy-MM-dd", "kkkk-'W'WW", "yyyy-MM"])("should accept valid format=%j", (validFormat) => {
-        expect(() => assertLuxonFormat(validFormat)).not.toThrow();
+        expect(() => assertValidDateTimeFormat(validFormat)).not.toThrow();
     });
 
     it.each(["FF", "''"])("should reject invalid format=%j", (invalidFormat) => {
-        expect(() => assertLuxonFormat(invalidFormat)).toThrowErrorMatchingSnapshot();
+        expect(() => assertValidDateTimeFormat(invalidFormat)).toThrowErrorMatchingSnapshot();
     });
 });

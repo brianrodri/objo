@@ -7,16 +7,25 @@ import { Task } from "@/model/task/schema";
 import { SYMBOL_PATH_LOOKUP, SYMBOL_PRIORITY_LOOKUP, SYMBOL_REG_EXP } from "./obsidian-tasks.const";
 
 /**
- * Parses {@link Task} metadata from a real markdown blob using Obsidian Task's emoji format.
- * @param text - the text of the task without its' markdown text.
- * @returns a {@link Task} with the parsed metadata.
- * @see {@link https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format}
- * @example
- *                                                                         ( symbol & value )
- * "the text at the front is assumed to be a description. ❌ cancelled date ➕ creation date ✅ completed date"
- *                                                       ( symbol & value )                 ( symbol & value  )
+ * Parses task metadata from a markdown string using Obsidian Task's emoji format.
  *
- * \{ cancelled: "cancelled date", created: "creation date", done: "completed date" \}
+ * The function extracts the task description (the text preceding the first emoji symbol) and associated metadata.
+ * Recognized emoji markers denote fields such as cancellation, creation, completion dates, priority, or dependencies.
+ *
+ * For example:
+ * ```
+ * "Prepare slides ❌ 2025-05-01 ➕ 2025-04-20 ✅ 2025-05-05"
+ * // Returns an object similar to:
+ * // {
+ * //   description: "Prepare slides",
+ * //   cancelled: DateTime for "2025-05-01",
+ * //   created: DateTime for "2025-04-20",
+ * //   done: DateTime for "2025-05-05"
+ * // }
+ * ```
+ * @param text - The markdown text containing the task description and metadata formatted with Obsidian Task's emoji syntax.
+ * @returns A partial {@link Task} object populated with the extracted metadata.
+ * @see {@link https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format}
  */
 export function parseTaskEmojiFormat(text: string): DeepPartial<Task> {
     const matchedSymbols = [...text.matchAll(SYMBOL_REG_EXP), /$/.exec(text) as RegExpExecArray];
