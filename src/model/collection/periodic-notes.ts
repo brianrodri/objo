@@ -1,43 +1,13 @@
-import assert from "assert";
-import { attempt, isError } from "lodash";
+import { notStrictEqual as assertNotStrictEqual } from "assert";
+import { attempt, clone, isError } from "lodash";
 import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMaybeValid } from "luxon";
 import { parse } from "path";
+import { DeepReadonly } from "utility-types";
 
 import { assertLuxonFormat, assertValid } from "@/util/luxon-utils";
 
 import { DateBasedCollection } from "./schema";
-import { sanitizeFolder } from "./util";
-
-/**
- * Configuration options for {@link PeriodicNotes}.
- * @param IsValidConfiguration - whether the configuration is valid.
- */
-export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
-    IsValidConfiguration extends true ?
-        {
-            /** {@inheritDoc PeriodicNotes.folder} */
-            folder: string;
-            /** {@inheritDoc PeriodicNotes.dateFormat} */
-            dateFormat: string;
-            /** {@inheritDoc PeriodicNotes.dateOptions} */
-            dateOptions: DateTimeOptions;
-            /** {@inheritDoc PeriodicNotes.intervalDuration} */
-            intervalDuration: Duration<true>;
-            /** {@inheritDoc PeriodicNotes.intervalOffset} */
-            intervalOffset: Duration<true>;
-        }
-    :   {
-            /** {@inheritDoc PeriodicNotes.folder} */
-            folder: string;
-            /** {@inheritDoc PeriodicNotes.dateFormat} */
-            dateFormat: string;
-            /** {@inheritDoc PeriodicNotes.dateOptions} */
-            dateOptions?: DateTimeOptions;
-            /** {@inheritDoc PeriodicNotes.intervalDuration} */
-            intervalDuration: DurationLike;
-            /** {@inheritDoc PeriodicNotes.intervalOffset} */
-            intervalOffset?: DurationLike;
-        };
+import { stripTrailingSlash } from "./util";
 
 /**
  * Intended to handle the popular "Periodic Notes" community plugin.
@@ -55,7 +25,7 @@ export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesC
     public readonly dateFormat: string;
 
     /** Luxon options used when parsing {@link DateTime}s from file names. */
-    public readonly dateOptions: DateTimeOptions;
+    public readonly dateOptions: DeepReadonly<DateTimeOptions>;
 
     /**
      * The {@link Duration} of each file's corresponding {@link Interval}.
@@ -101,23 +71,64 @@ export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesC
 }
 
 /**
- * @param config - the config to validate.
- * @throws if any of the config's properties are invalid.
- * @returns a valid config.
+ * Configuration options for {@link PeriodicNotes}.
+ * @typeParam IsValidConfiguration - whether the configuration is valid.
+ */
+export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
+    IsValidConfiguration extends true ?
+        {
+            /** {@inheritDoc PeriodicNotes.folder} */
+            folder: string;
+            /** {@inheritDoc PeriodicNotes.dateFormat} */
+            dateFormat: string;
+            /** {@inheritDoc PeriodicNotes.dateOptions} */
+            dateOptions: DateTimeOptions;
+            /** {@inheritDoc PeriodicNotes.intervalDuration} */
+            intervalDuration: Duration<true>;
+            /** {@inheritDoc PeriodicNotes.intervalOffset} */
+            intervalOffset: Duration<true>;
+        }
+    :   {
+            /** {@inheritDoc PeriodicNotes.folder} */
+            folder: string;
+            /** {@inheritDoc PeriodicNotes.dateFormat} */
+            dateFormat: string;
+            /** {@inheritDoc PeriodicNotes.dateOptions} */
+            dateOptions?: DateTimeOptions;
+            /** {@inheritDoc PeriodicNotes.intervalDuration} */
+            intervalDuration: DurationLike;
+            /** {@inheritDoc PeriodicNotes.intervalOffset} */
+            intervalOffset?: DurationLike;
+        };
+
+/**
+ * Validates and normalizes a PeriodicNotes configuration object.
+ *
+ * This function checks that:
+ * - the folder path (after stripping any trailing slash) is non-empty,
+ * - the date format is valid with the given date options,
+ * - the interval duration is a valid, non-zero duration, and
+ * - the interval offset is a valid duration.
+ *
+ * If any of these validations fail, an {@link AggregateError} is thrown containing details
+ * about each issue. On success, a new configuration object with strictly defined properties is returned.
+ * @param config - The configuration object to validate.
+ * @returns A validated configuration object with normalized properties.
+ * @throws If one or more configuration properties are invalid.
  */
 function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true> {
-    const folder = sanitizeFolder(config.folder);
+    const folder = stripTrailingSlash(config.folder);
     const dateFormat = config.dateFormat;
-    const dateOptions = config.dateOptions ?? {};
+    const dateOptions = clone(config.dateOptions ?? {});
     const intervalDuration = Duration.fromDurationLike(config.intervalDuration);
     const intervalOffset = Duration.fromDurationLike(config.intervalOffset ?? 0);
 
     const errors = [
-        attempt(() => assert(folder.length > 0, "folder must be non-empty")),
+        attempt(() => assertNotStrictEqual(folder.length, 0, "folder must be non-empty")),
         attempt(() => assertLuxonFormat(dateFormat, dateOptions)),
-        attempt(() => assertValid(intervalOffset, "interval offset is invalid")),
         attempt(() => assertValid(intervalDuration, "interval duration is invalid")),
-        attempt(() => assert(intervalDuration.valueOf() !== 0, "interval duration must not be zero")),
+        attempt(() => assertNotStrictEqual(intervalDuration.valueOf(), 0, "interval duration must not be zero")),
+        attempt(() => assertValid(intervalOffset, "interval offset is invalid")),
     ].filter(isError);
 
     if (errors.length > 0) {

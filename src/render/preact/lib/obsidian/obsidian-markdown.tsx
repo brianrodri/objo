@@ -13,9 +13,9 @@ import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./obsidian-markdown.const";
  */
 export const ObsidianMarkdown: FunctionalComponent<ObsidianMarkdownProps> = (props) => {
     const { app, component, markdown, sourcePath, tagName = "span", delay = MARKDOWN_RENDER_DEBOUNCE_TIME } = props;
+    const elRef = useRef<HTMLElement>();
     const delayMs = useMemo(() => Duration.fromDurationLike(delay).toMillis(), [delay]);
     const renderObsidianMarkdown = useDebounceCallback(MarkdownRenderer["render"], delayMs);
-    const elRef = useRef<HTMLElement>();
 
     useEffect(() => {
         const el = elRef.current;

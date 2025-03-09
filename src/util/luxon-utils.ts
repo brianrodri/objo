@@ -1,4 +1,4 @@
-import { AssertionError, ok as assert } from "assert";
+import assert from "assert";
 import { DateTime, DateTimeOptions, Duration, Interval } from "luxon";
 import { Brand } from "utility-types";
 
@@ -9,20 +9,23 @@ export type LuxonValue<IsValid extends boolean> = DateTime<IsValid> | Duration<I
 export type LuxonFormat = Brand<string, "LuxonFormat">;
 
 /**
- * @param value - the {@link LuxonValue} to check.
- * @param message - the message to use in the error.
- * @throws error if value is invalid.
+ * Asserts that the provided Luxon value is valid.
+ *
+ * This function checks whether a Luxon date, duration, or interval is valid. If the value is invalid,
+ * it throws an error with a message combining a custom header (or default constructor name) with the
+ * value's invalid reason and, if available, its invalid explanation.
+ * @param value - The Luxon object to validate.
+ * @param message - Optional custom header for the error message.
+ * @throws If the provided value is invalid.
  */
 export function assertValid(
     value: LuxonValue<true> | LuxonValue<false>,
     message?: string,
 ): asserts value is LuxonValue<true> {
-    if (!value.isValid) {
-        const { invalidReason, invalidExplanation } = value;
-        const header = message ?? `Invalid ${value.constructor.name}`;
-        const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
-        throw new AssertionError({ message: `${header}: ${reason}`, actual: false, expected: true, operator: "==" });
-    }
+    const { invalidReason, invalidExplanation } = value;
+    const header = message ?? `Invalid ${value.constructor.name}`;
+    const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
+    assert(value.isValid, `${header}: ${reason}`);
 }
 
 /**

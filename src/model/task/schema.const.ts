@@ -2,29 +2,26 @@ import { DateTime } from "luxon";
 
 import { Task, TaskSource, TaskStatus } from "./schema";
 
-/** The default date used by {@link Task}s. Valid dates will always take precedence over invalid dates. */
-export const DEFAULT_DATETIME_VALUE: DateTime = DateTime.invalid("unspecified");
-
 /** The default priority used by {@link Task}s. Different values will always take precedence over this value. */
-export const DEFAULT_PRIORITY_VALUE: Task["priority"] = 3;
+export const DEFAULT_PRIORITY_VALUE = 3 as const satisfies Task["priority"];
 
 /**
  * The default type used by {@link TaskSource} and {@link TaskStatus}.
  * Different values will always take precedence over this value.
  */
-export const DEFAULT_TYPE_VALUE: TaskSource["type"] & TaskStatus["type"] = "UNKNOWN";
+export const DEFAULT_TYPE_VALUE = "UNKNOWN" as const satisfies TaskSource["type"] & TaskStatus["type"];
 
 /** A strongly-typed {@link Task} with all-default values. */
 export const TASK_WITH_DEFAULT_VALUES: Task = {
     status: { type: DEFAULT_TYPE_VALUE },
     source: { type: DEFAULT_TYPE_VALUE },
     dates: {
-        cancelled: DEFAULT_DATETIME_VALUE,
-        created: DEFAULT_DATETIME_VALUE,
-        done: DEFAULT_DATETIME_VALUE,
-        due: DEFAULT_DATETIME_VALUE,
-        scheduled: DEFAULT_DATETIME_VALUE,
-        start: DEFAULT_DATETIME_VALUE,
+        cancelled: DateTime.invalid("unspecified"),
+        created: DateTime.invalid("unspecified"),
+        done: DateTime.invalid("unspecified"),
+        due: DateTime.invalid("unspecified"),
+        scheduled: DateTime.invalid("unspecified"),
+        start: DateTime.invalid("unspecified"),
     },
     description: "",
     priority: DEFAULT_PRIORITY_VALUE,

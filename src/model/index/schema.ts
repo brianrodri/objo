@@ -3,7 +3,7 @@ import { DeepReadonly } from "utility-types";
 
 import { Collection } from "../collection/schema";
 
-/** Provides an API for efficiently accessing {@link Collection}s in a vault. */
+/** API for efficiently accessing the notes of a {@link Collection}. */
 export interface VaultIndex {
     /**
      * Register a new {@link Collection} into the index.

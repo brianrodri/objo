@@ -9,7 +9,7 @@ export abstract class Collection {
     public abstract includes(filePath: string): boolean;
 }
 
-/** A {@link Collection} where each note corresponds to a unique {@link luxon.Interval} of time. */
+/** Interface for {@link Collection} where each note corresponds to a unique {@link luxon.Interval} of time. */
 export abstract class DateBasedCollection extends Collection {
     /**
      * @param filePath - the path to check.
