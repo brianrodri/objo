@@ -1,9 +1,10 @@
-import { escapeRegExp, has, keysIn, set } from "lodash";
+import { has, set } from "lodash";
 import { DateTime } from "luxon";
-import { DeepPartial, PickByValue } from "utility-types";
+import { DeepPartial } from "utility-types";
 
 import { Task } from "@/model/task/schema";
-import { PathsOf } from "@/util/type-utils";
+
+import { SYMBOL_PATH_LOOKUP, SYMBOL_PRIORITY_LOOKUP, SYMBOL_REG_EXP } from "./obsidian-tasks.const";
 
 /**
  * Parses {@link Task} metadata from a real markdown blob using Obsidian Task's emoji format.
@@ -44,30 +45,3 @@ export function parseTaskEmojiFormat(text: string): DeepPartial<Task> {
 
     return result;
 }
-
-const SYMBOL_PATH_LOOKUP = {
-    "❌": "dates.cancelled",
-    "➕": "dates.created",
-    "✅": "dates.done",
-    "📅": "dates.due",
-    "⌛": "dates.scheduled",
-    "⏳": "dates.scheduled",
-    "🛫": "dates.start",
-    "⛔": "dependsOn",
-    "🆔": "id",
-    "🔺": "priority",
-    "⏫": "priority",
-    "🔼": "priority",
-    "🔽": "priority",
-    "⏬": "priority",
-} as const satisfies Record<string, PathsOf<Task>>;
-
-const SYMBOL_PRIORITY_LOOKUP = {
-    "🔺": 0,
-    "⏫": 1,
-    "🔼": 2,
-    "🔽": 4,
-    "⏬": 5,
-} as const satisfies { [K in keyof PickByValue<typeof SYMBOL_PATH_LOOKUP, "priority">]: number };
-
-const SYMBOL_REG_EXP = new RegExp(keysIn(SYMBOL_PATH_LOOKUP).map(escapeRegExp).join("|"), "g");
