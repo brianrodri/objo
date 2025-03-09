@@ -16,7 +16,16 @@ export default defineConfig([
 
     { plugins: { js }, extends: ["js/recommended"] },
     { plugins: { jsdoc }, files: ["**/*.{js,jsx}"], extends: ["jsdoc/flat/recommended-error"] },
-    { plugins: { jsdoc }, files: ["**/*.{ts,tsx}"], extends: ["jsdoc/flat/recommended-typescript-error"] },
+    {
+        plugins: { jsdoc },
+        files: ["**/*.{ts,tsx}"],
+        extends: ["jsdoc/flat/recommended-typescript-error"],
+        settings: {
+            // Define the core TSDoc tag [`@typeParam`](https://tsdoc.org/pages/tags/typeparam/)
+            // See: https://github.com/gajus/eslint-plugin-jsdoc/issues/844#issuecomment-1051308663
+            jsdoc: { structuredTags: { typeParam: { name: "namepath-defining", type: false } } },
+        },
+    },
     { plugins: { tsdoc }, files: ["**/*.{ts,tsx}"], rules: { "tsdoc/syntax": "error" } },
 
     {

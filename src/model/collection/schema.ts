@@ -1,10 +1,6 @@
 import { IntervalMaybeValid } from "luxon";
 
-/**
- * Interface for Bullet Journal collections.
- *
- * Provides efficient functions for common operations required by views and other models.
- */
+/** Interface for Bullet Journal collections that provide efficient query functions. */
 export abstract class Collection {
     /**
      * @param filePath - the path to check.
@@ -13,11 +9,11 @@ export abstract class Collection {
     public abstract includes(filePath: string): boolean;
 }
 
+/** A {@link Collection} where each note corresponds to a unique {@link luxon.Interval} of time. */
 export abstract class DateBasedCollection extends Collection {
     /**
-     * Used to accurately enable date-based queries on collections and to look up "neighboring" files.
      * @param filePath - the path to check.
-     * @returns the valid interval corresponding to the file, otherwise an invalid interval.
+     * @returns the interval corresponding to the file, otherwise an invalid interval.
      */
     public abstract getIntervalOf(filePath: string): IntervalMaybeValid;
 

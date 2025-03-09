@@ -1,5 +1,6 @@
 /**
  * The union of all dot-separated paths in an object rescursively.
+ * @typeParam T - the object to get paths from.
  * @example
  *
  * ```typescript

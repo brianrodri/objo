@@ -34,8 +34,7 @@ export function assertLuxonFormat(
     dateFormat: string,
     dateOptions?: DateTimeOptions,
 ): asserts dateFormat is LuxonFormat {
-    // NOTE: Any valid UTC date works.
-    const sourceDate = DateTime.fromMillis(0).setZone("utc");
+    const sourceDate = DateTime.fromMillis(0).setZone("utc"); // NOTE: Any valid UTC date works.
     const parsedDate = DateTime.fromFormat(sourceDate.toFormat(dateFormat, dateOptions), dateFormat, dateOptions);
     assert(
         parsedDate.isValid &&
