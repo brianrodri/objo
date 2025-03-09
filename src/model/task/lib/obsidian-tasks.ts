@@ -14,7 +14,7 @@ import { SYMBOL_PATH_LOOKUP, SYMBOL_PRIORITY_LOOKUP, SYMBOL_REG_EXP } from "./ob
  *
  * For example:
  * ```
- * "Prepare slides ❌2025-05-01 ➕2025-04-20 ✅2025-05-05"
+ * "Prepare slides ❌ 2025-05-01 ➕ 2025-04-20 ✅ 2025-05-05"
  * // Returns an object similar to:
  * // {
  * //   description: "Prepare slides",
