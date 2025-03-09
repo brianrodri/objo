@@ -112,7 +112,6 @@ export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
  *
  * If any of these validations fail, an {@link AggregateError} is thrown containing details
  * about each issue. On success, a new configuration object with strictly defined properties is returned.
- *
  * @param config - The configuration object to validate.
  * @returns A validated configuration object with normalized properties.
  * @throws If one or more configuration properties are invalid.
