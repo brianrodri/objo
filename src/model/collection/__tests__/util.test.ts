@@ -1,17 +1,17 @@
 import { describe, expect, it } from "vitest";
 
-import { sanitizeFolder } from "../util";
+import { stripTrailingSlash } from "../util";
 
-describe(`${sanitizeFolder.name}`, () => {
+describe(`${stripTrailingSlash.name}`, () => {
     it("should strip trailing slashes", () => {
-        expect(sanitizeFolder("foo/")).toEqual("foo");
+        expect(stripTrailingSlash("foo/")).toEqual("foo");
     });
 
     it("should do nothing if there are no trailing slashes", () => {
-        expect(sanitizeFolder("foo")).toEqual("foo");
+        expect(stripTrailingSlash("foo")).toEqual("foo");
     });
 
     it("should do nothing when folder is the vault root", () => {
-        expect(sanitizeFolder("/")).toEqual("/");
+        expect(stripTrailingSlash("/")).toEqual("/");
     });
 });

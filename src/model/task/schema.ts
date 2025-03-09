@@ -1,11 +1,6 @@
 import { DateTime } from "luxon";
 
-export {
-    DEFAULT_DATETIME_VALUE,
-    DEFAULT_PRIORITY_VALUE,
-    DEFAULT_TYPE_VALUE,
-    TASK_WITH_DEFAULT_VALUES,
-} from "./schema.const";
+export { DEFAULT_PRIORITY_VALUE, DEFAULT_TYPE_VALUE, TASK_WITH_DEFAULT_VALUES } from "./schema.const";
 
 /** Objo-related metadata for the tasks in a user's vault. */
 export interface Task {
@@ -43,39 +38,24 @@ export interface Task {
 /** Metadata about the actionable status of a task. */
 export type TaskStatus =
     | {
-          /**
-           * The status of the task. Mirrors the status provided by the "obsidian-tasks" plugin.
-           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
-           */
+          /** `"UNKNOWN"` is reserved for tasks that are invalid or unparsable. */
           type: "UNKNOWN";
       }
     | {
-          /**
-           * The status of the task. Mirrors the status provided by the "obsidian-tasks" plugin.
-           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
-           */
+          /** The status of the task. Mirrors the status provided by the "obsidian-tasks" plugin. */
           type: "OPEN" | "DONE" | "CANCELLED" | "NON_TASK";
-          /**
-           * The character inside the `[ ]` brackets on the line with the task.
-           * Generally a space (" ") for incomplete tasks and an ("x") for completed tasks.
-           */
+          /** The character inside the `[ ]` brackets on the line with the task. */
           symbol: string;
       };
 
 /** Metadata about where a task was extracted/generated from. */
 export type TaskSource =
     | {
-          /**
-           * Identifies where this task was extracted/generated from.
-           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
-           */
+          /** `"UNKNOWN"` is reserved for tasks that are invalid or unparsable. */
           type: "UNKNOWN";
       }
     | {
-          /**
-           * Identifies where this task was extracted/generated from.
-           * `"UNKNOWN"` is reserved for tasks that are invalid or unparsable.
-           */
+          /** Identifies where this task was extracted/generated from. */
           type: "PAGE";
           /** The full path of the file this task was taken from. */
           path: string;

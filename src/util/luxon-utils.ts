@@ -1,4 +1,4 @@
-import { AssertionError, ok as assert } from "assert";
+import assert from "assert";
 import { DateTime, DateTimeOptions, Duration, Interval } from "luxon";
 import { Brand } from "utility-types";
 
@@ -17,12 +17,10 @@ export function assertValid(
     value: LuxonValue<true> | LuxonValue<false>,
     message?: string,
 ): asserts value is LuxonValue<true> {
-    if (!value.isValid) {
-        const { invalidReason, invalidExplanation } = value;
-        const header = message ?? `Invalid ${value.constructor.name}`;
-        const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
-        throw new AssertionError({ message: `${header}: ${reason}`, actual: false, expected: true, operator: "==" });
-    }
+    const { invalidReason, invalidExplanation } = value;
+    const header = message ?? `Invalid ${value.constructor.name}`;
+    const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
+    assert(value.isValid, `${header}: ${reason}`);
 }
 
 /**
