@@ -37,7 +37,7 @@ export function assertValidLuxonValue(
  * @param dateFormat - The date format string to validate.
  * @param dateOptions - Optional formatting and parsing options for date-time operations.
  * @see {@link https://moment.github.io/luxon/#/parsing?id=table-of-tokens}
- * @throws {AssertionError} If the date format does not produce matching formatted strings upon parsing.
+ * @throws If the date format does not produce matching formatted strings upon parsing.
  */
 export function assertValidDateTimeFormat(
     dateFormat: string,
