@@ -102,19 +102,20 @@ export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
         };
 
 /**
- * Validates a PeriodicNotes configuration object.
+ * Validates and normalizes a PeriodicNotes configuration object.
  *
- * This function ensures that:
- * - The folder path, after removing any trailing slash, is non-empty.
- * - The date format is valid with the provided date options.
- * - The interval duration is a valid, non-zero duration.
- * - The interval offset is a valid duration.
+ * This function checks that:
+ * - the folder path (after stripping any trailing slash) is non-empty,
+ * - the date format is valid with the given date options,
+ * - the interval duration is a valid, non-zero duration, and
+ * - the interval offset is a valid duration.
  *
- * If any of these validations fail, an {@link AggregateError} is thrown detailing all issues.
- * Otherwise, it returns a new configuration object with more specific types.
+ * If any of these validations fail, an {@link AggregateError} is thrown containing details
+ * about each issue. On success, a new configuration object with strictly defined properties is returned.
+ *
  * @param config - The configuration object to validate.
- * @returns A validated configuration with strictly defined properties.
- * @throws If one or more properties of the configuration are invalid.
+ * @returns A validated configuration object with normalized properties.
+ * @throws If one or more configuration properties are invalid.
  */
 function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true> {
     const folder = stripTrailingSlash(config.folder);
