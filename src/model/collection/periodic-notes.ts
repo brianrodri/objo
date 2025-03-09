@@ -115,7 +115,7 @@ export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
  *
  * @param config - The configuration object to validate.
  * @returns A validated configuration object with normalized properties.
- * @throws if one or more configuration properties are invalid.
+ * @throws If one or more configuration properties are invalid.
  */
 function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true> {
     const folder = stripTrailingSlash(config.folder);
