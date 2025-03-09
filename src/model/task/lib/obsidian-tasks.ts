@@ -23,10 +23,8 @@ import { SYMBOL_PATH_LOOKUP, SYMBOL_PRIORITY_LOOKUP, SYMBOL_REG_EXP } from "./ob
  * //   done: DateTime for "2025-05-05"
  * // }
  * ```
- *
  * @param text - The markdown text containing the task description and metadata formatted with Obsidian Task's emoji syntax.
  * @returns A partial {@link Task} object populated with the extracted metadata.
- *
  * @see {@link https://publish.obsidian.md/tasks/Reference/Task+Formats/Tasks+Emoji+Format}
  */
 export function parseTaskEmojiFormat(text: string): DeepPartial<Task> {
