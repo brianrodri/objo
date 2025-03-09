@@ -34,12 +34,9 @@ export function assertValidLuxonValue(
  * then parses that string back into a date. It verifies that the parsed date is valid and that reformatting it
  * produces the original string. Failing this consistency check triggers an error, indicating that the format is invalid
  * for round-trip date conversions.
- *
  * @param dateFormat - The date format string to validate.
  * @param dateOptions - Optional formatting and parsing options for date-time operations.
- *
  * @see {@link https://moment.github.io/luxon/#/parsing?id=table-of-tokens}
- *
  * @throws {AssertionError} If the date format does not produce matching formatted strings upon parsing.
  */
 export function assertValidDateTimeFormat(
