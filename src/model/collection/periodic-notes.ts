@@ -8,7 +8,10 @@ import { assertLuxonFormat, assertValid } from "@/util/luxon-utils";
 import { DateBasedCollection } from "./schema";
 import { sanitizeFolder } from "./util";
 
-/** Configuration options for {@link PeriodicNotes}. */
+/**
+ * Configuration options for {@link PeriodicNotes}.
+ * @param IsValidConfiguration - whether the configuration is valid.
+ */
 export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
     IsValidConfiguration extends true ?
         {
@@ -37,16 +40,12 @@ export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
         };
 
 /**
+ * Intended to handle the popular "Periodic Notes" community plugin.
+ * As a consequence, all files in the collection must be placed in the same folder.
  * @see {@link https://github.com/liamcain/obsidian-periodic-notes}
- *
- * A {@link DateBasedCollection} where each file corresponds to a unique {@link Interval} of time.
- * Intended to handle Obsidian's built-in "Daily Notes" plugin and the more-comprehensive "Periodic Notes" community
- * plugin. As a consequence, all files in the collection must be placed in the same folder.
- *
- * TODO: Is it worth supporting files organized into different folders?
  */
 export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesConfig<true> {
-    /** The folder containing all of the notes. */
+    /** The folder containing all of the notes. TODO: Support files organized into different folders. */
     public readonly folder: string;
 
     /**
@@ -125,5 +124,6 @@ function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true
         const indentedMessages = errors.map((error) => `${error.name}: ${error.message}`.replace(/^/gm, "\t"));
         throw new AggregateError(errors, ["invalid config", ...indentedMessages].join("\n"));
     }
+
     return { folder, dateFormat, dateOptions, intervalDuration, intervalOffset };
 }
