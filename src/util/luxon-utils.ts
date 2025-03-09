@@ -14,11 +14,9 @@ export type LuxonFormat = Brand<string, "LuxonFormat">;
  * This function checks whether a Luxon date, duration, or interval is valid. If the value is invalid,
  * it throws an error with a message combining a custom header (or default constructor name) with the
  * value's invalid reason and, if available, its invalid explanation.
- *
  * @param value - The Luxon object to validate.
  * @param message - Optional custom header for the error message.
- *
- * @throws {Error} If the provided value is invalid.
+ * @throws If the provided value is invalid.
  */
 export function assertValid(
     value: LuxonValue<true> | LuxonValue<false>,

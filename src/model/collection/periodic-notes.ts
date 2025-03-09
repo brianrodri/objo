@@ -112,11 +112,9 @@ export type PeriodicNotesConfig<IsValidConfiguration extends boolean> =
  *
  * If any of these validations fail, an {@link AggregateError} is thrown detailing all issues.
  * Otherwise, it returns a new configuration object with more specific types.
- *
  * @param config - The configuration object to validate.
  * @returns A validated configuration with strictly defined properties.
- *
- * @throws {AggregateError} If one or more properties of the configuration are invalid.
+ * @throws If one or more properties of the configuration are invalid.
  */
 function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true> {
     const folder = stripTrailingSlash(config.folder);

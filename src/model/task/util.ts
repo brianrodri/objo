@@ -6,9 +6,7 @@ import { DEFAULT_PRIORITY_VALUE, DEFAULT_TYPE_VALUE, Task, TASK_WITH_DEFAULT_VAL
 
 /**
  * Merges multiple partial Task objects into a complete Task using a custom merge strategy.
- *
  * The function begins with default Task values and sequentially merges each provided partial Task. For each property, the front-most non-default value is retained. Special handling is applied for properties such as task type, priority, strings, DateTime objects, and Set collections.
- *
  * @param parts - The partial Task objects to merge.
  * @returns new {@link Task} with the front-most non-default values taken from the parts.
  */
