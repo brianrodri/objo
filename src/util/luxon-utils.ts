@@ -18,14 +18,13 @@ export type LuxonFormat = Brand<string, "LuxonFormat">;
  * @param message - Optional custom header for the error message.
  * @throws If the provided value is invalid.
  */
-export function assertValid(
+export function assertValidLuxonValue(
     value: LuxonValue<true> | LuxonValue<false>,
     message?: string,
 ): asserts value is LuxonValue<true> {
-    const { invalidReason, invalidExplanation } = value;
-    const header = message ?? `Invalid ${value.constructor.name}`;
-    const reason = invalidExplanation ? `${invalidReason}: ${invalidExplanation}` : invalidReason;
-    assert(value.isValid, `${header}: ${reason}`);
+    message ??= `Invalid ${value.constructor.name}`;
+    const help = value.invalidExplanation ? `${value.invalidReason}: ${value.invalidExplanation}` : value.invalidReason;
+    assert(value.isValid, `${message}: ${help}`);
 }
 
 /**
@@ -33,7 +32,7 @@ export function assertValid(
  * @param dateOptions - the options to use when parsing and formatting.
  * @see {@link https://moment.github.io/luxon/#/parsing?id=table-of-tokens}
  */
-export function assertLuxonFormat(
+export function assertValidDateTimeFormat(
     dateFormat: string,
     dateOptions?: DateTimeOptions,
 ): asserts dateFormat is LuxonFormat {
