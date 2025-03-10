@@ -54,9 +54,16 @@ export function assertValidDateTimeFormat(
 }
 
 /**
- * TODO(coderabbitai[bot])
- * @param unsorted - TODO(coderabbitai[bot])
- * @returns TODO(coderabbitai[bot])
+ * Merges intersecting intervals from an unsorted array.
+ *
+ * This function takes an unsorted array of valid Luxon Interval objects and returns a new
+ * array where any overlapping intervals are merged. If the input array contains fewer than
+ * two intervals, a shallow copy is returned. Otherwise, the intervals are sorted by their start
+ * and end times before sequentially merging any that intersect. The union of intersecting intervals
+ * is validated to ensure correctness.
+ *
+ * @param unsorted - An unsorted array of Interval objects.
+ * @returns An array of Interval objects with merged overlapping intervals.
  */
 export function mergeIntersecting(unsorted: Interval<true>[]): Interval<true>[] {
     if (unsorted.length < 2) {
