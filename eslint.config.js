@@ -23,7 +23,7 @@ export default defineConfig([
         settings: {
             // Define the core TSDoc tag [`@typeParam`](https://tsdoc.org/pages/tags/typeparam/)
             // See: https://github.com/gajus/eslint-plugin-jsdoc/issues/844#issuecomment-1051308663
-            jsdoc: { structuredTags: { typeParam: { name: "namepath-defining", type: false } } },
+            jsdoc: { structuredTags: { typeParam: { name: "namepath-referencing", type: false } } },
         },
     },
     { plugins: { tsdoc }, files: ["**/*.{ts,tsx}"], rules: { "tsdoc/syntax": "error" } },
