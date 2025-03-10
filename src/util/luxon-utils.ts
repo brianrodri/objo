@@ -54,32 +54,20 @@ export function assertValidDateTimeFormat(
 }
 
 /**
- * Merges intersecting intervals from an unsorted array.
- *
- * This function takes an unsorted array of valid Luxon Interval objects and returns a new
- * array where any overlapping intervals are merged. If the input array contains fewer than
- * two intervals, a shallow copy is returned. Otherwise, the intervals are sorted by their start
- * and end times before sequentially merging any that intersect. The union of intersecting intervals
- * is validated to ensure correctness.
- * @param unsorted - An unsorted array of Interval objects.
- * @returns An array of Interval objects with merged overlapping intervals.
+ * Merge an array of Intervals into an equivalent minimal set of Intervals.
+ * Only combines **intersecting** intervals. Use {@link Interval.merge} to, additionally, merge adjacent intervals.
+ * @param input - intervals to merge
+ * @returns an equivalent minimal set of Intervals without any intersections.
  */
-export function mergeIntersecting(unsorted: Interval<true>[]): Interval<true>[] {
-    if (unsorted.length < 2) {
-        return [...unsorted];
-    } else {
-        const [first, ...sortedRest] = sortBy(unsorted, ["start", "end"]);
-        const sortedNonIntersecting = [first];
-        for (const next of sortedRest) {
-            const last = sortedNonIntersecting[sortedNonIntersecting.length - 1];
-            if (last.intersection(next)) {
-                const union = last.union(next);
-                assertValidLuxonValue(union);
-                sortedNonIntersecting[sortedNonIntersecting.length - 1] = union;
-            } else {
-                sortedNonIntersecting.push(next);
-            }
+export function mergeIntersecting(input: Interval<true>[]): Interval<true>[] {
+    return sortBy(input, ["start", "end"]).reduce<Interval<true>[]>((output, next) => {
+        const prevIndex = output.length - 1;
+        if (prevIndex >= 0 && output[prevIndex].intersection(next)) {
+            const union = output[prevIndex].union(next);
+            assertValidLuxonValue(union);
+            return output.toSpliced(prevIndex, 1, union);
+        } else {
+            return [...output, next];
         }
-        return sortedNonIntersecting;
-    }
+    }, []);
 }

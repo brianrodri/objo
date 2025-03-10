@@ -46,7 +46,7 @@ export const MERGE_INTERSECTING_TEST_CASES = [
  * Converts an ISO 8601 string into a validated Luxon Interval.
  * @param iso - The ISO 8601 string representing the interval.
  * @returns The valid Luxon Interval derived from the provided string.
- * @throws {Error} If the ISO string does not produce a valid interval.
+ * @throws If the ISO string does not produce a valid interval.
  */
 function toInterval(iso: string): Interval<true> {
     const interval = Interval.fromISO(iso);
