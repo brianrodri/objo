@@ -10,6 +10,7 @@ import {
     IntervalMaybeValid,
 } from "luxon";
 
+import { assertEach as assertEach } from "./assert-utils";
 
 export function assertValidLuxonValue(value: DateTimeMaybeValid, message?: string): asserts value is DateTime<true>;
 export function assertValidLuxonValue(value: DurationMaybeValid, message?: string): asserts value is Duration<true>;
@@ -61,8 +62,8 @@ export function assertValidDateTimeFormat(dateFormat: string, dateOptions?: Date
  * @param input - The intervals to merge. Must all be valid.
  * @returns An equivalent minimal set of Intervals without any intersections.
  */
-export function mergeIntersecting(input: Interval<true>[]): Interval<true>[] {
-    input.forEach((interval) => assertValidLuxonValue(interval));
+export function mergeIntersecting(input: IntervalMaybeValid[]): Interval<true>[] {
+    assertEach(input, assertValidLuxonValue);
     const sortedOutput: Interval<true>[] = [];
     for (const sortedNext of sortBy(input, ["start", "end"])) {
         const prevIndex = sortedOutput.length - 1;
