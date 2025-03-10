@@ -1,4 +1,5 @@
 import assert from "assert";
+import { sortBy } from "lodash";
 import { DateTime, DateTimeOptions, Duration, Interval } from "luxon";
 import { Brand } from "utility-types";
 
@@ -50,4 +51,26 @@ export function assertValidDateTimeFormat(
             parsedDate.toFormat(dateFormat, dateOptions) === sourceDate.toFormat(dateFormat, dateOptions),
         "date format must parse the formatted strings it produces",
     );
+}
+
+/**
+ * Merge an array of {@link Interval}s into an equivalent minimal set of {@link Interval}s.
+ * Only combines _intersecting_ intervals. Use {@link Interval.merge} to, additionally, merge _adjacent_ intervals.
+ * @param input - The intervals to merge. Must all be valid.
+ * @returns An equivalent minimal set of Intervals without any intersections.
+ */
+export function mergeIntersecting(input: Interval<true>[]): Interval<true>[] {
+    input.forEach((interval) => assertValidLuxonValue(interval));
+    const sortedOutput: Interval<true>[] = [];
+    for (const sortedNext of sortBy(input, ["start", "end"])) {
+        const prevIndex = sortedOutput.length - 1;
+        if (prevIndex >= 0 && sortedOutput[prevIndex].intersection(sortedNext)) {
+            const union = sortedOutput[prevIndex].union(sortedNext);
+            assertValidLuxonValue(union);
+            sortedOutput[prevIndex] = union;
+        } else {
+            sortedOutput.push(sortedNext);
+        }
+    }
+    return sortedOutput;
 }
