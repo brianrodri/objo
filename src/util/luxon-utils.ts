@@ -54,20 +54,20 @@ export function assertValidDateTimeFormat(
 }
 
 /**
- * Merge an array of Intervals into an equivalent minimal set of Intervals.
- * Only combines **intersecting** intervals. Use {@link Interval.merge} to, additionally, merge adjacent intervals.
- * @param input - intervals to merge
- * @returns an equivalent minimal set of Intervals without any intersections.
+ * Merge an array of {@link Interval}s into an equivalent minimal set of {@link Interval}s.
+ * Only combines _intersecting_ intervals. Use {@link Interval.merge} to, additionally, merge _adjacent_ intervals.
+ * @param input - The intervals to merge. Must all be valid.
+ * @returns An equivalent minimal set of Intervals without any intersections.
  */
 export function mergeIntersecting(input: Interval<true>[]): Interval<true>[] {
-    return sortBy(input, ["start", "end"]).reduce<Interval<true>[]>((output, next) => {
-        const prevIndex = output.length - 1;
-        if (prevIndex >= 0 && output[prevIndex].intersection(next)) {
-            const union = output[prevIndex].union(next);
-            assertValidLuxonValue(union);
-            return output.toSpliced(prevIndex, 1, union);
+    const sortedOutput: Interval<true>[] = [];
+    for (const sortedNext of sortBy(input, ["start", "end"])) {
+        const prevIndex = sortedOutput.length - 1;
+        if (prevIndex >= 0 && sortedOutput[prevIndex].intersection(sortedNext)) {
+            sortedOutput[prevIndex] = sortedOutput[prevIndex].union(sortedNext) as Interval<true>;
         } else {
-            return [...output, next];
+            sortedOutput.push(sortedNext);
         }
-    }, []);
+    }
+    return sortedOutput;
 }
