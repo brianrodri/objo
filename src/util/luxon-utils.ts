@@ -61,7 +61,6 @@ export function assertValidDateTimeFormat(
  * two intervals, a shallow copy is returned. Otherwise, the intervals are sorted by their start
  * and end times before sequentially merging any that intersect. The union of intersecting intervals
  * is validated to ensure correctness.
- *
  * @param unsorted - An unsorted array of Interval objects.
  * @returns An array of Interval objects with merged overlapping intervals.
  */
