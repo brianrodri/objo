@@ -1,7 +1,8 @@
 import { DateTime, Duration, Interval } from "luxon";
 import { describe, expect, it } from "vitest";
 
-import { assertValidDateTimeFormat, assertValidLuxonValue } from "../luxon-utils";
+import { assertValidDateTimeFormat, assertValidLuxonValue, mergeIntersecting } from "../luxon-utils";
+import { MERGE_INTERSECTING_TEST_CASES } from "./luxon-utils.test.const";
 
 describe(`${assertValidLuxonValue.name}`, () => {
     const reason = "user-provided reason";
@@ -32,5 +33,11 @@ describe(`${assertValidDateTimeFormat.name}`, () => {
 
     it.each(["FF", "''"])("should reject invalid format=%j", (invalidFormat) => {
         expect(() => assertValidDateTimeFormat(invalidFormat)).toThrowErrorMatchingSnapshot();
+    });
+});
+
+describe(`${mergeIntersecting.name}`, () => {
+    it.each(MERGE_INTERSECTING_TEST_CASES)("$name", ({ input, output }) => {
+        expect(mergeIntersecting(input)).toEqual(output);
     });
 });

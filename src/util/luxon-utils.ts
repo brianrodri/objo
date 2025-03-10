@@ -1,4 +1,5 @@
 import assert from "assert";
+import { sortBy } from "lodash";
 import { DateTime, DateTimeOptions, Duration, Interval } from "luxon";
 import { Brand } from "utility-types";
 
@@ -50,4 +51,29 @@ export function assertValidDateTimeFormat(
             parsedDate.toFormat(dateFormat, dateOptions) === sourceDate.toFormat(dateFormat, dateOptions),
         "date format must parse the formatted strings it produces",
     );
+}
+
+/**
+ * TODO(coderabbitai[bot])
+ * @param unsorted - TODO(coderabbitai[bot])
+ * @returns TODO(coderabbitai[bot])
+ */
+export function mergeIntersecting(unsorted: Interval<true>[]): Interval<true>[] {
+    if (unsorted.length < 2) {
+        return [...unsorted];
+    } else {
+        const [first, ...sortedRest] = sortBy(unsorted, ["start", "end"]);
+        const sortedNonIntersecting = [first];
+        for (const next of sortedRest) {
+            const last = sortedNonIntersecting[sortedNonIntersecting.length - 1];
+            if (last.intersection(next)) {
+                const union = last.union(next);
+                assertValidLuxonValue(union);
+                sortedNonIntersecting[sortedNonIntersecting.length - 1] = union;
+            } else {
+                sortedNonIntersecting.push(next);
+            }
+        }
+        return sortedNonIntersecting;
+    }
 }
