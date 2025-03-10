@@ -60,11 +60,14 @@ export function assertValidDateTimeFormat(
  * @returns An equivalent minimal set of Intervals without any intersections.
  */
 export function mergeIntersecting(input: Interval<true>[]): Interval<true>[] {
+    input.forEach((interval) => assertValidLuxonValue(interval));
     const sortedOutput: Interval<true>[] = [];
     for (const sortedNext of sortBy(input, ["start", "end"])) {
         const prevIndex = sortedOutput.length - 1;
         if (prevIndex >= 0 && sortedOutput[prevIndex].intersection(sortedNext)) {
-            sortedOutput[prevIndex] = sortedOutput[prevIndex].union(sortedNext) as Interval<true>;
+            const union = sortedOutput[prevIndex].union(sortedNext);
+            assertValidLuxonValue(union);
+            sortedOutput[prevIndex] = union;
         } else {
             sortedOutput.push(sortedNext);
         }
