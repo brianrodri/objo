@@ -10,7 +10,7 @@ import {
     IntervalMaybeValid,
 } from "luxon";
 
-import { assertEachWith as assertEachWith } from "./assert-utils";
+import { assertEachWith } from "./assert-utils";
 
 export function assertValid(value: DateTimeMaybeValid, message?: string): asserts value is DateTime<true>;
 export function assertValid(value: DurationMaybeValid, message?: string): asserts value is Duration<true>;
