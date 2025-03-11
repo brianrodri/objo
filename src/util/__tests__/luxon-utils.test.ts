@@ -17,14 +17,14 @@ describe(`${assertValid.name}`, () => {
         });
 
         it("should accept valid durations", () => {
-            const value = Duration.fromDurationLike({ days: 1 }) as DurationMaybeValid;
+            const value = Duration.fromISO("P1D");
             expectTypeOf(value).toEqualTypeOf<DurationMaybeValid>();
             assertValid(value, message);
             expectTypeOf(value).toEqualTypeOf<Duration<true>>();
         });
 
         it("should accept valid intervals", () => {
-            const value = Interval.after(DateTime.now(), { days: 1 });
+            const value = Interval.fromISO("2025-03-05/2025-03-06");
             expectTypeOf(value).toEqualTypeOf<IntervalMaybeValid>();
             assertValid(value, message);
             expectTypeOf(value).toEqualTypeOf<Interval<true>>();
