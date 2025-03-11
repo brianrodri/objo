@@ -1,16 +1,16 @@
 import { attempt, isError } from "lodash";
 
 /**
- * Asserts that all items in an array pass the given assertion.
- * Throws an aggregate error with _all_ failures, rather than just the first one encountered.
+ * Asserts that all items pass the assertion.
+ * This function can be used to constrain a type from `T[]` to `Constrained[]`.
  * @typeParam T - the type of each input item.
  * @typeParam Constrained - the constrained type of each input item.
  * @param items - The array of items to inspect.
- * @param assertion - Used to assert that an item is constrained.
+ * @param assertion - The assertion function. If all items pass, the array itself will be constrained too.
  * @param message - Optional message to include if an assertion fails.
- * @throws aggregate error with items that failed the assertion.
+ * @throws an aggregate error with _all_ failures, rather than just the first one encountered.
  */
-export function assertEach<T, Constrained extends T>(
+export function assertEachWith<T, Constrained extends T>(
     items: T[],
     assertion: (item: T) => asserts item is Constrained,
     message?: string,

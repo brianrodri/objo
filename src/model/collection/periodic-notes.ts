@@ -1,10 +1,10 @@
-import { notStrictEqual as assertNotStrictEqual } from "assert";
+import assert from "assert";
 import { attempt, clone, isError } from "lodash";
 import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMaybeValid } from "luxon";
 import { parse } from "path";
 import { DeepReadonly } from "utility-types";
 
-import { assertValidDateTimeFormat, assertValidLuxonValue } from "@/util/luxon-utils";
+import { assertValid, assertValidDateTimeFormat } from "@/util/luxon-utils";
 
 import { DateBasedCollection } from "./schema";
 import { stripTrailingSlash } from "./util";
@@ -57,7 +57,7 @@ export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesC
     public override getIntervalOf(filePath: string): IntervalMaybeValid {
         const parsedPath = parse(filePath);
         if (parsedPath.dir !== this.folder) {
-            return Interval.invalid("invalid folder", `"${filePath}" is not in "${this.folder}"`);
+            return Interval.invalid("invalid folder", `"${filePath}" must be in "${this.folder}"`);
         }
         const parsedDate = DateTime.fromFormat(parsedPath.name, this.dateFormat, this.dateOptions);
         if (!parsedDate.isValid) {
@@ -121,11 +121,11 @@ function validated(config: PeriodicNotesConfig<false>): PeriodicNotesConfig<true
     const intervalOffset = Duration.fromDurationLike(config.intervalOffset ?? 0);
 
     const errors = [
-        attempt(() => assertNotStrictEqual(folder.length, 0, "folder must be non-empty")),
+        attempt(() => assert(folder.length > 0, "folder must be non-empty")),
         attempt(() => assertValidDateTimeFormat(dateFormat, dateOptions)),
-        attempt(() => assertValidLuxonValue(intervalDuration, "interval duration is invalid")),
-        attempt(() => assertNotStrictEqual(intervalDuration.valueOf(), 0, "interval duration must not be zero")),
-        attempt(() => assertValidLuxonValue(intervalOffset, "interval offset is invalid")),
+        attempt(() => assertValid(intervalDuration, "interval duration must be valid")),
+        attempt(() => assert(intervalDuration.valueOf() !== 0, "interval duration must be non-zero")),
+        attempt(() => assertValid(intervalOffset, "interval offset must be valid")),
     ].filter(isError);
 
     if (errors.length > 0) {
