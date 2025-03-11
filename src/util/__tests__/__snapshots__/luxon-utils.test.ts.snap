@@ -1,17 +1,17 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`assertValidDateTimeFormat > should reject invalid format="''" 1`] = `[AssertionError: date format must parse the formatted strings it produces]`;
+exports[`assertValid > with message="user-provided message" > should reject invalid datetimes 1`] = `[AssertionError: user-provided message: user-provided reason: user-provided explanation]`;
 
-exports[`assertValidDateTimeFormat > should reject invalid format="FF" 1`] = `[AssertionError: date format must parse the formatted strings it produces]`;
+exports[`assertValid > with message="user-provided message" > should reject invalid durations 1`] = `[AssertionError: user-provided message: user-provided reason: user-provided explanation]`;
 
-exports[`assertValidLuxonValue > with message="user-provided message" > should reject invalid 'DateTime' 1`] = `[AssertionError: user-provided message: unit out of range: you specified 99 (of type number) as a day, which is invalid]`;
+exports[`assertValid > with message="user-provided message" > should reject invalid intervals 1`] = `[AssertionError: user-provided message: user-provided reason: user-provided explanation]`;
 
-exports[`assertValidLuxonValue > with message="user-provided message" > should reject invalid 'Duration' 1`] = `[AssertionError: user-provided message: user-provided reason]`;
+exports[`assertValid > with message=undefined > should reject invalid datetimes 1`] = `[AssertionError: Invalid DateTime: user-provided reason: user-provided explanation]`;
 
-exports[`assertValidLuxonValue > with message="user-provided message" > should reject invalid 'Interval' 1`] = `[AssertionError: user-provided message: user-provided reason: user-provided explanation]`;
+exports[`assertValid > with message=undefined > should reject invalid durations 1`] = `[AssertionError: Invalid Duration: user-provided reason: user-provided explanation]`;
 
-exports[`assertValidLuxonValue > with message=undefined > should reject invalid 'DateTime' 1`] = `[AssertionError: Invalid DateTime: unit out of range: you specified 99 (of type number) as a day, which is invalid]`;
+exports[`assertValid > with message=undefined > should reject invalid intervals 1`] = `[AssertionError: Invalid Interval: user-provided reason: user-provided explanation]`;
 
-exports[`assertValidLuxonValue > with message=undefined > should reject invalid 'Duration' 1`] = `[AssertionError: Invalid Duration: user-provided reason]`;
+exports[`assertValidDateTimeFormat > should reject invalid format="''" 1`] = `[AssertionError: format="''" and options=undefined must make round-trip conversions]`;
 
-exports[`assertValidLuxonValue > with message=undefined > should reject invalid 'Interval' 1`] = `[AssertionError: Invalid Interval: user-provided reason: user-provided explanation]`;
+exports[`assertValidDateTimeFormat > should reject invalid format="FF" 1`] = `[AssertionError: format="FF" and options=undefined must make round-trip conversions]`;
