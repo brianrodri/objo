@@ -2,7 +2,6 @@ import assert from "assert";
 import { attempt, clone, isError } from "lodash";
 import { DateTime, DateTimeOptions, Duration, DurationLike, Interval, IntervalMaybeValid } from "luxon";
 import { parse } from "path";
-import { DeepReadonly } from "utility-types";
 
 import { assertValid, assertValidDateTimeFormat } from "@/util/luxon-utils";
 
@@ -25,7 +24,7 @@ export class PeriodicNotes extends DateBasedCollection implements PeriodicNotesC
     public readonly dateFormat: string;
 
     /** Luxon options used when parsing {@link DateTime}s from file names. */
-    public readonly dateOptions: DeepReadonly<DateTimeOptions>;
+    public readonly dateOptions: Readonly<DateTimeOptions>;
 
     /**
      * The {@link Duration} of each file's corresponding {@link Interval}.
