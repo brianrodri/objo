@@ -5,6 +5,7 @@ export default {
     cleanOutputDir: false,
     treatWarningsAsErrors: true,
     treatValidationWarningsAsErrors: true,
+    warnOnUnstableDtLink: false,
     plugin: ["typedoc-plugin-coverage", "@typhonjs-typedoc/typedoc-theme-dmt", "typedoc-plugin-dt-links"],
     theme: "default-modern",
     exclude: ["./docs/**/*", "./node_modules/**/*", "**/__mocks__/**/*", "**/__tests__/**/*", "**/*.const.ts"],
