@@ -6,11 +6,7 @@ export default {
     treatWarningsAsErrors: true,
     treatValidationWarningsAsErrors: true,
     warnOnUnstableDtLink: false,
-    plugin: ["typedoc-plugin-coverage", "@typhonjs-typedoc/typedoc-theme-dmt", "typedoc-plugin-dt-links"],
-    theme: "default-modern",
+    plugin: ["typedoc-plugin-coverage", "typedoc-plugin-dt-links"],
     exclude: ["./docs/**/*", "./node_modules/**/*", "**/__mocks__/**/*", "**/__tests__/**/*", "**/*.const.ts"],
     projectDocuments: ["docs/architecture/decisions/*.md"],
-
-    // https://github.com/typhonjs-typedoc/typedoc-theme-dmt#configuration
-    dmtNavigation: { style: "flat" },
 };
