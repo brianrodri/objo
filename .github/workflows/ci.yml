@@ -1,34 +1,28 @@
+---
 name: CI
-on:
-    pull_request: { branches: [main] }
-    push: { branches: [main] }
-
+"on":
+  pull_request: {branches: [main]}
+  push: {branches: [main]}
 jobs:
-    build:
-        name: build:ci
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with: { node-version: latest }
-
-            - name: Install dependencies
-              run: npm clean-install
-              env: { HUSKY: 0 }
-
-            - name: Build with CI checks
-              run: npm run build:ci
-
-            - name: Upload test results to Codecov
-              if: ${{ !cancelled() }}
-              uses: codecov/test-results-action@v1
-              with: { token: "${{ secrets.CODECOV_TOKEN }}" }
-
-            - name: Upload coverage to Codecov
-              if: ${{ !cancelled() }}
-              uses: codecov/codecov-action@v5
-              with: { token: "${{ secrets.CODECOV_TOKEN }}" }
+  build:
+    name: build:ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with: {node-version: latest}
+      - name: Install dependencies
+        run: npm clean-install
+        env: {HUSKY: 0}
+      - name: Build with CI checks
+        run: npm run build:ci
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@v1
+        with: {token: "${{ secrets.CODECOV_TOKEN }}"}
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
+        with: {token: "${{ secrets.CODECOV_TOKEN }}"}
