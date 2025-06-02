@@ -3,3 +3,7 @@ docs/
 dist/
 node_modules/
 test-vault/
+
+# Using `yamlfmt` for YAML files, not `prettier`.
+*.yml
+*.yaml
