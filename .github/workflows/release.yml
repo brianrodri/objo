@@ -1,35 +1,29 @@
+---
 name: Release
-on:
-    workflow_dispatch:
-
+"on":
+  workflow_dispatch:
 permissions:
-    contents: read
-
+  contents: read
 jobs:
-    release:
-        name: build:release
-        runs-on: ubuntu-latest
-        permissions:
-            contents: write
-            issues: write
-            pull-requests: write
-            id-token: write
-
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v4
-
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with: { node-version: latest }
-
-            - name: Install dependencies
-              run: npm clean-install
-              env: { HUSKY: 0 }
-
-            - name: Build with CI checks
-              run: npm run build:ci
-
-            - name: Release update
-              env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
-              run: npx semantic-release
+  release:
+    name: build:release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with: {node-version: latest}
+      - name: Install dependencies
+        run: npm clean-install
+        env: {HUSKY: 0}
+      - name: Build with CI checks
+        run: npm run build:ci
+      - name: Release update
+        env: {GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"}
+        run: npx semantic-release
