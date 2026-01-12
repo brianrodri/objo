@@ -1,3 +1,4 @@
+import assert from "assert";
 import { Duration, DurationLike } from "luxon";
 import { createElement, FunctionalComponent, JSX } from "preact";
 import { useEffect, useMemo, useRef } from "preact/hooks";
@@ -13,21 +14,19 @@ import { MARKDOWN_RENDER_DEBOUNCE_TIME } from "./obsidian-markdown.const";
  */
 export const ObsidianMarkdown: FunctionalComponent<ObsidianMarkdownProps> = (props) => {
     const { app, component, markdown, sourcePath, tagName = "span", delay = MARKDOWN_RENDER_DEBOUNCE_TIME } = props;
-    const elRef = useRef<HTMLElement>();
+    const ref = useRef<HTMLElement>();
     const delayMs = useMemo(() => Duration.fromDurationLike(delay).toMillis(), [delay]);
     const renderObsidianMarkdown = useDebounceCallback(MarkdownRenderer["render"], delayMs);
 
     useEffect(() => {
-        const el = elRef.current;
-        if (el) {
-            const runAsync = async () => await renderObsidianMarkdown(app, markdown, el, sourcePath, component);
-            runAsync().catch(console.error);
-            return renderObsidianMarkdown.cancel;
-        }
+        // HINT: Guaranteed to be non-null within `useEffect`, see: https://react.dev/learn/synchronizing-with-effects.
+        assert(ref.current);
+        renderObsidianMarkdown(app, markdown, ref.current, sourcePath, component)?.catch(console.error);
+        return () => renderObsidianMarkdown.cancel();
     }, [renderObsidianMarkdown, app, markdown, sourcePath, component]);
 
     // eslint-disable-next-line react-hooks/refs -- TODO(facebook/react#34775): This is a false-positive.
-    return createElement(tagName, { ref: elRef });
+    return createElement(tagName, { ref });
 };
 
 /** Configures how Obsidian (the app) will render its markdown. */
