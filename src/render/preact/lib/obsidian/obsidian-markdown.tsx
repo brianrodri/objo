@@ -26,6 +26,7 @@ export const ObsidianMarkdown: FunctionalComponent<ObsidianMarkdownProps> = (pro
         }
     }, [renderObsidianMarkdown, app, markdown, sourcePath, component]);
 
+    // eslint-disable-next-line react-hooks/refs -- TODO(facebook/react#34775): This is a false-positive.
     return createElement(tagName, { ref: elRef });
 };
 
