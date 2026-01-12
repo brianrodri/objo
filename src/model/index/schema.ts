@@ -10,7 +10,7 @@ export interface VaultIndex {
      * All calls to this function will be treated as adding a brand new collection, regardless
      * of whether the input has already been registered in an earlier call.
      * @param collection - the collection to register with this index.
-     * @throws {@link Error} if the index cannot support the given collection.
+     * @throws Error - if the index cannot support the given collection.
      * @returns a {@link VaultCollectionIndex} that can be used to interact with the primary index.
      */
     addCollection<C extends Collection>(collection: C): VaultCollectionIndex<C>;

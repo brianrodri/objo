@@ -8,7 +8,7 @@ import { attempt, isError } from "lodash";
  * @param items - The array of items to inspect.
  * @param assertion - The assertion function. If all items pass, the array itself will be constrained too.
  * @param message - Optional message to include if an assertion fails.
- * @throws {@link AggregateError} an aggregate error with _all_ failures, rather than just the first one encountered.
+ * @throws AggregateError - Holds errors from _all_ rejections rather than just the first one encountered.
  */
 export function assertEachWith<T, Constrained extends T>(
     items: T[],
