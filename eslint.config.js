@@ -21,9 +21,14 @@ export default defineConfig([
         files: ["**/*.{ts,tsx}"],
         extends: ["jsdoc/flat/recommended-typescript-error"],
         settings: {
-            // Define the core TSDoc tag [`@typeParam`](https://tsdoc.org/pages/tags/typeparam/)
-            // See: https://github.com/gajus/eslint-plugin-jsdoc/issues/844#issuecomment-1051308663
-            jsdoc: { structuredTags: { typeParam: { name: "namepath-referencing", type: false, required: ["name"] } } },
+            // NOTE(microsoft/tsdoc#72): TSDoc (used by TypeDoc) relies on `@typeParam` rather than JSDoc's `@template`.
+            jsdoc: { tagNamePreference: { typeParam: "typeParam" } },
+        },
+        rules: {
+            // TSDoc (used by TypeDoc) handles type-checking `@throws` because its syntax is incompatible with JSDoc's.
+            "jsdoc/require-throws-type": "off",
+            // NOTE(microsoft/tsdoc#171): Manually define the official TSDoc tags that aren't provided by JSDoc.
+            "jsdoc/check-tag-names": ["error", { definedTags: ["typeParam"], inlineTags: ["inheritDoc", "link"] }],
         },
     },
     { plugins: { tsdoc }, files: ["**/*.{ts,tsx}"], rules: { "tsdoc/syntax": "error" } },
@@ -38,7 +43,7 @@ export default defineConfig([
     },
 
     {
-        extends: [eslintPluginReactHooks.configs["recommended-latest"]],
+        extends: [eslintPluginReactHooks.configs.flat["recommended-latest"]],
         files: ["**/*.{ts,tsx}"],
     },
 
