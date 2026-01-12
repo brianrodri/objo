@@ -44,5 +44,7 @@ export default defineConfig(({ mode }) => ({
             reporter: ["text", "html", "clover", "json", "lcov"],
         },
         reporters: [["junit", { outputFile: "test-report.junit.xml" }], "verbose"],
+        // NOTE(vitest-dev/vitest#4029): obsidian package has no "main" entrypoint so we need to mock the lib entirely.
+        alias: { obsidian: resolve(__dirname, "src/lib/obsidian/__mocks__/types.ts") },
     },
 }));
