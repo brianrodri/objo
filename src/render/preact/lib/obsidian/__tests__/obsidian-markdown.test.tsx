@@ -8,7 +8,7 @@ import { App, Component, MarkdownRenderer } from "@/lib/obsidian/types";
 import { ObsidianMarkdown, ObsidianMarkdownProps } from "../obsidian-markdown";
 
 vi.mock("@/lib/obsidian/types");
-afterEach(() => vi.restoreAllMocks());
+afterEach(() => vi.resetAllMocks());
 
 describe(`${ObsidianMarkdown.name}`, () => {
     const requiredProps: OmitByValue<ObsidianMarkdownProps, undefined> = {
