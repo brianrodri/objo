@@ -23,7 +23,7 @@ export function assertValid(value: IntervalMaybeValid, message?: string): assert
  * it throws an error with details from the value's `invalidReason` and `invalidExplanation` properties.
  * @param value - The Luxon object to validate.
  * @param message - Optional custom header for the error message.
- * @throws If the provided value is invalid.
+ * @throws {@link Error} If the provided value is invalid.
  */
 export function assertValid(
     value: DateTimeMaybeValid | DurationMaybeValid | IntervalMaybeValid,
@@ -44,7 +44,7 @@ export function assertValid(
  * @param format - The date format string to validate.
  * @param options - Optional formatting and parsing options for date-time operations.
  * @see {@link https://moment.github.io/luxon/#/parsing?id=table-of-tokens}
- * @throws If the date format does not produce matching formatted strings upon parsing.
+ * @throws {@link Error} If the date format does not produce matching formatted strings upon parsing.
  */
 export function assertValidDateTimeFormat(format: string, options?: DateTimeOptions): void {
     const sourceDate = DateTime.fromMillis(0).setZone("utc"); // Any valid UTC date would work.
